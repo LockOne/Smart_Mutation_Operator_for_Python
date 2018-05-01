@@ -1,0 +1,82 @@
+### keywords
+if
+else
+def
+while
+do
+self
+False
+class
+None
+continue
+break
+for
+finally
+is
+return
+lambda
+try
+from
+True
+nonlocal
+global
+not
+with
+import
+pass
+except
+in
+raise
+elif
+and
+as
+or
+yield
+### arithmetic operators
++
+-
+/
+*
+%
+//
+### comparison operators
+>
+>=
+==
+<
+<=
+!=
+### bitwise operators
+^
+|
+&
+~
+<<
+>>
+### brackets
+(
+)
+{
+}
+[
+]
+### assignment operators
+=
++=
+*=
+/=
+%=
+//=
+-=
+**=
+&=
+|=
+^=
+>>=
+<<=
+### quatation mark
+'
+"
+### comment
+#
+'''
