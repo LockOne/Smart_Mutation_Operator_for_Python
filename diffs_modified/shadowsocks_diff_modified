@@ -1,0 +1,3962 @@
+-import os
++import socket
+-                os.system(cmd)
++        if 'can not parse header when' not in line:
+-    decipher = openssl.OpenSSLStreamCrypto(method, b'k' * 32, b'i' * 16, 0)
++    decipher = MbedTLSStreamCrypto(method, b'k' * 32, b'i' * 16, 0)
+-    decipher = openssl.OpenSSLAeadCrypto(
++    decipher = MbedTLSAeadCrypto(
+-    decipher = openssl.OpenSSLAeadCrypto(
++    decipher = MbedTLSAeadCrypto(
+-                                self._closed_values.add(value)
++                        if self.close_callback is not None:
+-        self.decrypt_once = self.update
++    def encrypt_once(self, data):
+-        self.decrypt = self.update
++
+-        self.decrypt_once = self.update
++
+-def load_sodium():
++def load_sodium(path=None):
+-                                  'libsodium')
++                                  'libsodium', path)
+-    def __init__(self, cipher_name, key, iv, op):
++    def __init__(self, cipher_name, key, iv, op, crypto_path=None):
+-            load_sodium()
++            crypto_path = dict(crypto_path) if crypto_path else dict()
+-        # print("".join("%02x" % ord(b) for b in self._nonce))
++    load_sodium()
+-def load_openssl():
++def load_openssl(crypto_path=None):
+-                                  'libcrypto')
++                                  'libcrypto', path)
+-        raise Exception('libcrypto(OpenSSL) not found')
++        raise Exception('libcrypto(OpenSSL) not found with path %s' % path)
+-    def __init__(self, cipher_name):
++    def __init__(self, cipher_name, crypto_path=None):
+-            load_openssl()
++            load_openssl(crypto_path)
+-        AeadCryptoBase.__init__(self, cipher_name, key, iv, op)
++    def __init__(self, cipher_name, key, iv, op, crypto_path=None):
+-        :return: void
++        :return: None
+-        :return: void
++        :return: None
+-        super(OpenSSLStreamCrypto, self).__init__(cipher_name)
++    def __init__(self, cipher_name, key, iv, op, crypto_path=None):
+-    'aes-256-gcm': (32, 32, OpenSSLAeadCrypto),
++    # AEAD: iv_len = salt_len = key_len
+-
++def test_aes_128_cfb():
+-def create_cipher(alg, key, iv, op, key_as_bytes=0, d=None, salt=None,
++def create_cipher(alg, key, iv, op, crypto_path=None,
+-    return openssl.OpenSSLStreamCrypto(b'rc4', rc4_key, b'', op)
++    return openssl.OpenSSLStreamCrypto(b'rc4', rc4_key, b'', op, crypto_path)
+-from ctypes import c_char_p, c_int, c_ulonglong, byref, c_ulong, \
++from ctypes import c_char_p, c_int, c_uint, c_ulonglong, byref, \
+-def load_libsodium():
++def load_libsodium(crypto_path=None):
+-        aead.load_sodium()
++        aead.load_sodium(path)
+-        print('load libsodium again')
++        print('load libsodium again with path %s' % path)
+-                                      'libsodium')
++                                      'libsodium', path)
+-                                                       c_char_p)
++    libsodium.crypto_stream_salsa20_xor_ic.argtypes = (
+-                                                        c_char_p)
++    libsodium.crypto_stream_chacha20_xor_ic.argtypes = (
+-                                                             c_char_p)
++    libsodium.crypto_stream_chacha20_ietf_xor_ic.argtypes = (
+-        c_void_p, c_void_p,     # c, clen
++        c_void_p, c_void_p,  # c, clen
+-        c_char_p, c_char_p      # npub, k
++        c_char_p,  # nsec, not used
+-        c_char_p,               # nsec, not used
++        c_void_p, c_void_p,  # m, mlen
+-        c_char_p, c_char_p      # npub, k
++        c_char_p, c_char_p  # npub, k
+-    def __init__(self, cipher_name, key, iv, op):
++    def __init__(self, cipher_name, key, iv, op, crypto_path=None):
+-            load_libsodium()
++            load_libsodium(crypto_path)
+-    def __init__(self, cipher_name, key, iv, op):
++    def __init__(self, cipher_name, key, iv, op, crypto_path=None):
+-        AeadCryptoBase.__init__(self, cipher_name, key, iv, op)
++            load_libsodium(crypto_path)
+-            self.encryptor = libsodium.\
++            self.encryptor = libsodium. \
+-            self.decryptor = libsodium.\
++            self.decryptor = libsodium. \
+-                self.encryptor = libsodium.\
++                self.encryptor = libsodium. \
+-                self.decryptor = libsodium.\
++                self.decryptor = libsodium. \
+-                raise Exception('Unknown cipher')
++                raise Exception('Unsupported cipher')
+-            raise Exception("Encrypt failed")
++            raise Exception("Decrypt failed")
+-    decipher = SodiumCrypto('salsa20', b'k' * 32, b'i' * 16, 0)
++def test_chacha20():
+-def test_chacha20():
++def test_xchacha20():
+-    decipher = SodiumCrypto('chacha20', b'k' * 32, b'i' * 16, 0)
++
+-
++    test_xchacha20()
+-    def __init__(self, cipher_name, key, iv, op):
++    def __init__(self, cipher_name, key, iv, op, crypto_path=None):
+-    import ctypes.util
++def load_library(path, search_symbol, library_name):
+-            pass
++        lib = load_library(path, search_symbol, library_name)
+-from shadowsocks.crypto import rc4_md5, openssl, sodium, table
++from shadowsocks.crypto import rc4_md5, openssl, mbedtls, sodium, table
+-    Cryptor(key, method)
++def try_cipher(key, method=None, crypto_path=None):
+-    def __init__(self, password, method):
++    def __init__(self, password, method, crypto_path=None):
+-        return m[METHOD_INFO_CRYPTO](method, key, iv, op)
++        return m[METHOD_INFO_CRYPTO](method, key, iv, op, self.crypto_path)
+-                iv=decipher_iv
++                decipher_iv
+-def encrypt_all_m(key, iv, m, method, data):
++def encrypt_all_m(key, iv, m, method, data, crypto_path=None):
+-    cipher = m(method, key, iv, 1)
++    cipher = m(method, key, iv, 1, crypto_path)
+-def decrypt_all(password, method, data):
++def decrypt_all(password, method, data, crypto_path=None):
+-    cipher = m(method, key, iv, CIPHER_ENC_DECRYPTION)
++    cipher = m(method, key, iv, CIPHER_ENC_DECRYPTION, crypto_path)
+-def encrypt_all(password, method, data):
++def encrypt_all(password, method, data, crypto_path=None):
+-    cipher = m(method, key, iv, CIPHER_ENC_ENCRYPTION)
++    cipher = m(method, key, iv, CIPHER_ENC_ENCRYPTION, crypto_path)
+-    cryptor.try_cipher(config['password'], config['method'])
++    config['crypto_path'] = {'openssl': config['libopenssl'],
+-                    'version']
++                    'libopenssl=', 'libmbedtls=', 'libsodium=', 'version']
+-                    'prefer-ipv6']
++                    'libopenssl=', 'libmbedtls=', 'libsodium=', 'prefer-ipv6']
+-                config['manager_address'] = value
++                config['manager_address'] = to_str(value)
+-                            *xchacha20-ietf-poly1305,
++                            xchacha20-ietf-poly1305,
+-                            camellia-256-cfb,
++                         Sodium 1.0.12:
+-  --user USER            username to run as
++  --pid-file=PID_FILE    pid file for daemon mode
+-                            *xchacha20-ietf-poly1305,
++                            xchacha20-ietf-poly1305,
+-                            camellia-256-cfb,
++                         Sodium 1.0.12:
+-  --manager-address ADDR optional server manager UDP address, see wiki
++  --workers=WORKERS      number of workers, available on Unix/Linux
+-                                        config['method'])
++                                        config['method'],
+-            data = self._local_sock.recv(BUF_SIZE)
++            data = self._local_sock.recv(buf_size)
+-            data = self._remote_sock.recv(BUF_SIZE)
++            data = self._remote_sock.recv(buf_size)
+-                                                    data)
++                                                    data, self._crypto_path)
+-                data = cryptor.encrypt_all_m(key, iv, m, self._method, data)
++                data = cryptor.encrypt_all_m(key, iv, m, self._method, data,
+-                                               self._method, data)
++                                               self._method, data,
+-                                                    self._method, data)
++                                                    self._method, data,
+-            results.append(fname)
++        fname += "*.dll"
+-            int(config['tunnel_remote_port'])
++        config['tunnel_remote_port'] = int(config['tunnel_remote_port'])
+-        to_str(config.get('tunnel_remote', '8.8.8.8'))
++    config['tunnel_remote'] = to_str(config.get('tunnel_remote', '8.8.8.8'))
+-                                                data)
++            try:
+-                )
++                logging.debug('UDP handle_server: data is empty after decrypt')
+-            data = cryptor.encrypt_all_m(key, iv, m, self._method, data)
++            try:
+-            response = cryptor.encrypt_all(self._password, self._method, data)
++            try:
+-                                                self._method, data)
++            try:
+-from ctypes import create_string_buffer
++from ctypes import c_int, create_string_buffer, byref, c_void_p
+-        :return: void
++        :return: None
+-        nonce_increment(self._nonce, self._nlen)
++        self.nonce_increment()
+-        :return: cipher text with tag
++        :return: str [payload][tag] cipher text with tag
+-        :return: (str, int)
++        :return: str [len][tag][payload][tag]
+-        l = AEAD_CHUNK_SIZE_LEN + plen + self._tlen * 2
++        # l = AEAD_CHUNK_SIZE_LEN + plen + self._tlen * 2
+-            raise Exception("data length invalid")
++        ctext = [self.aead_encrypt(pack("!H", plen & AEAD_CHUNK_SIZE_MASK))]
+-        if len(ctext) != l:
++        ctext.append(self.aead_encrypt(data))
+-        return ctext, l
++        return b''.join(ctext)
+-            ctext, _ = self.encrypt_chunk(data)
++            ctext = self.encrypt_chunk(data)
+-        ctext, clen = b"", 0
++        ctext = []
+-            clen += l
++            c = self.encrypt_chunk(data[:mlen])
+-        return ctext
++        return b''.join(ctext)
+-        :param data: str cipher text with tag
++        :param data: str [len][tag][payload][tag] cipher text with tag
+-        :param data: str encrypted msg
++        :param data: str [size][tag] encrypted chunk payload len
+-        :param data: str encrypted data
++        :param data: str [payload][tag][[len][tag]....] encrypted data
+-        :param data: str encrypted msg
++        :param data: str [len][tag][payload][tag][[len][tag]...] encrypted msg
+-        ptext, left = self.decrypt_chunk(data)
++        ptext = []
+-        return ptext
++            ptext.append(pnext)
+-    nonce_increment, EVP_CTRL_AEAD_GET_TAG, EVP_CTRL_AEAD_SET_TAG
++    EVP_CTRL_AEAD_GET_TAG, EVP_CTRL_AEAD_SET_TAG
+-    global loaded, libcrypto, buf, ctx_cleanup
++    global loaded, libcrypto, libsodium, buf, ctx_cleanup
+-            None, None, c_int(op)
++            self._cipher,
+-            key_ptr, iv_ptr,
++            None,
+-        # print("".join("%02x" % ord(b) for b in self._nonce))
++        AeadCryptoBase.nonce_increment(self)
+-            raise Exception('Verify data failed')
++            raise Exception('Finalize cipher failed')
+-    test_aes_gcm(256)
++def test_aes_ocb(bits=128):
+-    test_aes_256_gcm()
++    test_aes_gcm_chunk(128)
+-        raise Exception('libsodium not found')
++    if not aead.sodium_loaded:
+-    )
++    # aes-256-gcm, same api structure as above
+-
++        global libsodium
+-    print("Test chacha20-poly1305")
++    print("Test chacha20-poly1305 [payload][tag]")
+-    print("Test chacha20-ietf-poly1305")
++    print("Test chacha20-ietf-poly1305 [payload][tag]")
+-    results = []
++    cipher_results = []
+-        results.append(c)
++        # print(pos, l)
+-        results.append(decipher.decrypt(c[pos:pos + l]))
++    # c = b''.join(cipher_results)
+-    assert b''.join(results) == plain
++    assert b''.join(plain_results) == plain
+-                             rc4, rc4-md5, table.
++                         Sodium:
+-                             rc4, rc4-md5, table.
++                         Sodium:
+-    version="2.9.1",
++    version="3.0.0",
+-    func_name = 'EVP_' + cipher_name.replace('-', '_')
++    func_name = b'EVP_' + cipher_name.replace(b'-', b'_')
+-    def __init__(self, cipher_name, key, iv, op):
++class OpenSSLCryptoBase(object):
+-        iv_ptr = c_char_p(iv)
++        self._cipher = cipher
+-            raise Exception('can not initialize cipher context')
++
+-                                   byref(cipher_out_len), c_char_p(data), l)
++        libcrypto.EVP_CipherUpdate(
+-    'seed-cfb': (16, 16, OpenSSLCrypto),
++    'aes-128-cfb': (16, 16, OpenSSLStreamCrypto),
+-    decipher = OpenSSLCrypto(method, b'k' * 32, b'i' * 16, 0)
++    cipher = OpenSSLStreamCrypto(method, b'k' * 32, b'i' * 16, 1)
+-    return openssl.OpenSSLCrypto(b'rc4', rc4_key, b'', op)
++    return openssl.OpenSSLStreamCrypto(b'rc4', rc4_key, b'', op)
+-        fname = fname + ".dll"
++        fname += ".dll"
+-    BLOCK_SIZE = 16384
++    block_size = 16384
+-    plain = urandom(BLOCK_SIZE * rounds)
++    plain = urandom(block_size * rounds)
+-        c = cipher.update(plain[pos:pos + l])
++        c = cipher.encrypt(plain[pos:pos + l])
+-    while pos < len(plain):
++    while pos < len(c):
+-        results.append(decipher.update(c[pos:pos + l]))
++        results.append(decipher.decrypt(c[pos:pos + l]))
+-    print('speed: %d bytes/s' % (BLOCK_SIZE * rounds / (end - start)))
++    print('speed: %d bytes/s' % (block_size * rounds / (end - start)))
+-def decrypt_all(password, method, data):
++def dencrypt_all(password, method, data):
+-        plain2, key, iv = decrypt_all(b'key', method, cipher)
++        plain2, key, iv = dencrypt_all(b'key', method, cipher)
+-    from shadowsocks import encrypt
++    from shadowsocks import cryptor
+-    data = encrypt.encrypt_all(b'asdfadsfasdf', 'aes-256-cfb', 1,
++    data = cryptor.encrypt_all(b'asdfadsfasdf', 'aes-256-cfb',
+-    data = encrypt.encrypt_all(b'foobar2', 'aes-256-cfb', 1,
++    data = cryptor.encrypt_all(b'foobar2', 'aes-256-cfb',
+-from shadowsocks import encrypt
++from shadowsocks import cryptor
+-    encrypt.try_cipher(config['password'], config['method'])
++    cryptor.try_cipher(config['password'], config['method'])
+-from shadowsocks import encrypt, eventloop, shell, common
++from shadowsocks import cryptor, eventloop, shell, common
+-
++
+-                                            config['method'])
++        self._cryptor = cryptor.Cryptor(config['password'],
+-        data = self._encryptor.encrypt(data)
++        data = self._cryptor.encrypt(data)
+-                key = self._encryptor.decipher_iv + self._encryptor.key
++                key = self._cryptor.decipher_iv + self._cryptor.key
+-                key = self._encryptor.cipher_iv + self._encryptor.key
++                key = self._cryptor.cipher_iv + self._cryptor.key
+-            data_to_send = self._encryptor.encrypt(data)
++            data_to_send = self._cryptor.encrypt(data)
+-                key = self._encryptor.decipher_iv + index
++                key = self._cryptor.decipher_iv + index
+-        key = self._encryptor.cipher_iv + index
++        key = self._cryptor.cipher_iv + index
+-            data = self._encryptor.encrypt(data)
++            data = self._cryptor.encrypt(data)
+-            data = self._encryptor.decrypt(data)
++            data = self._cryptor.decrypt(data)
+-            data = self._encryptor.decrypt(data)
++            data = self._cryptor.decrypt(data)
+-            data = self._encryptor.encrypt(data)
++            data = self._cryptor.encrypt(data)
+-from shadowsocks import encrypt, eventloop, lru_cache, common, shell
++from shadowsocks import cryptor, eventloop, lru_cache, common, shell
+-            data, key, iv = encrypt.decrypt_all(self._password,
++            data, key, iv = cryptor.decrypt_all(self._password,
+-            key, iv, m = encrypt.gen_key_iv(self._password, self._method)
++            key, iv, m = cryptor.gen_key_iv(self._password, self._method)
+-            data = encrypt.encrypt_all_m(key, iv, m, self._method, data)
++            data = cryptor.encrypt_all_m(key, iv, m, self._method, data)
+-                                           data)
++            response = cryptor.encrypt_all(self._password, self._method, data)
+-                                       data)
++            data, key, iv = cryptor.decrypt_all(self._password,
+-                data = data[3:]
++            if self._is_tunnel:
+-                return
++                cmd = common.ord(data[1])
+-                                self._local_sock)
++            # jump over socks5 response
+-            self._handle_stage_init(data)
++            # jump over socks5 init
+-                return
++            if self._is_tunnel:
+-                data = data[3:]
++                frag = common.ord(data[2])
+-
++        logging.info("udp data to %s:%d from %s:%d"
+-            response = b'\x00\x00\x00' + data
++            if self._is_tunnel:
+-def dencrypt_all(password, method, data):
++def decrypt_all(password, method, data):
+-        plain2, key, iv = dencrypt_all(b'key', method, cipher)
++        plain2, key, iv = decrypt_all(b'key', method, cipher)
+-                                                 data)
++            data, key, iv = encrypt.decrypt_all(self._password,
+-    version="2.9.0",
++    version="2.9.1",
+-VALID_HOSTNAME = re.compile(br"(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
++VALID_HOSTNAME = re.compile(br"(?!-)[A-Z\d\-_]{1,63}(?<!-)$", re.IGNORECASE)
+-    global loaded, libcrypto, buf
++    global loaded, libcrypto, buf, ctx_cleanup
+-    libcrypto.EVP_CIPHER_CTX_cleanup.argtypes = (c_void_p,)
++    try:
+-            libcrypto.EVP_CIPHER_CTX_cleanup(self._ctx)
++            ctx_cleanup(self._ctx)
+-            self._ota_enable = False
++        self._ota_enable = config.get('one_time_auth', False)
+-            self._forbidden_iplist = None
++        self._forbidden_iplist = config.get('forbidden_ip')
+-                data += onetimeauth_gen(data, key)
++                _header = data[:header_length]
+-            self._ota_enable = False
++        self._ota_enable = config.get('one_time_auth', False)
+-
++        self._forbidden_iplist = config.get('forbidden_ip')
+-            ip = line.split()[-1].split(':')[0]
++            ip = line.split()[-1].split(':')[-2]
+-            # ATYP & 0x10 == 1, then OTA is enabled.
++            # ATYP & 0x10 == 0x10, then OTA is enabled.
+-            length = min(self._ota_len, len(data))
++            length = min(self._ota_len - len(self._ota_buff_data), len(data))
+-                                    self._servers.append(server)
++                    if not (line and line.startswith(b'nameserver')):
+-                                    self._hosts[hostname] = ip
++                    if len(parts) < 2:
+-                    import traceback
++@shell.exception_handle(self_=False, exit_code=1)
+-        udp_server.add_to_loop(loop)
++    logging.info("starting local at %s:%d" %
+-        signal.signal(getattr(signal, 'SIGQUIT', signal.SIGTERM), handler)
++    dns_resolver = asyncdns.DNSResolver()
+-        signal.signal(signal.SIGINT, int_handler)
++    def handler(signum, _):
+-        shell.print_exception(e)
++    def int_handler(signum, _):
+-                        traceback.print_exc()
++        if not self._control_client_addr:
+-                self._loop.modify(self._remote_sock, event)
++        if not dirty:
+-        else:
++        if not self._is_local:
+-                self._config['fast_open']:
++            return
+-                    data = data[3:]
++        if self._is_local:
+-                                     b'\x00\x00\x00\x00\x10\x10'),
++                    header = b'\x05\x00\x00\x01'
+-                                           self._handle_dns_resolved)
++                self._stage = STAGE_UDP_ASSOC
+-            self.destroy()
++                logging.error('unknown command %d', cmd)
+-            self._log_error(error)
++            addr, port = self._client_address[0], self._client_address[1]
+-            ip = result[1]
++        if not (result and result[1]):
+-        self.destroy()
++                remote_sock.connect((remote_addr, remote_port))
+-
++        unchunk_data = b''
+-                    data_cb(self._ota_buff_data)
++                    unchunk_data += _data
+-            if self._ota_enable:
++            if self._ota_enable_session:
+-            if self._ota_enable:
++            if self._ota_enable_session:
+-                    self._ota_enable = True
++                self._ota_enable_session = addrtype & ADDRTYPE_AUTH
+-                if self._ota_enable:
++                if self._ota_enable_session:
+-                if self._ota_enable:
++                if self._ota_enable_session:
+-            if self._ota_enable:
++            if self._ota_enable_session:
+-            if self._ota_enable:
++            if self._ota_enable_session:
+-            self._one_time_auth_enable = True
++            self._ota_enable = True
+-            self._one_time_auth_enable = False
++            self._ota_enable = False
+-                self._one_time_auth_enable = True
++            self._ota_enable_session = addrtype & ADDRTYPE_AUTH
+-            if self._one_time_auth_enable:
++            if self._ota_enable_session:
+-    version="2.8.2",
++    version="2.9.0",
+-from ctypes import c_char_p, c_int, c_ulonglong, byref, \
++from ctypes import c_char_p, c_int, c_ulonglong, byref, c_ulong, \
+-# for salsa20 and chacha20
++# for salsa20 and chacha20 and chacha20-ietf
+-            logging.warning('unsupported SOCKS protocol version ' + 
++            logging.warning('unsupported SOCKS protocol version ' +
+-            logging.warning('unsupported SOCKS protocol version ' + str(socks_version))
++            logging.warning('unsupported SOCKS protocol version ' + 
+-            logging.warning('none of METHOD\'s requested by client is supported')
++            logging.warning('none of SOCKS METHOD\'s '
+-# stage 0 SOCKS hello received from local, send hello to local
++# stage 0 auth METHOD received from local, reply with selection message
+-            return
++            self._handle_stage_init(data)
+-STATUS_IPV6 = 1
++STATUS_FIRST = 0
+-    def __init__(self, server_list=None):
++    def __init__(self, server_list=None, prefer_ipv6=False):
+-                self._send_req(hostname, QTYPE_AAAA)
++            if not ip and self._hostname_status.get(hostname, STATUS_SECOND) \
+-                elif self._hostname_status.get(hostname, None) == STATUS_IPV6:
++                elif self._hostname_status.get(hostname, None) \
+-                        if question[1] == QTYPE_AAAA:
++                        if question[1] == self._QTYPES[1]:
+-                self._send_req(hostname, QTYPE_A)
++                self._hostname_status[hostname] = STATUS_FIRST
+-                self._send_req(hostname, QTYPE_A)
++                self._send_req(hostname, self._QTYPES[0])
+-        dns_resolver = asyncdns.DNSResolver(config['dns_server'])
++        dns_resolver = asyncdns.DNSResolver(config['dns_server'],
+-        dns_resolver = asyncdns.DNSResolver()
++        dns_resolver = asyncdns.DNSResolver(prefer_ipv6=config['prefer_ipv6'])
+-                    'forbidden-ip=', 'user=', 'manager-address=', 'version']
++                    'forbidden-ip=', 'user=', 'manager-address=', 'version',
+-        self._ota_buff_data = ''
++        self._ota_buff_head = b''
+-                    data = chr(ord(data[0]) | ADDRTYPE_AUTH) + data[1:]
++                    data = common.chr(addrtype | ADDRTYPE_AUTH) + data[1:]
+-                self._ota_buff_data = ''
++                self._ota_buff_head = b''
+-        data = chr(ord(data[0]) | ADDRTYPE_AUTH) + data[1:]
++        data = common.chr(common.ord(data[0]) | ADDRTYPE_AUTH) + data[1:]
+-            data, key, iv = encrypt.dencrypt_all(self._password, self._method, data)
++            data, key, iv = encrypt.dencrypt_all(self._password,
+-            key, iv, m = gen_key_iv(self._password, self._method)
++            key, iv, m = encrypt.gen_key_iv(self._password, self._method)
+-            data = encrypt.encrypt_all_m(key, iv, m, method, data)
++            data = encrypt.encrypt_all_m(key, iv, m, self._method, data)
+-            data = encrypt.encrypt_all(self._password, self._method, 0, data)
++            data, key, iv = encrypt.dencrypt_all(self._password, self._method, data)
+-                if onetimeauth_verify(_hash, _data, _key) is False:
++                data = data[: -ONETIMEAUTH_BYTES]
+-                header_length += ONETIMEAUTH_BYTES
++            key, iv, m = gen_key_iv(self._password, self._method)
+-            data = encrypt.encrypt_all(self._password, self._method, 1, data)
++                data = self._ota_chunk_data_gen(key, iv, data)
+-    def _one_time_auth_chunk_data_gen(self, data):
++    def _ota_chunk_data_gen(self, key, iv, data):
+-        key = self._encryptor.cipher_iv + self._encryptor.key
++        key = iv + key
+-    sock_in2.bind(('::1', 9006))
++    sock_in1.bind(('::1', 9001))
+-    sock_out.sendto(b'data', ('::1', 9005))
++    sock_out.sendto(b'data', ('::1', 9001))
+-    sock_out.sendto(b'data', ('::1', 9006))
++    sock_out.sendto(b'data', ('::1', 9002))
+-    sock_out.sendto(b'data', ('::1', 9004))
++    sock_in1.bind(('::1', 9001))
+-    sock_in2.bind(('::1', 9002))
++    sock_in1.bind(('::1', 9005))
+-    sock_out.sendto(b'data', ('::1', 9001))
++    sock_out.sendto(b'data', ('::1', 9005))
+-    sock_out.sendto(b'data', ('::1', 9002))
++    sock_out.sendto(b'data', ('::1', 9006))
+-    sock_out.sendto(b'data', ('::1', 9001))
++    sock_in1.bind(('::1', 9004))
+-    python = ['coverage', 'run', '-p', '-a']
++    python = ['coverage', 'run', '-a']
+-                _data =  data[header_length: -ONETIMEAUTH_BYTES]
++                _data = data[header_length: -ONETIMEAUTH_BYTES]
+-    ONETIMEAUTH_BYTES, ONETIMEAUTH_CHUNK_BYTES, ONETIMEAUTH_CHUNK_DATA_LEN, ADDRTYPE_AUTH
++from shadowsocks.common import parse_header, onetimeauth_verify, \
+-            self._one_time_auth_enable = True
++            self._ota_enable = True
+-        self._one_time_auth_chunk_idx = 0
++            self._ota_enable = False
+-                data = self._one_time_auth_chunk_data_gen(data)
++            if self._ota_enable:
+-                                               self._data_to_write_to_remote.append)
++            if self._ota_enable:
+-                s = remote_sock.sendto(data, MSG_FASTOPEN, self._chosen_server)
++                s = remote_sock.sendto(data, MSG_FASTOPEN,
+-                if self._one_time_auth_enable or addrtype & ADDRTYPE_AUTH:
++                if self._ota_enable or addrtype & ADDRTYPE_AUTH:
+-                                          self._encryptor.decipher_iv + self._encryptor.key) is False:
++                    offset = header_length + ONETIMEAUTH_BYTES
+-                if self._one_time_auth_enable:
++                if self._ota_enable:
+-                    data += onetimeauth_gen(data, self._encryptor.cipher_iv + self._encryptor.key)
++                    key = self._encryptor.cipher_iv + self._encryptor.key
+-                if self._one_time_auth_enable:
++                if self._ota_enable:
+-                                                   self._data_to_write_to_remote.append)
++                    self._ota_chunk_data(data,
+-        if result:
++        if result and result[1]:
+-                try:
++            try:
+-                        traceback.print_exc()
++                    # we don't have to wait for remote since it's not
+-    def _one_time_auth_chunk_data(self, data, data_cb):
++    def _ota_chunk_data(self, data, data_cb):
+-            if self._one_time_auth_len == 0:
++            if self._ota_len == 0:
+-                self._one_time_auth_buff_head += data[:length]
++                length = ONETIMEAUTH_CHUNK_BYTES - len(self._ota_buff_head)
+-                if len(self._one_time_auth_buff_head) < ONETIMEAUTH_CHUNK_BYTES:
++                if len(self._ota_buff_head) < ONETIMEAUTH_CHUNK_BYTES:
+-            self._one_time_auth_buff_data += data[:length]
++                data_len = self._ota_buff_head[:ONETIMEAUTH_CHUNK_DATA_LEN]
+-            if len(self._one_time_auth_buff_data) == self._one_time_auth_len:
++            if len(self._ota_buff_data) == self._ota_len:
+-                        is False:
++                _hash = self._ota_buff_head[ONETIMEAUTH_CHUNK_DATA_LEN:]
+-                self._one_time_auth_len = 0
++                    data_cb(self._ota_buff_data)
+-    def _one_time_auth_chunk_data_gen(self, data):
++    def _ota_chunk_data_gen(self, data):
+-        self._one_time_auth_chunk_idx += 1
++        index = struct.pack('>I', self._ota_chunk_idx)
+-                data = self._one_time_auth_chunk_data_gen(data)
++            if self._ota_enable:
+-                self._one_time_auth_chunk_data(data, self._write_to_sock_remote)
++            if self._ota_enable:
+-                logging.debug('UDP handle_server: data is empty after decrypt')
++                logging.debug(
+-                                      self._encryptor.decipher_iv + self._encryptor.key) is False:
++                _hash = data[-ONETIMEAUTH_BYTES:]
+-        return data + onetimeauth_gen(data, self._encryptor.cipher_iv + self._encryptor.key)
++        key = self._encryptor.cipher_iv + self._encryptor.key
+-    ONETIMEAUTH_BYTES, ONETIMEAUTH_CHUNK_BYTES, ONETIMEAUTH_CHUNK_DATA_LEN, ADDRTYPE_AUTH
++from shadowsocks.common import parse_header, pack_addr, onetimeauth_verify, \
+-                data = _one_time_auth_chunk_data_gen(data)
++                data = self._one_time_auth_chunk_data_gen(data)
+-                config['port_password'][str(server_port)] = config['password']
++        server_port = config['server_port']
+-    if config.get('server_port', None) and type(config['server_port']) != list:
++    if 'server_port' in config and type(config['server_port']) != list:
+-    config['server_port'] = config.get('server_port', None)
++    config['server_port'] = config.get('server_port', 8388)
+-from shadowsocks.common import parse_header, pack_addr, \
++from shadowsocks.common import parse_header, pack_addr, onetimeauth_verify, onetimeauth_gen, \
+-                    return None
++                    return
+-                    return None
++                    return
+-        shortopts = 'hd:s:b:p:k:l:m:c:t:vq'
++        shortopts = 'hd:s:b:p:k:l:m:c:t:vqa'
+-        shortopts = 'hd:s:p:k:m:c:t:vq'
++        shortopts = 'hd:s:p:k:m:c:t:vqa'
+-from shadowsocks.common import parse_header, onetimeauth_verify, \
++from shadowsocks.common import parse_header, onetimeauth_verify, onetimeauth_gen, \
+-        else:
++        else:
+-                header_length += ONETIMEAUTH_BYTES
++            if self._is_local is False:
+-                    #
++                    self._one_time_auth_chunk_idx += 1
+-                self._one_time_auth_chunk_idx += 1
++    def _one_time_auth_chunk_data_gen(self, data):
+-        else:
++        else:
+-            raise Exception("can't get addrinfo for %s:%d" %
++            raise Exception("UDP can't get addrinfo for %s:%d" %
+-                logging.warn('drop a message since frag is not 0')
++                logging.warn('UDP drop a message since frag is not 0')
+-
++            # spec https://shadowsocks.org/en/spec/one-time-auth.html
+-                header_length += ONETIMEAUTH_BYTES
++    def _one_time_auth_chunk_data_gen(self, data):
+-ADDRTYPE_HOST = 3
++ADDRTYPE_IPV4 = 0x01
+-    if addrtype == ADDRTYPE_IPV4:
++    if addrtype & ADDRTYPE_MASK == ADDRTYPE_IPV4:
+-    elif addrtype == ADDRTYPE_HOST:
++    elif addrtype & ADDRTYPE_MASK == ADDRTYPE_HOST:
+-    elif addrtype == ADDRTYPE_IPV6:
++    elif addrtype & ADDRTYPE_MASK == ADDRTYPE_IPV6:
+-        self.key = key
++    def __init__(self, password, method):
+-        self.iv = None
++        self.decipher_iv = None
+-            self.cipher = self.get_cipher(key, method, 1,
++            self.cipher = self.get_cipher(password, method, 1,
+-
++        self.key = key
+-            self.decipher = self.get_cipher(self.key, self.method, 0,
++            self.decipher_iv = decipher_iv
+-from shadowsocks.common import parse_header
++from shadowsocks.common import parse_header, onetimeauth_verify, \
+-        self._data_to_write_to_remote.append(data)
++        if self._one_time_auth_enable:
+-                if len(data) > header_length:
++                if self._one_time_auth_enable:
+-
++    def _write_to_sock_remote(self, data):
+-            self._write_to_sock(data, self._remote_sock)
++            self._handle_stage_stream(data)
+-from shadowsocks.common import parse_header, pack_addr
++from shadowsocks.common import parse_header, pack_addr, \
+-            # addrtype, dest_addr, dest_port, header_length = header_result
++            addrtype, dest_addr, dest_port, header_length = header_result
+-            if len(data) >= 2 + addrlen:
++            if len(data) >= 4 + addrlen:
+-STAT_SEND_LIMIT = 100
++STAT_SEND_LIMIT = 50
+-        send_data(r)
++                i = 0
+-    def __init__(self):
++    def __init__(self, server_list=None):
+-        self._parse_resolv()
++        if server_list is None:
+-    dns_resolver = asyncdns.DNSResolver()
++
+-    signal.signal(signal.SIG_IGN, signal.SIGHUP)
++    signal.signal(signal.SIGHUP, signal.SIG_IGN)
+-            config['port_password'][str(server_port)] = config['password']
++        server_port = config.get('server_port', None)
+-            and not config.get('port_password', None):
++            and not config.get('port_password', None) \
+-    if 'server_port' in config and type(config['server_port']) != list:
++    if config.get('server_port', None) and type(config['server_port']) != list:
+-    config['server_port'] = config.get('server_port', 8388)
++    config['server_port'] = config.get('server_port', None)
+-    version="2.8.1",
++    version="2.8.2",
+-            config = json.loads(config_json)
++            config = shell.parse_json_in_str(config_json)
+-    cli.send(b'add: {"server_port":7001, "password":"1234"}')
++    cli.send(b'add: {"server_port":7001, "password":"asdfadsfasdf"}')
+-    data = encrypt.encrypt_all(b'1234', 'aes-256-cfb', 1,
++    data = encrypt.encrypt_all(b'asdfadsfasdf', 'aes-256-cfb', 1,
+-    stats = json.loads(data)
++    stats = shell.parse_json_in_str(data)
+-                                        object_hook=_decode_dict)
++                    config = parse_json_in_str(f.read().decode('utf8'))
+-    version="2.8",
++    version="2.8.1",
+-                addr = manager_address.split(':')
++                addr = manager_address.rsplit(':', 1)
+-                family = socket.AF_INET
++                addrs = socket.getaddrinfo(addr[0], addr[1])
+-    version="2.7.1",
++    version="2.8",
+-    logging.basicConfig(level=logging.DEBUG,
++    logging.basicConfig(level=5,
+-    time.sleep(2)
++    t = threading.Thread(target=run_server)
+-    rdata = tcp_cli.recv(4096)
++    tcp_cli.recv(4096)
+-    os._exit(0)
++    manager._loop.stop()
+-    t = threading.Thread(target=run_server).start()
++    threading.Thread(target=run_server).start()
+-        self._password = config['password']
++        self._password = common.to_bytes(config['password'])
+-                                             socket.IPPROTO_UDP)
++
+-                                       int(config['manager_port'])))
++            self._control_socket = socket.socket(family,
+-            logging.error('can not bind to manager port')
++            logging.error('can not bind to manager address')
+-    if config.get('manager_port', 0):
++    if config.get('manager_address', 0):
+-                    'forbidden-ip=', 'user=', 'manager-port=', 'version']
++                    'forbidden-ip=', 'user=', 'manager-address=', 'version']
+-                config['manager_port'] = int(value)
++            elif key == '--manager-address':
+-  --manager-port PORT    optional server manager UDP port
++  --manager-address ADDR optional server manager UDP address, see wiki
+-BUF_SIZE = 2048
++BUF_SIZE = 1506
+-        u = udprelay.UDPRelay(config, self._dns_resolver, False)
++        t = tcprelay.TCPRelay(config, self._dns_resolver, False,
+-        pass
++        r = {}
+-    def _update_activity(self):
++    def _update_activity(self, data_len=0):
+-        self._server.update_activity(self)
++        self._server.update_activity(self, data_len)
+-        self._update_activity()
++        self._update_activity(len(data))
+-        self._update_activity()
++
+-    def __init__(self, config, dns_resolver, is_local):
++    def __init__(self, config, dns_resolver, is_local, stat_callback=None):
+-    def update_activity(self, handler):
++    def update_activity(self, handler, data_len):
+-    def __init__(self, config, dns_resolver, is_local):
++    def __init__(self, config, dns_resolver, is_local, stat_callback=None):
+-        logging.debug(key)
++        if self._stat_callback:
+-    Manager(config).run()
++    Manager(config).run()
+-    if config['manager_port']:
++    if config.get('manager_port', 0):
+-from shadowsocks import shell, daemon, eventloop, tcprelay, udprelay, asyncdns
++from shadowsocks import shell, daemon, eventloop, tcprelay, udprelay, \
+-    for port, password in config['port_password'].items():
++    port_password = config['port_password']
+-                    'forbidden-ip=', 'user=', 'version']
++                    'forbidden-ip=', 'user=', 'manager-port=', 'version']
+-    version="2.7",
++    version="2.7.1",
+-    def modify(self, f, mode, handler):
++    def modify(self, f, mode):
+-                self._loop.modify(self._local_sock, event, self._server)
++                self._loop.modify(self._local_sock, event)
+-                self._loop.modify(self._remote_sock, event, self._server)
++                self._loop.modify(self._remote_sock, event)
+-                logging.info('closed UDP port %d', self._listen_port)
++                logging.info('closed UDP port %d', self._listen_port)
+-            self._loop.remove(self._sock, self)
++            self._loop.remove(self._sock)
+-                arr.remove(callback, self)
++                arr.remove(callback)
+-                self._loop.remove(self._sock, self)
++                self._loop.remove(self._sock)
+-        self._fd_to_handler = {}
++        self._fdmap = {}  # (f, handler)
+-        return [(self._fd_to_f[fd], fd, event) for fd, event in events]
++        return [(self._fdmap[fd][0], fd, event) for fd, event in events]
+-        self._fd_to_f[fd] = f
++        self._fdmap[fd] = (f, handler)
+-    def remove(self, f, handler):
++    def remove(self, f):
+-        del self._fd_to_f[fd]
++        del self._fdmap[fd]
+-            del self._fd_to_handler[fd]
++        self._fdmap[fd] = (f, handler)
+-                handler = self._fd_to_handler.get(fd, None)
++                handler = self._fdmap.get(fd, None)
+-            self._loop.remove(self._remote_sock, self._server)
++            self._loop.remove(self._remote_sock)
+-            self._loop.remove(self._local_sock, self._server)
++            self._loop.remove(self._local_sock)
+-                self._eventloop.remove(self._server_socket, self)
++                self._eventloop.remove(self._server_socket)
+-                self._eventloop.remove(self._server_socket, self)
++                self._eventloop.remove(self._server_socket)
+-            self._eventloop.remove(client, self)
++            self._eventloop.remove(client)
+-                self._eventloop.remove(self._server_socket, self)
++                self._eventloop.remove(self._server_socket)
+-            now = time.time()
++            asap = False
+-            if now - self._last_time >= TIMEOUT_PRECISION:
++            now = time.time()
+-                logging.info('closed listen port %d', self._listen_port)
++                logging.info('closed TCP port %d', self._listen_port)
+-                sock.close()
++        logging.debug('UDP close')
+-            self._loop.remove(self._sock, self)
++            if self._loop:
+-            self._eventloop.remove(self._server_socket, self)
++            if self._eventloop:
+-    dns_resolver.add_to_loop(loop, ref=True)
++    dns_resolver.add_to_loop(loop)
+-    version="2.6.12",
++    version="2.7",
+-    def add_to_loop(self, loop, ref=False):
++    def add_to_loop(self, loop):
+-        loop.add_handler(self.handle_events, ref=ref)
++        loop.add(self._sock, eventloop.POLL_IN, self)
+-            self._last_time = now
++    def handle_event(self, sock, fd, event):
+-                arr.remove(callback)
++                arr.remove(callback, self)
+-                loop.remove_handler(dns_resolver.handle_events)
++import time
+-        self._epoll.modify(fd, mode)
++# we check timeouts every TIMEOUT_PRECISION seconds
+-    def add_fd(self, fd, mode):
++    def register(self, fd, mode):
+-    def remove_fd(self, fd):
++    def unregister(self, fd):
+-        self.add_fd(fd, mode)
++    def modify(self, fd, mode):
+-    def add_fd(self, fd, mode):
++    def register(self, fd, mode):
+-    def remove_fd(self, fd):
++    def unregister(self, fd):
+-        self.add_fd(fd, mode)
++    def modify(self, fd, mode):
+-            self._impl = EpollLoop()
++            self._impl = select.epoll()
+-        self._handlers_to_remove = []
++        self._fd_to_handler = {}
+-    def add(self, f, mode):
++    def add(self, f, mode, handler):
+-        self._impl.add_fd(fd, mode)
++        self._impl.register(fd, mode)
+-    def remove(self, f):
++    def remove(self, f, handler):
+-        self._impl.remove_fd(fd)
++        self._impl.unregister(fd)
+-    def modify(self, f, mode):
++    def modify(self, f, mode, handler):
+-            self._handlers.remove(handler)
++        self._impl.modify(fd, mode)
+-        while self._ref_handlers:
++        while not self._stopping:
+-                events = self.poll(1)
++                events = self.poll(TIMEOUT_PRECISION)
+-            self._iterating = False
++
+-        loop.add(local_sock, eventloop.POLL_IN | eventloop.POLL_ERR)
++        loop.add(local_sock, eventloop.POLL_IN | eventloop.POLL_ERR,
+-                self._loop.modify(self._local_sock, event)
++                self._loop.modify(self._local_sock, event, self._server)
+-                self._loop.modify(self._remote_sock, event)
++                self._loop.modify(self._remote_sock, event, self._server)
+-                self._loop.add(remote_sock, eventloop.POLL_ERR)
++                self._loop.add(remote_sock, eventloop.POLL_ERR, self._server)
+-                                       eventloop.POLL_ERR | eventloop.POLL_OUT)
++                                       eventloop.POLL_ERR | eventloop.POLL_OUT,
+-            self._loop.remove(self._remote_sock)
++            self._loop.remove(self._remote_sock, self._server)
+-            self._loop.remove(self._local_sock)
++            self._loop.remove(self._local_sock, self._server)
+-                            eventloop.POLL_IN | eventloop.POLL_ERR)
++                            eventloop.POLL_IN | eventloop.POLL_ERR, self)
+-        if now - handler.last_activity < TIMEOUT_PRECISION:
++        if now - handler.last_activity < eventloop.TIMEOUT_PRECISION:
+-    def _handle_events(self, events):
++    def handle_event(self, sock, fd, event):
+-        for sock, fd, event in events:
++        if sock:
+-                            traceback.print_exc()
++                handler = self._fd_to_handlers.get(fd, None)
+-                    logging.warn('poll removed fd')
++                logging.warn('poll removed fd')
+-            self._last_time = now
++    def handle_periodic(self):
+-                self._eventloop.remove(self._server_socket)
++                self._eventloop.remove(self._server_socket, self)
+-                self._eventloop.remove_handler(self._handle_events)
++                self._eventloop.stop()
+-            self._eventloop.remove(client)
++            self._eventloop.remove(client, self)
+-            self._eventloop.add(client, eventloop.POLL_IN)
++            self._eventloop.add(client, eventloop.POLL_IN, self)
+-                            eventloop.POLL_IN | eventloop.POLL_ERR)
++                            eventloop.POLL_IN | eventloop.POLL_ERR, self)
+-            self._last_time = now
++    def handle_event(self, sock, fd, event):
+-            self._eventloop.remove_handler(self._handle_events)
++            self._eventloop.remove_periodic(self.handle_periodic)
+-                                          addrlen])[0]
++                                                     addrlen])[0]
+-    sock_out.set_proxy(socks.SOCKS5, '127.0.0.1', 1081)
++    sock_out.set_proxy(socks.SOCKS5, SERVER_IP, SERVER_PORT)
+-    sock_out.set_proxy(socks.SOCKS5, '127.0.0.1', 1081)
++    sock_out.set_proxy(socks.SOCKS5, SERVER_IP, SERVER_PORT)
+-    sock_out.set_proxy(socks.SOCKS5, '127.0.0.1', 1081)
++    sock_out.set_proxy(socks.SOCKS5, SERVER_IP, SERVER_PORT)
+-    version="2.6.11",
++    version="2.6.12",
+-            return
++        addrs = self._dns_cache.get(server_addr, None)
+-    return '%s:%s' % (source_addr[0], source_addr[1])
++def client_key(source_addr, server_af):
+-        key = client_key(r_addr, (dest_addr, dest_port))
++        addrs = socket.getaddrinfo(server_addr, server_port, 0,
+-                return
++            if self._forbidden_iplist:
+-    sock_out.sendto('data', ('127.0.0.1', 9001))
++    sock_out.sendto(b'data', ('127.0.0.1', 9001))
+-    sock_out.sendto('data', ('127.0.0.1', 9002))
++    sock_out.sendto(b'data', ('127.0.0.1', 9002))
+-    return '%s:%s:%s:%s' % (a, b, c, d)
++def client_key(source_addr, dest_addr):
+-        key = client_key(r_addr[0], r_addr[1], dest_addr, dest_port)
++        key = client_key(r_addr, (dest_addr, dest_port))
+-    version="2.6.10",
++    version="2.6.11",
+-                     addrtype)
++        logging.warn('unsupported addrtype %d, maybe wrong password or '
+-                            if value not in values_closed:
++                            if value not in self._closed_values:
+-                                values_closed.append(value)
++                                self._closed_values.add(value)
+-    version="2.6.9",
++    version="2.6.10",
+-                            self.close_callback(value)
++                            if value not in values_closed:
+-            self._remote_address = (remote_addr, remote_port)
++            self._remote_address = (common.to_str(remote_addr), remote_port)
+-    version="2.6.8",
++    version="2.6.9",
+-parser.add_argument('--url', type=str, default='http://www.example.com/')
++parser.add_argument('--url', type=str, default=default_url)
+-from shadowsocks import common, lru_cache, eventloop, utils
++from shadowsocks import common, lru_cache, eventloop, shell
+-        utils.print_exception(e)
++        shell.print_exception(e)
+-from shadowsocks import common, utils
++from shadowsocks import common, shell
+-        utils.print_exception(e)
++        shell.print_exception(e)
+-        utils.print_exception(e)
++        shell.print_exception(e)
+-        utils.print_exception(e)
++        shell.print_exception(e)
+-            utils.print_exception(e)
++            shell.print_exception(e)
+-from shadowsocks import utils
++from shadowsocks import shell
+-                    utils.print_exception(e)
++                    shell.print_exception(e)
+-from shadowsocks import utils, daemon, eventloop, tcprelay, udprelay, asyncdns
++from shadowsocks import shell, daemon, eventloop, tcprelay, udprelay, asyncdns
+-    utils.check_python()
++    shell.check_python()
+-    config = utils.get_config(True)
++    config = shell.get_config(True)
+-        utils.print_exception(e)
++        shell.print_exception(e)
+-from shadowsocks import utils, daemon, eventloop, tcprelay, udprelay, asyncdns
++from shadowsocks import shell, daemon, eventloop, tcprelay, udprelay, asyncdns
+-    utils.check_python()
++    shell.check_python()
+-    config = utils.get_config(False)
++    config = shell.get_config(False)
+-            utils.print_exception(e)
++            shell.print_exception(e)
+-from shadowsocks import encrypt, eventloop, utils, common
++from shadowsocks import encrypt, eventloop, shell, common
+-                utils.print_exception(e)
++                shell.print_exception(e)
+-                    utils.print_exception(e)
++                    shell.print_exception(e)
+-                    utils.print_exception(e)
++                    shell.print_exception(e)
+-            utils.print_exception(e)
++            shell.print_exception(e)
+-            logging.log(utils.VERBOSE_LEVEL, 'sweeping timeouts')
++            logging.log(shell.VERBOSE_LEVEL, 'sweeping timeouts')
+-                logging.log(utils.VERBOSE_LEVEL, 'fd %d %s', fd,
++                logging.log(shell.VERBOSE_LEVEL, 'fd %d %s', fd,
+-                        utils.print_exception(e)
++                        shell.print_exception(e)
+-from shadowsocks import encrypt, eventloop, lru_cache, common, utils
++from shadowsocks import encrypt, eventloop, lru_cache, common, shell
+-                utils.print_exception(e)
++                shell.print_exception(e)
+-from shadowsocks import common, lru_cache, eventloop
++from shadowsocks import common, lru_cache, eventloop, utils
+-        logging.error(e)
++        utils.print_exception(e)
+-from shadowsocks import common
++from shadowsocks import common, utils
+-        logging.error(e)
++        utils.print_exception(e)
+-        logging.error(e)
++        utils.print_exception(e)
+-        logging.error(e)
++        utils.print_exception(e)
+-            logging.error(e)
++            utils.print_exception(e)
+-                    traceback.print_exc()
++                    utils.print_exception(e)
+-            traceback.print_exc()
++        utils.print_exception(e)
+-                traceback.print_exc()
++            utils.print_exception(e)
+-                    traceback.print_exc()
++                utils.print_exception(e)
+-                    logging.error(e)
++                    utils.print_exception(e)
+-                    logging.error(e)
++                    utils.print_exception(e)
+-            logging.error(e)
++            utils.print_exception(e)
+-                        logging.error(e)
++                        utils.print_exception(e)
+-from shadowsocks import encrypt, eventloop, lru_cache, common
++from shadowsocks import encrypt, eventloop, lru_cache, common, utils
+-                logging.error(e)
++                utils.print_exception(e)
+-            raise Exception("getaddrinfo failed for %s:%d" % (ip,  port))
++            raise Exception("getaddrinfo failed for %s:%d" % (ip, port))
+-    print('shadowsocks %s' % version)
++    print('Shadowsocks %s' % version)
+-        longopts = ['help', 'fast-open', 'pid-file=', 'log-file=', 'user=']
++        longopts = ['help', 'fast-open', 'pid-file=', 'log-file=', 'user=',
+-                    'forbidden-ip=', 'user=']
++                    'forbidden-ip=', 'user=', 'version']
+-  -h, --help             show this help message and exit
++  -h, --help             show this help message and exit
+-  -h, --help             show this help message and exit
++  -h, --help             show this help message and exit
+-        # TODO support multiple server IP
++        if type(server) == list:
+-    if config.get('server', '') in [b'127.0.0.1', b'localhost']:
++    if config.get('server', '') in ['127.0.0.1', 'localhost']:
+-        config['server'] = config.get('server', '0.0.0.0')
++        config['server'] = to_str(config.get('server', '0.0.0.0'))
+-    if (config.get('method', '') or '').lower() == b'table':
++    if (config.get('method', '') or '').lower() == 'table':
+-    if (config.get('method', '') or '').lower() == b'rc4':
++    if (config.get('method', '') or '').lower() == 'rc4':
+-    config['method'] = config.get('method', b'aes-256-cfb')
++    config['password'] = to_bytes(config.get('password', b''))
+-    config['local_address'] = config.get('local_address', '127.0.0.1')
++    config['local_address'] = to_str(config.get('local_address', '127.0.0.1'))
+-    func_name = b'EVP_' + cipher_name.replace(b'-', b'_')
++    func_name = 'EVP_' + cipher_name.replace('-', '_')
+-    b'seed-cfb': (16, 16, OpenSSLCrypto),
++    'aes-128-cfb': (16, 16, OpenSSLCrypto),
+-    run_method(b'aes-128-cfb')
++    run_method('aes-128-cfb')
+-    run_method(b'aes-256-cfb')
++    run_method('aes-256-cfb')
+-    run_method(b'aes-128-cfb8')
++    run_method('aes-128-cfb8')
+-    run_method(b'aes-256-ofb')
++    run_method('aes-256-ofb')
+-    run_method(b'aes-256-ctr')
++    run_method('aes-256-ctr')
+-    run_method(b'bf-cfb')
++    run_method('bf-cfb')
+-    run_method(b'rc4')
++    run_method('rc4')
+-    b'rc4-md5': (16, 16, create_cipher),
++    'rc4-md5': (16, 16, create_cipher),
+-    decipher = create_cipher(b'rc4-md5', b'k' * 32, b'i' * 16, 0)
++    cipher = create_cipher('rc4-md5', b'k' * 32, b'i' * 16, 1)
+-        if cipher_name == b'salsa20':
++        if cipher_name == 'salsa20':
+-        elif cipher_name == b'chacha20':
++        elif cipher_name == 'chacha20':
+-    b'chacha20': (32, 8, SodiumCrypto),
++    'salsa20': (32, 8, SodiumCrypto),
+-    decipher = SodiumCrypto(b'salsa20', b'k' * 32, b'i' * 16, 0)
++    cipher = SodiumCrypto('salsa20', b'k' * 32, b'i' * 16, 1)
+-    decipher = SodiumCrypto(b'chacha20', b'k' * 32, b'i' * 16, 0)
++    cipher = SodiumCrypto('chacha20', b'k' * 32, b'i' * 16, 1)
+-    b'table': (0, 0, TableCipher)
++    'table': (0, 0, TableCipher)
+-    decipher = TableCipher(b'table', b'test', b'', 0)
++    cipher = TableCipher('table', b'test', b'', 1)
+-            password = password.encode('utf-8')
++        password = common.to_bytes(password)
+-    b'table',
++    'aes-128-cfb',
+-                config['server'] = to_bytes(value)
++                config['server'] = to_str(value)
+-                config['method'] = to_bytes(value)
++                config['method'] = to_str(value)
+-                config['local_address'] = to_bytes(value)
++                config['local_address'] = to_str(value)
+-    license='MIT',
++    version="2.6.8",
+-        'License :: OSI Approved :: MIT License',
++        'License :: OSI Approved :: Apache Software License',
+-# furnished to do so, subject to the following conditions:
++# Copyright 2012-2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2014-2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2013-2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2014-2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2012-2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2013-2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2012-2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-# furnished to do so, subject to the following conditions:
++# Copyright 2015 clowwindy
+-# all copies or substantial portions of the Software.
++#     http://www.apache.org/licenses/LICENSE-2.0
+-# SOFTWARE.
++# Unless required by applicable law or agreed to in writing, software
+-    version="2.6.6",
++    version="2.6.7",
+-    except (KeyboardInterrupt, IOError, OSError) as e:
++    except Exception as e:
+-        os._exit(1)
++        sys.exit(1)
+-        except (KeyboardInterrupt, IOError, OSError) as e:
++        except Exception as e:
+-            os._exit(1)
++            sys.exit(1)
+-def check_config(config):
++def check_config(config, is_local):
+-    check_config(config)
++    check_config(config, is_local)
+-        log_file = common.to_str(log_file)
++    if config.get('daemon', None) == 'stop':
+-                config['daemon'] = value
++                config['daemon'] = to_str(value)
+-                config['pid-file'] = value
++                config['pid-file'] = to_str(value)
+-                config['log-file'] = value
++                config['log-file'] = to_str(value)
+-    asyncdns
++from shadowsocks import utils, daemon, eventloop, tcprelay, udprelay, asyncdns
+-    asyncdns
++from shadowsocks import utils, daemon, eventloop, tcprelay, udprelay, asyncdns
+-    encrypt.try_cipher(config['password'], config['method'])
++from shadowsocks import encrypt
+-        exit(1)
++        sys.exit(1)
+-        longopts = ['help', 'fast-open', 'pid-file=', 'log-file=']
++        longopts = ['help', 'fast-open', 'pid-file=', 'log-file=', 'user=']
+-                    'forbidden-ip=']
++                    'forbidden-ip=', 'user=']
+-               [-t TIMEOUT] [-c CONFIG] [--fast-open] [-v] -[d] [-q]
++    print('''usage: sslocal [OPTION]...
+-                [--workers WORKERS] [-v] [-d start] [-q]
++    print('''usage: ssserver [OPTION]...
+-                    if n > 80:
++                    if n >= 80:
+-            raise SyntaxError("Not a valid CIDR notation: %s" % addr)
++            raise Exception("Not a valid CIDR notation: %s" % addr)
+-            raise SyntaxError("Not a valid CIDR notation: %s" % addr)
++            raise Exception("Not a valid CIDR notation: %s" % addr)
+-            IPNetwork(config.get('forbidden_ip', '127.0.0.0/8,::1/128'))
++        try:
+-        map(self.add_network, addrs)
++        list(map(self.add_network, addrs))
+-            while ((ip & 1) == 0):
++            while (ip & 1) == 0 and ip is not 0:
+-    config['forbidden_ip'] = IPNetwork(config.get('forbidden_ip', '127.0.0.0/8,::1'))
++        config['forbidden_ip'] = \
+-            return any(map(lambda (n, ps): n == ip >> ps,
++            return any(map(lambda n_ps: n_ps[0] == ip >> n_ps[1],
+-            return any(map(lambda (n, ps): n == ip >> ps,
++            return any(map(lambda n_ps: n_ps[0] == ip >> n_ps[1],
+-    ADDRLENGTH = {socket.AF_INET: 32, socket.AF_INET6: 128}
++    ADDRLENGTH = {socket.AF_INET: 32, socket.AF_INET6: 128, False: 0}
+-            prefix_size = IPNetwork.ADDRLENGTH[addr_family] - int(block[1])
++                         "implicit treated as %s/%d" % (addr, addr, addr_len))
+-            return any(map(lambda (naddr, ps): naddr == ip >> ps, self._network_list_v4))
++            return any(map(lambda (n, ps): n == ip >> ps,
+-            return any(map(lambda (naddr, ps): naddr == ip >> ps, self._network_list_v6))
++            return any(map(lambda (n, ps): n == ip >> ps,
+-    ip_network = IPNetwork('127.0.0.0/24,::ff:1/112,::1,192.168.1.1,192.168.2.0')
++    ip_network = IPNetwork('127.0.0.0/24,::ff:1/112,::1,192.168.1.1,192.0.2.0')
+-    assert '192.168.3.1' in ip_network  # 192.168.2.0 is treated as 192.168.2.0/23
++    assert '192.0.2.1' in ip_network
+-from shadowsocks.common import to_bytes, to_str
++from shadowsocks.common import to_bytes, to_str, IPNetwork
+-                                if is_ip(server) == socket.AF_INET:
++                                if common.is_ip(server) == socket.AF_INET:
+-                        if is_ip(ip):
++                        if common.is_ip(ip):
+-        elif is_ip(hostname):
++        elif common.is_ip(hostname):
+-# SOCKS CMD defination
++# SOCKS command definition
+-
++
+-# sslocal:
++# as sslocal:
+-# ssserver:
++# as ssserver:
+-# stream direction
++# for each handler, we have 2 stream directions:
+-# stream wait status, indicating it's waiting for reading, etc
++# for each stream, it's waiting for reading, or writing, or both
+-    version="2.6.5",
++    version="2.6.6",
+-                except (OSError, IOError) as e:
++                except Exception as e:
+-    version="2.6.4",
++    version="2.6.5",
+-    header = struct.pack('!HBBHHHH', request_id, 1, 0, 1, 0, 0, 0)
++def build_request(address, qtype):
+-    return header + addr + qtype_qclass
++    return request_id + header + addr + qtype_qclass
+-        req = build_request(hostname, qtype, self._request_id)
++        req = build_request(hostname, qtype)
+-            paths.append(path)
++        if os.name == "nt":
+-                'lib%s.dll' % name]
++                '%s.dll' % name]
+-    version="2.6.3",
++    version="2.6.4",
+-    for name in possible_lib_names:
++    lib_names = []
+-        for name in possible_lib_names:
++        for name in lib_names:
+-    assert find_library('crypto', 'EVP_CipherUpdate', 'libcrypto') is not None
++    assert find_library(('crypto', 'eay32'), 'EVP_CipherUpdate',
+-    assert find_library(('notexist', 'c', 'crypto'),
++    assert find_library(('notexist', 'c', 'crypto', 'eay32'),
+-    from ctypes.util import find_library
++    import ctypes.util
+-        path = find_library(name)
++        path = ctypes.util.find_library(name)
+-            sys.stderr.write(line)
++            sys.stderr.write(line)
+-    version="2.6.2",
++    version="2.6.3",
+-                                     common.to_str(sa[0]))
++                        logging.debug('IP %s is in forbidden list, drop' %
+-            p4 = Popen(['socksify', 'dig', '@%s' % config.dns, 'www.google.com'],
++            p4 = Popen(['socksify', 'dig', '@%s' % config.dns,
+-            self._forbidden_iplist = self._config['forbidden_ip']
++        if 'forbidden_ip' in config:
+-            p3 = Popen(['curl', 'http://www.example.com/', '-v', '-L',
++            p3 = Popen(['curl', config.url, '-v', '-L',
+-            p4 = Popen(['socksify', 'dig', '@8.8.8.8', 'www.google.com'],
++            if config.should_fail:
+-            print('test passed')
++            if config.should_fail:
+-        longopts = ['help', 'fast-open', 'pid-file=', 'log-file=', 'workers=']
++        longopts = ['help', 'fast-open', 'pid-file=', 'log-file=', 'workers=',
+-    test_aes_128_cfb()
++from shadowsocks.crypto import openssl
+-                                   padding=1)
++    return openssl.OpenSSLCrypto(b'rc4', rc4_key, b'', op)
+-from shadowsocks.crypto import m2, rc4_md5, openssl, sodium, table
++from shadowsocks.crypto import rc4_md5, openssl, sodium, table
+-        return os.urandom(length)
++    return os.urandom(length)
+-    if type(possible_lib_names) is not list:
++    if type(possible_lib_names) not in (list, tuple):
+-    assert find_library(['notexist', 'c', 'crypto'],
++    assert find_library(('notexist', 'c', 'crypto'),
+-class CtypesCrypto(object):
++class OpenSSLCrypto(object):
+-    b'seed-cfb': (16, 16, CtypesCrypto),
++    b'aes-128-cfb': (16, 16, OpenSSLCrypto),
+-    decipher = CtypesCrypto(method, b'k' * 32, b'i' * 16, 0)
++    cipher = OpenSSLCrypto(method, b'k' * 32, b'i' * 16, 1)
+-        return ctypes_openssl.CtypesCrypto(b'rc4', rc4_key, b'', op)
++        from shadowsocks.crypto import openssl
+-class Salsa20Crypto(object):
++class SodiumCrypto(object):
+-    b'chacha20': (32, 8, Salsa20Crypto),
++    b'salsa20': (32, 8, SodiumCrypto),
+-    decipher = Salsa20Crypto(b'salsa20', b'k' * 32, b'i' * 16, 0)
++    cipher = SodiumCrypto(b'salsa20', b'k' * 32, b'i' * 16, 1)
+-    decipher = Salsa20Crypto(b'chacha20', b'k' * 32, b'i' * 16, 0)
++    cipher = SodiumCrypto(b'chacha20', b'k' * 32, b'i' * 16, 1)
+-    ctypes_openssl, ctypes_libsodium, table
++from shadowsocks.crypto import m2, rc4_md5, openssl, sodium, table
+-# let M2Crypto override ctypes_openssl
++method_supported.update(openssl.ciphers)
+-from ctypes import CDLL, c_char_p, c_int, c_ulonglong, byref, \
++from ctypes import c_char_p, c_int, c_ulonglong, byref, \
+-    if libsodium_path is None:
++    libsodium = util.find_library('sodium', 'crypto_stream_salsa20_xor_ic',
+-    libsodium.sodium_init.restype = c_int
++
+-from ctypes import CDLL, c_char_p, c_int, c_long, byref,\
++from ctypes import c_char_p, c_int, c_long, byref,\
+-    if libcrypto_path is None:
++    libcrypto = util.find_library(('crypto', 'eay32'),
+-    libcrypto = CDLL(libcrypto_path)
++
+-    from shadowsocks.crypto import util
++from __future__ import absolute_import, division, print_function, \
+-            self._handlers_to_remove = []
++            if self._handlers_to_remove:
+-        # the user does not have sufficient privileges to access those 
++        # We may get here when find_library fails because, for example,
+-            pass
++        import sys
+-    except:
++    except Exception:
+-    config['method'] = config.get('method', 'aes-256-cfb')
++    config['method'] = config.get('method', b'aes-256-cfb')
+-                self._handlers_to_remove = []
++            self._handlers_to_remove = []
+-Online help: <https://github.com/clowwindy/shadowsocks>
++Online help: <https://github.com/shadowsocks/shadowsocks>
+-Online help: <https://github.com/clowwindy/shadowsocks>
++Online help: <https://github.com/shadowsocks/shadowsocks>
+-    version="2.6.1",
++    version="2.6.2",
+-                             'considered an attack')
++                             'considered as an attack')
+-# Copyright (c) 2014 clowwindy
++# Copyright (c) 2015 clowwindy
+-                                               remote_port))
++            logging.info('connecting %s:%d from %s:%d' %
+-            logging.error(e)
++            self._log_error(e)
+-            logging.error(error)
++            self._log_error(error)
+-                                   'coverage-%s-brightgreen.svg'
++                                   'coverage-%s-%s.svg'
+-                                  urllib.quote(coverage))
++                                  (urllib.quote(coverage), color))
+-        (r"/([a-zA-Z0-9\\-_]+)", MainHandler),
++        (r"/([a-zA-Z0-9\-_]+)", MainHandler),
+-                                urllib.quote(coverage))
++                                   'coverage-%s-brightgreen.svg'
+-                              urllib.quote(coverage))
++        def get(self, project):
+-        (r"/shadowsocks", MainHandler),
++        (r"/([a-zA-Z0-9\\-_]+)", MainHandler),
+-    for p in ('sodium',):
++    for p in ('sodium', 'libsodium'):
+-    url='https://github.com/clowwindy/shadowsocks',
++    url='https://github.com/shadowsocks/shadowsocks',
+-    version="2.6",
++    version="2.6.1",
+-               self._update_stream(STREAM_UP, WAIT_STATUS_READWRITING)
++                self._update_stream(STREAM_UP, WAIT_STATUS_READWRITING)
+-                data = b''.join(self._data_to_write_to_local)
++                data = b''.join(self._data_to_write_to_remote)
+-                    self._update_stream(STREAM_UP, WAIT_STATUS_READWRITING)
++                    self._data_to_write_to_remote = [data]
+-                    self._stage = STAGE_STREAM
++                    self._data_to_write_to_remote = []
+-from shadowsocks.common import to_bytes
++from shadowsocks.common import to_bytes, to_str
+-                     (config['server'], config['server_port']))
++                     (to_str(config['server']), config['server_port']))
+-import urllib
++if __name__ == '__main__':
+-                          urllib.quote(coverage))
++    application = tornado.web.Application([
+-    tornado.ioloop.IOLoop.instance().start()
++    if __name__ == "__main__":
+-    assert pid != -1
++    signal.signal(signal.SIGINT, handle_exit)
+-            print('waitpid', file=sys.stderr)
++                signal.signal(signal.SIGINT, handler)
+-            os.kill(p.pid, signal.SIGQUIT)
++            print('kill', file=sys.stderr)
+-
++    print('started')
+-            raise Exception('daemon mode is only supported in unix')
++            raise Exception('daemon mode is only supported on Unix')
+-    version="2.5",
++    version="2.6",
+-        sys.exit(0)
++        if signum == signal.SIGTERM:
+-    os.kill(ppid, signal.SIGINT)
++    os.kill(ppid, signal.SIGTERM)
+-    freopen(log_file, 'a', sys.stderr)
++    try:
+-from shadowsocks import utils, encrypt, eventloop, tcprelay, udprelay, asyncdns
++from shadowsocks import utils, daemon, encrypt, eventloop, tcprelay, udprelay,\
+-from shadowsocks import utils, encrypt, eventloop, tcprelay, udprelay, asyncdns
++from shadowsocks import utils, daemon, encrypt, eventloop, tcprelay, udprelay,\
+-        logging.warn('warning: local set to listen 0.0.0.0, which is not safe')
++        logging.warn('warning: local set to listen on 0.0.0.0, it\'s not safe')
+-        logging.warn('warning: server set to listen %s:%s, are you sure?' %
++        logging.warn('warning: server set to listen on %s:%s, are you sure?' %
+-        longopts = ['fast-open']
++        shortopts = 'hd:s:b:p:k:l:m:c:t:vq'
+-        longopts = ['fast-open', 'workers=']
++        shortopts = 'hd:s:p:k:m:c:t:vq'
+-            elif key == '-h':
++            elif key in ('-h', '--help'):
+-  -q, -qq               quiet mode, only show warnings/errors
++               [-t TIMEOUT] [-c CONFIG] [--fast-open] [-v] -[d] [-q]
+-  -q, -qq               quiet mode, only show warnings/errors
++                [--workers WORKERS] [-v] [-d start] [-q]
+-# local:
++# sslocal:
+-# remote:
++# ssserver:
+-        # if any of the promises are broken, it indicates a bug have been
++        # if any of the promises are broken, it indicates a bug has been
+-
++# we clear at most TIMEOUTS_CLEAN_SIZE timeouts each time
+-# stage 1 hello received, hello sent
++# stage 0 SOCKS hello received from local, send hello to local
+-# stage 5 remote connected
++# stage 3 DNS resolved, connect to remote
+-# stage 5 remote connected
++# stage 0 just jump to stage 1
+-STAGE_HELLO = 1
++STAGE_ADDR = 1
+-STAGE_REPLY = 4
++STAGE_CONNECTING = 4
+-# stream wait status
++# stream wait status, indicating it's waiting for reading, etc
+-    def _handle_stage_reply(self, data):
++    def _handle_stage_connecting(self, data):
+-    def _handle_stage_hello(self, data):
++    def _handle_stage_addr(self, data):
+-                    self._stage = STAGE_REPLY
++                    self._stage = STAGE_CONNECTING
+-                        self._stage = STAGE_REPLY
++                        self._stage = STAGE_CONNECTING
+-                        self._stage = STAGE_REPLY
++                        self._stage = STAGE_CONNECTING
+-            self._stage = STAGE_HELLO
++            self._stage = STAGE_ADDR
+-        elif (is_local and self._stage == STAGE_HELLO) or \
++        elif self._stage == STAGE_CONNECTING:
+-            self._handle_stage_hello(data)
++            self._handle_stage_addr(data)
+-        """ set handler to active """
++        # set handler to active
+-    #test_encrypt_all()
++    test_encrypt_all()
+-    r = cached_keys.get(password, None)
++    cached_key = '%s-%d-%d' % (password, key_len, iv_len)
+-    cached_keys[password] = (key, iv)
++    cached_keys[cached_key] = (key, iv)
+-    test_encrypt_all()
++    #test_encrypt_all()
+-        cipher = encryptor.encrypt(plain)
++        cipher = encryptor.encrypt(plain)
+-        logging.warn('testing %s' % method.decode('utf-8'))
++    for method in CIPHERS_TO_TEST:
+-    for method in method_supported.keys():
++    for method in CIPHERS_TO_TEST:
+-    python = ['coverage', 'run', '-a']
++    python = ['coverage', 'run', '-p', '-a']
+-            if counter == 10:
++            if counter == 9:
+-    test()
++    test()
+-                    if self._store.__contains__(key):
++                    if key in self._store:
+-                if self._store.__contains__(key):
++                if key in self._store:
+-        if os.environ.__contains__('WINDIR'):
++        if 'WINDIR' in os.environ:
+-    def add_to_loop(self, loop):
++    def add_to_loop(self, loop, ref=False):
+-        loop.add_handler(self.handle_events, ref=False)
++        loop.add_handler(self.handle_events, ref=ref)
+-            if self._cb_to_hostname.__contains__(callback):
++            if callback in self._cb_to_hostname:
+-        if self._hostname_to_cb.__contains__(hostname):
++        if hostname in self._hostname_to_cb:
+-        if self._hostname_status.__contains__(hostname):
++        if hostname in self._hostname_status:
+-                    if self._hostname_status.__contains__(hostname):
++                    if hostname in self._hostname_status:
+-        elif self._hosts.__contains__(hostname):
++        elif hostname in self._hosts:
+-        elif self._cache.__contains__(hostname):
++        elif hostname in self._cache:
+-python = 'python'
++python = ['python']
+-server_args = [python, 'shadowsocks/server.py', '-v']
++if config.with_coverage:
+-            os.kill(p.pid, signal.SIGTERM)
++            os.kill(p.pid, signal.SIGQUIT)
+-    version="2.4.3",
++    version="2.5",
+-from ctypes import CDLL, c_char_p, c_int, c_long, c_ulonglong, byref, \
++from ctypes import CDLL, c_char_p, c_int, c_ulonglong, byref, \
+-from shadowsocks.crypto import m2, rc4_md5, salsa20_ctr, ctypes_openssl, table
++from shadowsocks.crypto import m2, rc4_md5, salsa20_ctr,\
+-    version="2.4.2",
++    version="2.4.3",
+-                    addr, port = self._local_sock.getsockname()
++                    addr, port = self._local_sock.getsockname()[:2]
+-server_args = [python, 'shadowsocks/server.py']
++client_args = [python, 'shadowsocks/local.py', '-v']
+-            data = ''.join(self._data_to_write_to_local)
++            data = b''.join(self._data_to_write_to_local)
+-    version="2.4.1",
++    version="2.4.2",
+-    return s.encode('utf-8')
++    if bytes != str:
+-        return socket.inet_ntoa(ipstr)
++        return to_bytes(socket.inet_ntoa(ipstr))
+-        return v6addr
++        import re
+-            v4addr = addr[addr.rindex(b':') + 1:]
++        if '.' in addr:  # a v4 addr
+-            newaddr = addr[:addr.rindex(b':') + 1] + b''.join(v4addr)
++            v4addr = map(lambda x: ('%02X' % ord(x)), v4addr)
+-        grps = addr.split(b':')
++        grps = addr.split(':')
+-            r = socket.inet_pton(family, address)
++            r = socket.inet_pton(family, address_str)
+-    return addrtype, dest_addr, dest_port, header_length
++    return addrtype, to_bytes(dest_addr), dest_port, header_length
+-            logging.info('connecting %s:%d' % (remote_addr.decode('utf-8'),
++            logging.info('connecting %s:%d' % (common.to_str(remote_addr),
+-                config['password'] = value
++                config['password'] = to_bytes(value)
+-                config['server'] = value
++                config['server'] = to_bytes(value)
+-                config['method'] = value
++                config['method'] = to_bytes(value)
+-                config['local_address'] = value
++                config['local_address'] = to_bytes(value)
+-
++import argparse
+-           stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
++python = 'python'
+-    decipher = TableCipher(b'rc4-md5', b'test', b'', 0)
++    decipher = TableCipher(b'table', b'test', b'', 0)
+-    decrypt_table = string.maketrans(encrypt_table, string.maketrans('', ''))
++    encrypt_table = b''.join(get_table(b'foobar!'))
+-    decrypt_table = string.maketrans(encrypt_table, string.maketrans('', ''))
++    encrypt_table = b''.join(get_table(b'barfoo!'))
+-def test_cipher(key, method=None):
++def try_cipher(key, method=None):
+-    encrypt.test_cipher(config['password'], config['method'])
++    encrypt.try_cipher(config['password'], config['method'])
+-    encrypt.test_cipher(config['password'], config['method'])
++    encrypt.try_cipher(config['password'], config['method'])
+-    return (key, iv)
++    return key, iv
+-    (key, _) = EVP_BytesToKey(password, key_len, iv_len)
++    if key_len > 0:
+-    decipher = create_cipher(b'rc4-md5', b'k' * 32, b'i' * 16, 1)
++    decipher = create_cipher(b'rc4-md5', b'k' * 32, b'i' * 16, 0)
+-from shadowsocks.crypto import m2, rc4_md5, salsa20_ctr, ctypes_openssl
++from shadowsocks.crypto import m2, rc4_md5, salsa20_ctr, ctypes_openssl, table
+-    translate = bytes.translate
++method_supported.update(table.ciphers)
+-        Encryptor(key, method)  # test if the settings if OK
++def test_cipher(key, method=None):
+-            method = None
++    def __init__(self, key, method):
+-            self.cipher = self.get_cipher(key, method, 1, iv=random_string(32))
++        method = method.lower()
+-            self.cipher = None
++            logging.error('method %s not supported' % method)
+-    def get_cipher_param(self, method):
++    def get_method_info(self, method):
+-        m = method_supported.get(method, None)
++        m = method_supported.get(method)
+-    def get_cipher(self, password, method, op, iv=None):
++    def get_cipher(self, password, method, op, iv):
+-        if m:
++        m = self._method_info
+-            return m[2](method, key, iv, op)
++        else:
+-        sys.exit(1)
++        iv = iv[:m[1]]
+-            return translate(buf, self.encrypt_table)
++        if self.iv_sent:
+-                return self.cipher_iv + self.cipher.update(buf)
++            self.iv_sent = True
+-            return self.decipher.update(buf)
++        if self.decipher is None:
+-            return translate(data, decrypt_table)
++    result = []
+-        return b''.join(result)
++        iv = data[:iv_len]
+-    encrypt.init_table(config['password'], config['method'])
++    encrypt.test_cipher(config['password'], config['method'])
+-    encrypt.init_table(config['password'], config['method'])
++    encrypt.test_cipher(config['password'], config['method'])
+-    if config.get('local_address', '') in ['0.0.0.0']:
++    if config.get('local_address', '') in [b'0.0.0.0']:
+-    if config.get('server', '') in ['127.0.0.1', 'localhost']:
++    if config.get('server', '') in [b'127.0.0.1', b'localhost']:
+-    if (config.get('method', '') or '').lower() == '':
++    if (config.get('method', '') or '').lower() == b'table':
+-    if (config.get('method', '') or '').lower() == 'rc4':
++    if (config.get('method', '') or '').lower() == b'rc4':
+-    if config.get('password') in ['mypassword']:
++    if config.get('password') in [b'mypassword']:
+-    table = [c for c in maketrans(b'', b'')]
++    table = maketrans(b'', b'')
+-        table.sort(lambda x, y: int(a % (ord(x) + i) - a % (ord(y) + i)))
++        table.sort(key=lambda x: int(a % (ord(x) + i)))
+-        cached_tables[key] = [encrypt_table, decrypt_table]
++        if key not in cached_tables:
+-                data = ''.join(self._data_to_write_to_local)
++                data = b''.join(self._data_to_write_to_local)
+-                                                 key_ptr, iv_ptr)
++        self._ctx = libcrypto.EVP_CIPHER_CTX_new()
+-            time.sleep(1)
++        if stage == 1:
+-            logging.info('connecting %s:%d' % (remote_addr.decode('utf-8'), remote_port))
++            logging.info('connecting %s:%d' % (remote_addr.decode('utf-8'),
+-            logging.info('connecting %s:%d' % (remote_addr, remote_port))
++            logging.info('connecting %s:%d' % (remote_addr.decode('utf-8'), remote_port))
+-    version="2.4",
++    version="2.4.1",
+-        sys.exit(1)
++            p3 = Popen(['curl', 'http://www.example.com/', '-v', '-L',
+-    print('test passed')
++        if stage == 3 and p3 is not None:
+-with open('README.rst') as f:
++with codecs.open('README.rst', encoding='utf-8') as f:
+-    return ctypes_openssl.CtypesCrypto(b'rc4', rc4_key, b'', op)
++    try:
+-    decipher = create_cipher(b'salsa20-ctr', b'k' * 32, b'i' * 8, 1)
++    cipher = create_cipher(b'rc4-md5', b'k' * 32, b'i' * 16, 1)
+-        __pypy__ = None
++        pass
+-def test_aes_128_cfb():
++def check_env():
+-        raise SkipTest
++    check_env()
+-        raise SkipTest
++    check_env()
+-        raise SkipTest
++    check_env()
+-    test_aes_128_cfb()
++    test_aes_128_cfb()
+-    test()
++    test()
+-    #                padding=1)
++    from shadowsocks.crypto import util
+-    assert b''.join(results) == plain
++    util.run_cipher(cipher, decipher)
+-    #                padding=1)
++    from shadowsocks.crypto import util
+-    assert b''.join(results) == plain
++
+-def test():
++def run_method(method):
+-    decipher = CtypesCrypto(b'aes-128-cfb', b'k' * 32, b'i' * 16, 0)
++    cipher = CtypesCrypto(method, b'k' * 32, b'i' * 16, 1)
+-    test()
++    test_aes_128_cfb()
+-    if info[0] == 3 and not info[1] >= 3:
++    elif info[0] == 3 and not info[1] >= 3:
+-    else:
++    elif info[0] not in [2, 3]:
+-        'Programming Language :: Python :: 3.2',
++    if info[0] == 3 and not info[1] >= 3:
+-    func_name = 'EVP_' + cipher_name.replace('-', '_')
++    func_name = b'EVP_' + cipher_name.replace(b'-', b'_')
+-    decipher = CtypesCrypto('aes-128-cfb', b'k' * 32, b'i' * 16, 0)
++    cipher = CtypesCrypto(b'aes-128-cfb', b'k' * 32, b'i' * 16, 1)
+-    print('salsa20 test start')
++    print('openssl test start')
+-    c = ''.join(results)
++    c = b''.join(results)
+-    assert ''.join(results) == plain
++    assert b''.join(results) == plain
+-                        format='%(levelname)-s: %(message)s', filemode='a+')
++                        format='%(levelname)-s: %(message)s')
+-                return '\x04' + r
++                return b'\x04' + r
+-                return '\x01' + r
++                return b'\x01' + r
+-    return '\x03' + chr(len(address)) + address
++    return b'\x03' + chr(len(address)) + address
+-                        datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
++                        datefmt='%Y-%m-%d %H:%M:%S')
+-        return ''.join(result)
++        return b''.join(result)
+-            response = '\x00\x00\x00' + data
++            response = b'\x00\x00\x00' + data
+-                                       d='md5', salt=None, i=1, padding=1)
++            return M2Crypto.EVP.Cipher(b'rc4', rc4_key, b'', op,
+-    return ctypes_openssl.CtypesCrypto('rc4', rc4_key, '', op)
++    return ctypes_openssl.CtypesCrypto(b'rc4', rc4_key, b'', op)
+-    import ctypes_openssl
++    from shadowsocks.crypto import ctypes_openssl
+-
++if hasattr(string, 'maketrans'):
+-    table = [c for c in string.maketrans('', '')]
++    table = [c for c in maketrans(b'', b'')]
+-                                         string.maketrans('', ''))
++        encrypt_table = b''.join(get_table(key))
+-            return string.translate(buf, self.encrypt_table)
++            return translate(buf, self.encrypt_table)
+-            return string.translate(buf, self.decrypt_table)
++            return translate(buf, self.decrypt_table)
+-            return string.translate(data, encrypt_table)
++            return translate(data, encrypt_table)
+-            return string.translate(data, decrypt_table)
++            return translate(data, decrypt_table)
+-    decipher = CtypesCrypto('aes-128-cfb', 'k' * 32, 'i' * 16, 0)
++    cipher = CtypesCrypto('aes-128-cfb', b'k' * 32, b'i' * 16, 1)
+-    return ''.join(c)
++    if bytes == str:
+-        if alg != 'salsa20-ctr':
++        if alg != b'salsa20-ctr':
+-        return ''.join(results)
++        return b''.join(results)
+-    decipher = Salsa20Cipher('salsa20-ctr', 'k' * 32, 'i' * 8, 1)
++    cipher = Salsa20Cipher(b'salsa20-ctr', b'k' * 32, b'i' * 8, 1)
+-    c = ''.join(results)
++    c = b''.join(results)
+-    assert ''.join(results) == plain
++    assert b''.join(results) == plain
+-    version="2.3.2",
++    version="2.4",
+-    #     sys.exit(1)
++    if info[0] == 2 and not info[1] >= 6:
+-                          for i, j in zip(ipstr[::2], ipstr[1::2]))
++                           for i, j in zip(ipstr[::2], ipstr[1::2]))
+-    for i in xrange(0, len(a)):
++    for i in range(0, len(a)):
+-    for i in xrange(1, 1024):
++    for i in range(1, 1024):
+-            list(map(lambda s: s.close(next_tick=True), tcp_servers + udp_servers))
++            list(map(lambda s: s.close(next_tick=True),
+-                self._write_to_sock(b'\x05\x00\x00\x01\x00\x00\x00\x00\x10\x10',
++                self._write_to_sock((b'\x05\x00\x00\x01'
+-
++            if bytes != str:
+-            print 'headline %dms' % (diff * 1000)
++        'Programming Language :: Python :: 3',
+-VALID_HOSTNAME = re.compile(r"(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
++VALID_HOSTNAME = re.compile(br"(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
+-    labels = address.split('.')
++    address = address.strip(b'.')
+-        results.append(chr(l))
++        results.append(common.chr(l))
+-    return ''.join(results)
++    results.append(b'\0')
+-    l = ord(data[p])
++    l = common.ord(data[p])
+-            return p - offset, '.'.join(labels)
++            return p - offset, b'.'.join(labels)
+-    return p - offset + 1, '.'.join(labels)
++        l = common.ord(data[p])
+-            for i in xrange(0, res_qdcount):
++            for i in range(0, res_qdcount):
+-            for i in xrange(0, res_ancount):
++            for i in range(0, res_ancount):
+-            for i in xrange(0, res_nscount):
++            for i in range(0, res_nscount):
+-            for i in xrange(0, res_arcount):
++            for i in range(0, res_arcount):
+-    if hostname[-1] == ".":
++    if hostname[-1] == b'.':
+-    return all(VALID_HOSTNAME.match(x) for x in hostname.split("."))
++    return all(VALID_HOSTNAME.match(x) for x in hostname.split(b'.'))
+-                        if line.startswith('nameserver'):
++                        if line.startswith(b'nameserver'):
+-                            for i in xrange(1, len(parts)):
++                            for i in range(1, len(parts)):
+-        v6addr = ':'.join(('%02X%02X' % (ord(i), ord(j)))
++        v6addr = b':'.join((b'%02X%02X' % (ord(i), ord(j)))
+-            v4addr = addr[addr.rindex(':') + 1:]
++        if b'.' in addr:  # a v4 addr
+-            newaddr = addr[:addr.rindex(':') + 1] + ''.join(v4addr)
++            v4addr = map(lambda x: (b'%02X' % ord(x)), v4addr)
+-        grps = addr.split(':')
++        grps = addr.split(b':')
+-        return ''.join((chr(i // 256) + chr(i % 256)) for i in dbyts)
++        return b''.join((chr(i // 256) + chr(i % 256)) for i in dbyts)
+-    'seed-cfb': (16, 16, CtypesCrypto),
++    b'aes-128-cfb': (16, 16, CtypesCrypto),
+-    print 'salsa20 test start'
++    print('salsa20 test start')
+-    print 'speed: %d bytes/s' % (BLOCK_SIZE * rounds / (end - start))
++    print('speed: %d bytes/s' % (BLOCK_SIZE * rounds / (end - start)))
+-        'seed-cfb': (16, 16, create_cipher),
++        b'aes-128-cfb': (16, 16, create_cipher),
+-    'rc4-md5': (16, 16, create_cipher),
++    b'rc4-md5': (16, 16, create_cipher),
+-            __import__('numpy')
++            numpy = __import__('numpy')
+-            __import__('salsa20')
++            salsa20 = __import__('salsa20')
+-    'salsa20-ctr': (32, 8, Salsa20Cipher),
++    b'salsa20-ctr': (32, 8, Salsa20Cipher),
+-    print 'salsa20 test start'
++    print('salsa20 test start')
+-    print 'speed: %d bytes/s' % (BLOCK_SIZE * rounds / (end - start))
++    print('speed: %d bytes/s' % (BLOCK_SIZE * rounds / (end - start)))
+-            sys.exit(1)
++        Encryptor(key, method)  # test if the settings if OK
+-    password = str(password)
++    if hasattr(password, 'encode'):
+-    while len(''.join(m)) < (key_len + iv_len):
++    while len(b''.join(m)) < (key_len + iv_len):
+-    ms = ''.join(m)
++    ms = b''.join(m)
+-        if method == 'table':
++        if method == b'table':
+-        self.cipher_iv = ''
++        self.cipher_iv = b''
+-        password = password.encode('utf-8')
++        if hasattr(password, 'encode'):
+-    if method is not None and method.lower() == 'table':
++    if method is not None and method.lower() == b'table':
+-        return results.iteritems()
++        return results.items()
+-            map(lambda s: s.close(next_tick=True), tcp_servers + udp_servers)
++            list(map(lambda s: s.close(next_tick=True), tcp_servers + udp_servers))
+-            map(lambda s: s.add_to_loop(loop), tcp_servers + udp_servers)
++            list(map(lambda s: s.add_to_loop(loop), tcp_servers + udp_servers))
+-            for i in xrange(0, int(config['workers'])):
++            for i in range(0, int(config['workers'])):
+-from shadowsocks import encrypt, eventloop, utils
++from shadowsocks import encrypt, eventloop, utils, common
+-                cmd = ord(data[1])
++                cmd = common.ord(data[1])
+-                        header = '\x05\x00\x00\x04'
++                        header = b'\x05\x00\x00\x04'
+-                        header = '\x05\x00\x00\x01'
++                        header = b'\x05\x00\x00\x01'
+-                self._write_to_sock('\x05\x00\x00\x01\x00\x00\x00\x00\x10\x10',
++                self._write_to_sock(b'\x05\x00\x00\x01\x00\x00\x00\x00\x10\x10',
+-            self._write_to_sock('\x05\00', self._local_sock)
++            self._write_to_sock(b'\x05\00', self._local_sock)
+-            data = ''.join(self._data_to_write_to_remote)
++            data = b''.join(self._data_to_write_to_remote)
+-from shadowsocks import encrypt, eventloop, lru_cache
++from shadowsocks import encrypt, eventloop, lru_cache, common
+-            frag = ord(data[2])
++            frag = common.ord(data[2])
+-        sys.exit(1)
++    # if not (info[0] == 2 and info[1] >= 6):
+-    print 'shadowsocks %s' % version
++    print('shadowsocks %s' % version)
+-    if config.get('password') in ['mypassword', 'barfoo!']:
++    if config.get('password') in ['mypassword']:
+-                    config = json.load(f, object_hook=_decode_dict)
++                    config = json.loads(f.read().decode('utf8'),
+-        print >>sys.stderr, e
++        print(e, file=sys.stderr)
+-    print '''usage: sslocal [-h] -s SERVER_ADDR [-p SERVER_PORT]
++    print('''usage: sslocal [-h] -s SERVER_ADDR [-p SERVER_PORT]
+-'''
++''')
+-    print '''usage: ssserver [-h] [-s SERVER_ADDR] [-p SERVER_PORT] -k PASSWORD
++    print('''usage: ssserver [-h] [-s SERVER_ADDR] [-p SERVER_PORT] -k PASSWORD
+-'''
++''')
+-        if isinstance(item, unicode):
++        if hasattr(item, 'encode'):
+-        if isinstance(value, unicode):
++    for key, value in data.items():
+-    print 'encryption test passed'
++    print('encryption test passed')
+-    print 'test passed'
++    print('test passed')
+-import eventloop
++
+-VALID_HOSTNAME = re.compile("(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
++VALID_HOSTNAME = re.compile(r"(?!-)[A-Z\d-]{1,63}(?<!-)$", re.IGNORECASE)
+-import crypto.ctypes_openssl
++
+-method_supported.update(crypto.ctypes_openssl.ciphers)
++method_supported.update(rc4_md5.ciphers)
+-method_supported.update(crypto.m2.ciphers)
++method_supported.update(m2.ciphers)
+-import asyncdns
++
+-import asyncdns
++
+-from common import parse_header
++
+-from common import parse_header, pack_addr
++
+-        create_string_buffer, c_void_p
++    global loaded, libcrypto, buf
+-    import M2Crypto.EVP
++    # import M2Crypto.EVP
+-            import numpy
++            __import__('numpy')
+-            import salsa20
++            __import__('salsa20')
+-    import M2Crypto.EVP
++    # import M2Crypto.EVP
+-import heapq
++# this LRUCache is optimized for concurrency, not QPS
+-        self._last_visits = []
++        self._last_visits = collections.deque()
+-        # O(logm)
++        # O(1)
+-        heapq.heappush(self._last_visits, t)
++        self._last_visits.append(t)
+-        # O(logm)
++        # O(1)
+-        heapq.heappush(self._last_visits, t)
++        self._last_visits.append(t)
+-                heapq.heappop(self._last_visits)
++                self._last_visits.popleft()
+-import sys
++
+-        Plugin.options(self,parser,env)
++        Plugin.options(self, parser, env)
+-    def wantDirectory(self,directory):
++    def wantDirectory(self, directory):
+-    def wantModule(self,file):
++    def wantModule(self, file):
+-    nose.main(addplugins=[ExtensionPlugin()])
++    nose.main(addplugins=[ExtensionPlugin()])
+-before = time.time()
++if __name__ == '__main__':
+-        print 'headline %dms' % (diff * 1000)
++    for line in sys.stdin:
+-                        self.close_callback(value)
++                        if now - self._keys_to_last_time[key] > self.timeout:
+-                    c += 1
++                    if now - self._keys_to_last_time[key] > self.timeout:
+-    version="2.3.1",
++    version="2.3.2",
+-    version="2.3",
++    version="2.3.1",
+-    libcrypto_path = find_library('crypto')
++    for p in ('crypto', 'eay32', 'libeay32'):
+-def load_ctr_cipher(cipher_name):
++def load_cipher(cipher_name):
+-            cipher = libcrypto.EVP_get_cipherbyname(cipher_name)
++        cipher = libcrypto.EVP_get_cipherbyname(cipher_name)
+-}
++if has_m2:
+-                               d='md5', salt=None, i=1, padding=1)
++    if not m2_not_found:
+-method_supported.update(crypto.m2.ciphers)
++# let M2Crypto override ctypes_openssl
+-        self._fd_to_f[fd] = None
++        del self._fd_to_f[fd]
+-        signal.signal(getattr(signal, 'SIGQUIT', signal.SIGTERM), child_handler)
++        signal.signal(getattr(signal, 'SIGQUIT', signal.SIGTERM),
+-    if 'server_port' in config:
++    if 'server_port' in config and type(config['server_port']) != list:
+-        signal.signal(signal.SIGQUIT, handler)
++        signal.signal(getattr(signal, 'SIGQUIT', signal.SIGTERM), handler)
+-        signal.signal(signal.SIGQUIT, child_handler)
++        signal.signal(getattr(signal, 'SIGQUIT', signal.SIGTERM), child_handler)
+-        if config['server_port'] or config['password']:
++        if config['password']:
+-    config['password'] = config.get('password', None)
++    config['password'] = config.get('password', '')
+-    if not ('password' in config and config['password']):
++    if is_local and not config.get('password', None):
+-           stdout=PIPE, stderr=PIPE, close_fds=True)
++p1 = Popen(['python', 'shadowsocks/server.py', '-c', server_config],
+-    buf = create_string_buffer(65536)
++    buf = create_string_buffer(buf_size)
+-                                   len(data))
++                                   byref(cipher_out_len), c_char_p(data), l)
+-    test()
++    test()
+-                               d='md5', salt=None, i=1, padding=1)
++    return M2Crypto.EVP.Cipher(alg.replace('-', '_'), key, iv, op,
+-    return M2Crypto.EVP.Cipher('rc4', key, iv, op, key_as_bytes=0,
++    return M2Crypto.EVP.Cipher(alg.replace('-', '_'), key, iv, op, key_as_bytes=0,
+-
++        # buf is copied to a str object when we access buf.raw
+-        cipher = libcrypto.EVP_get_cipherbyname(cipher_name)
++        if 'ctr' in cipher_name:
+-}
++method_supported = {}
+-    packages=['shadowsocks'],
++    packages=['shadowsocks', 'shadowsocks.crypto'],
+-import encrypt_rc4_md5
++import crypto.m2
+-    def get_cipher_len(self, method):
++    def get_cipher_param(self, method):
+-        m = self.get_cipher_len(method)
++        m = self.get_cipher_param(method)
+-                                           salt=None, i=1, padding=1)
++            return m[2](method, key, iv, op)
+-                decipher_iv_len = self.get_cipher_len(self.method)[1]
++                decipher_iv_len = self.get_cipher_param(self.method)[1]
+-        (key_len, iv_len) = method_supported[method]
++        (key_len, iv_len, m) = method_supported[method]
+-                                         salt=None, i=1, padding=1)
++        cipher = m(method, key, iv, op)
+-    encrypt_salsa20.test()
++    from shadowsocks.crypto import salsa20_ctr
+-    version="2.2.2",
++    version="2.3",
+-                    self._call_callback(hostname, None)
++                    for question in response.questions:
+-    version="2.2.1",
++    version="2.2.2",
+-                self._call_callback(hostname, ip)
++                    self._call_callback(hostname, ip)
+-        self._handlers.remove(handler)
++        if self._iterating:
+-        traceback.print_exc()
++        if config['verbose']:
+-            traceback.print_exc()
++            if config['verbose']:
+-        os._exit(0)
++        os._exit(1)
+-            os._exit(0)
++            os._exit(1)
+-                    # Happens when the client closes the connection
++                    # EPIPE: Happens when the client closes the connection
+-                    self._eventloop.remove_handler(self._handle_events)
++        if self._closed:
+-                self._eventloop.remove_handler(self._handle_events)
++        if self._closed:
+-import signal
++                    logging.debug('poll:%s', e)
+-    version="2.2.0",
++    version="2.2.1",
+-        loop.add_handler(self.handle_events)
++        loop.add_handler(self.handle_events, ref=False)
+-        self.stopping = False
++        self._ref_handlers = []
+-    def add_handler(self, handler):
++    def add_handler(self, handler, ref=True):
+-        while not self.stopping:
++        while self._ref_handlers:
+-                if errno_from_exception(e) == errno.EPIPE:
++                if errno_from_exception(e) in (errno.EPIPE, errno.EINTR):
+-                    logging.error('poll:%s', e)
++import signal
+-                udp_server.add_to_loop(loop)
++            map(lambda s: s.add_to_loop(loop), tcp_servers + udp_servers)
+-                        os.waitpid(pid, 0)
++                        try:
+-                import signal
++                signal.signal(signal.SIGQUIT, handler)
+-    def close(self):
++            if self._closed:
+-        self._server_socket.close()
++        if not next_tick:
+-        if now - self._last_time > 3.5:
++        if now - self._last_time > 3:
+-        if now - self._last_time > 7:
++            if self._closed:
+-    def close(self):
++    def close(self, next_tick=False):
+-        self._server_socket.close()
++        if not next_tick:
+-        longopts = ['fast-open', 'workers:']
++        longopts = ['fast-open', 'workers=']
+-                config['workers'] = value
++                config['workers'] = int(value)
+-import encrypt_rc4_sha256
++import encrypt_rc4_md5
+-    'rc4-sha256': (32, 16),
++    'rc4-md5': (16, 16),
+-                return encrypt_rc4_sha256.create_cipher(method, key, iv, op)
++            elif method == 'rc4-md5':
+-            cipher = encrypt_rc4_sha256.create_cipher(method, key, iv, op)
++        elif method == 'rc4-md5':
+-    rc4_key = sha256.digest()
++    md5 = hashlib.md5()
+-            return encrypt_rc4_sha256.create_cipher(method, key, iv, op)
++            cipher = encrypt_rc4_sha256.create_cipher(method, key, iv, op)
+-    version="2.1.0",
++    version="2.2.0",
+-            if method != 'salsa20-ctr':
++            if method == 'salsa20-ctr':
+-        if method != 'salsa20-ctr':
++        if method == 'salsa20-ctr':
+-            cipher = encrypt_salsa20.Salsa20Cipher(method, key, iv, op)
++#!/usr/bin/env python
+-#!/usr/bin/python
++#!/usr/bin/env python
+-                          qtype, server)
++            logging.debug('resolving %s with type %d using server %s',
+-        logging.warn('unsupported addrtype %d, maybe wrong password' % addrtype)
++        logging.warn('unsupported addrtype %d, maybe wrong password' %
+-                self.cipher_iv = iv[:m[1]]  # this iv is for cipher not decipher
++                # this iv is for cipher not decipher
+-                                                 struct.pack('<Q', self._nonce),
++                                                 struct.pack('<Q',
+-    test()
++    test()
+-                                                         self._chosen_server[1])
++                remote_sock = \
+-                                  # we trim the timeouts once a while
++        # we trim the timeouts once a while
+-                                    self._is_local)
++                    TCPRelayHandler(self, self._fd_to_handlers,
+-    return rv
++    return rv
+-            
++
+-    version="3.0",
++    version="2.1.0",
+-            return True
++            return family
+-                                if is_ip(server):
++                                if is_ip(server) == socket.AF_INET:
+-    version="2.1.0",
++    version="3.0",
+-    version="2.0.12",
++    version="2.1.0",
+-            print_server_help()
++        print_help(is_local)
+-                 'https://github.com/clowwindy/shadowsocks')
++    if not config:
+-    config['method'] = config.get('method', None)
++    config['method'] = config.get('method', 'aes-256-cfb')
+-                [--fast-open] [-v] [-q]
++    print '''usage: sslocal [-h] -s SERVER_ADDR [-p SERVER_PORT]
+-  -l LOCAL_PORT         local port
++  -p SERVER_PORT        server port, default: 8388
+-  -t TIMEOUT            timeout in seconds
++  -m METHOD             encryption method, default: aes-256-cfb
+-                [-v] [-q]
++    print '''usage: ssserver [-h] [-s SERVER_ADDR] [-p SERVER_PORT] -k PASSWORD
+-  -p SERVER_PORT        server port
++  -s SERVER_ADDR        server address, default: 0.0.0.0
+-  -t TIMEOUT            timeout in seconds
++  -m METHOD             encryption method, default: aes-256-cfb
+-    version="2.0.11",
++    version="2.0.12",
+-        shortopts = 'hs:b:p:k:l:m:c:t:v'
++        shortopts = 'hs:b:p:k:l:m:c:t:vq'
+-        shortopts = 'hs:p:k:m:c:t:v'
++        shortopts = 'hs:p:k:m:c:t:vq'
+-    if config['verbose'] == 2:
++    if config['verbose'] >= 2:
+-    elif config['verbose']:
++    elif config['verbose'] == 1:
+-                [--fast-open] [-v]
++                [--fast-open] [-v] [-q]
+-  -v                    verbose mode
++  -v, -vv               verbose mode
+-                -m METHOD [-t TIMEOUT] [-c CONFIG] [--fast-open] [-v]
++                -m METHOD [-t TIMEOUT] [-c CONFIG] [--fast-open] [--workders]
+-  -v                    verbose mode
++  -v, -vv               verbose mode
+-        shortopts = 's:b:p:k:l:m:c:t:v'
++        shortopts = 'hs:b:p:k:l:m:c:t:v'
+-        shortopts = 's:p:k:m:c:t:v'
++        shortopts = 'hs:p:k:m:c:t:v'
+-sys.path.insert(0, '../')
++sys.path.insert(0, './')
+-                          'python-m2crypto`')
++            logging.error(('M2Crypto is required to use %s, please run'
+-                          'default method')
++                          'default method, please run `apt-get install '
+-    version="2.0.10",
++    version="2.0.11",
+-        'shadowsocks': ['README.rst', 'LICENSE', 'config.json']
++        'shadowsocks': ['README.rst', 'LICENSE']
+-from common import parse_header
++from common import parse_header, pack_addr
+-                   struct.pack('>H', r_addr[1]) + data
++            data = pack_addr(r_addr[0]) + struct.pack('>H', r_addr[1]) + data
+-    version="2.0.9",
++    version="2.0.10",
+-                                     padding=1)
++        if method != 'salsa20-ctr':
+-            server_addr, server_port = self._remote_addr, self._remote_port
++            server_addr, server_port = self._get_a_server()
+-            return
++        else:
+-                       '--socks5-hostname', '127.0.0.1:1081'], close_fds=True)
++
+-        sys.exit(r)
++        if r != 0:
+-    version="2.0.8",
++    version="2.0.9",
+-                    config = json.load(f)
++                    config = json.load(f, object_hook=_decode_dict)
+-'''
++'''
+-            if error_no in (errno.EAGAIN, errno.EINPROGRESS):
++            if error_no in (errno.EAGAIN, errno.EINPROGRESS,
+-                    (errno.ETIMEDOUT, errno.EAGAIN):
++                    (errno.ETIMEDOUT, errno.EAGAIN, errno.EWOULDBLOCK):
+-                    (errno.ETIMEDOUT, errno.EAGAIN):
++                    (errno.ETIMEDOUT, errno.EAGAIN, errno.EWOULDBLOCK):
+-                    if error_no in (errno.EAGAIN, errno.EINPROGRESS):
++                    if error_no in (errno.EAGAIN, errno.EINPROGRESS,
+-            if error_no in (errno.EAGAIN, errno.EINPROGRESS):
++            if error_no in (errno.EAGAIN, errno.EINPROGRESS,
+-                    (errno.ETIMEDOUT, errno.EAGAIN):
++                    (errno.ETIMEDOUT, errno.EAGAIN, errno.EWOULDBLOCK):
+-                    (errno.ETIMEDOUT, errno.EAGAIN):
++                    (errno.ETIMEDOUT, errno.EAGAIN, errno.EWOULDBLOCK):
+-                    if error_no in (errno.EAGAIN, errno.EINPROGRESS):
++                    if error_no in (errno.EAGAIN, errno.EINPROGRESS,
+-    version="2.0.7",
++    version="2.0.8",
+-CACHE_SWEEP_INTERVAL = 10
++CACHE_SWEEP_INTERVAL = 30
+-                                                  close_callback=self._timedout)
++        self._cb_to_hostname = {}
+-        self._servers = servers
++        self._servers = []
+-
++                                    self._servers.append(server)
+-        self._call_callback(hostname, None, error=error)
++        if not self._servers:
+-                if addr != self._dns_server:
++                if addr[0] not in self._servers:
+-        self._sock.sendto(req, self._dns_server)
++        for server in self._servers:
+-CACHE_SWEEP_INTERVAL = 30
++CACHE_SWEEP_INTERVAL = 10
+-        self._cb_to_hostname = {}
++        self._cb_to_hostname = lru_cache.LRUCache(timeout=15,
+-                    return
++
+-        self._dns_server = ('8.8.8.8', 53)
++        if not servers:
+-    def _call_callback(self, hostname, ip):
++    def _call_callback(self, hostname, ip, error=None):
+-                callback((hostname, ip), None)
++            if ip or error:
+-        except (TypeError, OSError, IOError):
++        except (TypeError, ValueError, OSError, IOError):
+-    version="2.0.6",
++    version="2.0.7",
+-        except (OSError, IOError):
++        except (TypeError, OSError, IOError):
+-print 'encryption test passed'
++if 'salsa20' in sys.argv[-1]:
+-           bufsize=0, stdin=PIPE, stdout=PIPE, stderr=PIPE, close_fds=True)
++p1 = Popen(['python', 'shadowsocks/server.py', '-c', sys.argv[-1]], stdin=PIPE,
+-                       bufsize=0, close_fds=True)
++                       '--socks5-hostname', '127.0.0.1:1081'], close_fds=True)
+-            
++
+-                                             self._chosen_server)
++                s = remote_sock.sendto(data, MSG_FASTOPEN, self._chosen_server)
+-                    remote_port = self._remote_address[1]
++                    remote_addr = ip
+-                                           1)
++                        remote_port = self._chosen_server[1]
+-                        self._loop.add(remote_sock, eventloop.POLL_ERR)
++                        remote_sock = self._create_remote_socket(remote_addr,
+-                            remote_sock.connect(sa)
++                            remote_sock.connect((remote_addr, remote_port))
+-                return
++                if self._stage == STAGE_DESTROYED:
+-                return
++                if self._stage == STAGE_DESTROYED:
+-                return
++                if self._stage == STAGE_DESTROYED:
+-                return
++                if self._stage == STAGE_DESTROYED:
+-            logging.debug('sweeping timeouts')
++            logging.log(utils.VERBOSE_LEVEL, 'sweeping timeouts')
+-            #                   eventloop.EVENT_NAMES.get(event, event))
++            if sock:
+-                config['verbose'] = True
++                v_count += 1
+-    if config['verbose']:
++    logging.getLogger('').handlers = []
+-        server_socket.listen(1024)
++                self._config['fast_open'] = False
+-                              eventloop.EVENT_NAMES.get(event, event))
++            # if sock:
+-    version="2.0.5",
++    version="2.0.6",
+-BUF_SIZE = 8 * 1024
++BUF_SIZE = 32 * 1024
+-            if event & eventloop.POLL_IN:
++            if event & (eventloop.POLL_IN | eventloop.POLL_HUP):
+-            if event & eventloop.POLL_IN:
++            if event & (eventloop.POLL_IN | eventloop.POLL_HUP):
+-                    logging.error(e)
++                    logging.error('poll:%s', e)
+-            #                   eventloop.EVENT_NAMES.get(event, event))
++            if sock:
+-            # decrypt data
++            # decrypt data
+-    version="2.0.4",
++    version="2.0.5",
+-        config['port_password'][str(config['server_port'])] = config['password']
++        server_port = config['server_port']
+-                                              self._config['server_port']))
++                                             self._chosen_server)
+-                self._dns_resolver.resolve(self._config['server'],
++                self._dns_resolver.resolve(self._chosen_server[0],
+-                        remote_port = self._config['server_port']
++                        remote_addr, remote_port = self._chosen_server
+-p3 = None
++from shadowsocks import encrypt_salsa20
+-                        bufsize=0,  close_fds=True)
++                       bufsize=0, close_fds=True)
+-                traceback.print_exc()
++                if self._config['verbose']:
+-                    traceback.print_exc()
++                    if self._config['verbose']:
+-            traceback.print_exc()
++            if self._config['verbose']:
+-                    traceback.print_exc()
++                    if self._config['verbose']:
+-            traceback.print_exc()
++            if self._config['verbose']:
+-                        traceback.print_exc()
++                        if self._config['verbose']:
+-            logging.debug('got local error')
++        logging.debug('got remote error')
+-            logging.debug('got remote error')
++            logging.debug('ignore handle_event: destroyed')
+-                              eventloop.EVENT_NAMES.get(event, event))
++            # if sock:
+-                    # logging.debug('accept')
++                    logging.debug('accept')
+-    version="2.0.3",
++    version="2.0.4",
+-        self._sock.close()
++        if self._sock:
+-    elif addrtype == QTYPE_CNAME:
++    elif addrtype in [QTYPE_CNAME, QTYPE_NS]:
+-        return data
++        return data[offset:offset + length]
+-    version="2.0.2",
++    version="2.0.3",
+-            return string.translate(encrypt_table, data)
++            return string.translate(data, encrypt_table)
+-            return string.translate(decrypt_table, data)
++            return string.translate(data, decrypt_table)
+-    version="2.0.1",
++    version="2.0.2",
+-            res_arcount = header[6]
++            header = parse_header(data)
+-            assert res_rcode in [0, 3]
++            # assert res_tc == 0
+-            callback((hostname, ip), None)
++            if ip:
+-                self._cache[hostname] = ip
++                if ip:
+-                 is_local):
++                 dns_resolver, is_local):
+-                remote_port = self._config['server_port']
++                # notice here may go into _handle_dns_resolved directly
+-                self._update_stream(STREAM_DOWN, WAIT_STATUS_READING)
++                # notice here may go into _handle_dns_resolved directly
+-                                    conn[0], self._config, self._is_local)
++                                    conn[0], self._config, self._dns_resolver,
+-            assert res_rcode == 0
++            assert res_rcode in [0, 3]
+-        self._parse_config()
++        self._parse_resolv()
+-    def _parse_config(self):
++    def _parse_resolv(self):
+-                            parts = line.split(' ')
++                            parts = line.split()
+-            callback(hostname, None)
++            callback((hostname, hostname), None)
+-            callback(ip, None)
++            callback((hostname, ip), None)
+-common.patch_socket()
++CACHE_SWEEP_INTERVAL = 30
+-_request_count = 1
++common.patch_socket()
+-    header = struct.pack('!HBBHHHH', _request_count, 1, 0, 1, 0, 0, 0)
++def build_request(address, qtype, request_id):
+-        _request_count = 1
++        self._request_id = 1
+-        req = build_request(hostname, qtype)
++        self._request_id += 1
+-    resolver.resolve('ipv6.google.com', _callback)
++    for hostname in ['www.google.com',
+-        self._sock.setblocking(False)
++        self._sock = None
+-        udp_server = udprelay.UDPRelay(config, True)
++        dns_resolver = asyncdns.DNSResolver()
+-        udp_servers.append(udprelay.UDPRelay(a_config, False))
++        tcp_servers.append(tcprelay.TCPRelay(a_config, dns_resolver, False))
+-    def __init__(self, config, is_local):
++    def __init__(self, config, dns_resolver, is_local):
+-    def __init__(self, config, is_local):
++    def __init__(self, config, dns_resolver, is_local):
+-        # TODO try ipv4 and ipv6 sequencely
++        self._cache = lru_cache.LRUCache(timeout=300)
+-                del self._hostname_status[hostname]
++            else:
+-        self.last_visits = []
++        self._store = {}
+-        "O(logm)"
++        # O(logm)
+-        return self.store[key]
++        self._time_to_keys[t].append(key)
+-        "O(logm)"
++        # O(logm)
+-        heapq.heappush(self.last_visits, t)
++        self._store[key] = value
+-        del self.store[key]
++        # O(1)
+-        return iter(self.store)
++        return iter(self._store)
+-        return len(self.store)
++        return len(self._store)
+-        "O(m)"
++        # O(m)
+-            least = self.last_visits[0]
++        while len(self._last_visits) > 0:
+-                    value = self.store[key]
++            for key in self._time_to_keys[least]:
+-                    del self.store[key]
++                    del self._store[key]
+-            del self.time_to_keys[least]
++            del self._time_to_keys[least]
+-        return parse_name(data, offset, length)[1]
++        return parse_name(data, offset)[1]
+-def parse_name(data, offset, length=512):
++def parse_name(data, offset):
+-        labels = []
++    labels = []
+-        return (p - offset + 1, '.'.join(labels))
++    return p - offset + 1, '.'.join(labels)
+-    assert len
++    nlen, name = parse_name(data, offset)
+-            '!HHiH', data[offset + len:offset + len + 10]
++            '!HHiH', data[offset + nlen:offset + nlen + 10]
+-        return len + 10 + record_rdlength, \
++        ip = parse_ip(record_type, data, record_rdlength, offset + nlen + 10)
+-            '!HH', data[offset + len:offset + len + 4]
++            '!HH', data[offset + nlen:offset + nlen + 4]
+-        return len + 4, (name, None, record_type, record_class, None, None)
++        return nlen + 4, (name, None, record_type, record_class, None, None)
+-            res_qr = header[1] & 128
++            # res_id = header[0]
+-            res_ra = header[2] & 128
++            # res_ra = header[2] & 128
+-                    ars.append(r)
++        logging.error(e)
+-    socket.inet_pton = inet_pton
++def patch_socket():
+-    socket.inet_ntop = inet_ntop
++    if not hasattr(socket, 'inet_ntop'):
+-def pack_address(address):
++def build_address(address):
+-def pack_request(address):
++def build_request(address, qtype):
+-    qtype_qclass = struct.pack('!HH', QTYPE_ANY, QCLASS_IN)
++    addr = build_address(address)
+-        return (2, parse_name(data, pointer))
++        return (2, parse_name(data, pointer)[1])
+-def unpack_response(data):
++def parse_response(data):
+-
++            response = DNSResponse()
+-    callback(parsed_res)
++def is_ip(address):
+-    resolve('m.baidu.jp', _callback)
++    logging.getLogger('').handlers = []
+-def convert_address(address):
++def parse_ip(addrtype, data, length, offset):
+-    qtype_qclass = struct.pack('!HH', QTYPE_A, QCLASS_IN)
++    addr = pack_address(address)
+-    return data
++    try:
+-    pass
++    addr = convert_address(address)
+-    pass
++    print data
+-    callback(address)
++    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.SOL_UDP)
+-    resolve('www.baidu.com', _callback)
++    resolve('www.google.com', _callback)
+-                self._on_remote_error()
++            if event & eventloop.POLL_ERR:
+-            #                   eventloop.EVENT_NAMES.get(event, event))
++            if sock:
+-            import traceback
++        except Exception as e:
+-            import traceback
++        except Exception as e:
+-    version="2.0",
++    version="2.0.1",
+-                handler(events)
++                try:
+-            return
++            return False
+-    description="a lightweight tunnel proxy",
++    description="A fast tunnel proxy that help you get through firewalls",
+-        # tornado's timeout memory management is more flexible that we need
++        # tornado's timeout memory management is more flexible than we need
+-                self._update_stream(STREAM_DOWN, WAIT_STATUS_READING)
++                                             (self._config['server'],
+-                    self._update_stream(STREAM_DOWN, WAIT_STATUS_READING)
++                self._loop.add(remote_sock, eventloop.POLL_ERR)
+-                    self._update_stream(STREAM_DOWN, WAIT_STATUS_READING)
++        self._fastopen_connected = False
+-        if self._is_local and self._upstream_status == WAIT_STATUS_INIT and \
++        if self._is_local and not self._fastopen_connected and \
+-        self.update_activity()
++        self._update_activity()
+-    def update_activity(self):
++    def _update_activity(self):
+-    def update_stream(self, stream, status):
++    def _update_stream(self, stream, status):
+-    def write_to_sock(self, data, sock):
++    def _write_to_sock(self, data, sock):
+-                self.update_stream(STREAM_DOWN, WAIT_STATUS_WRITING)
++                self._update_stream(STREAM_DOWN, WAIT_STATUS_WRITING)
+-                self.update_stream(STREAM_UP, WAIT_STATUS_WRITING)
++                self._update_stream(STREAM_UP, WAIT_STATUS_WRITING)
+-                self.update_stream(STREAM_DOWN, WAIT_STATUS_READING)
++                self._update_stream(STREAM_DOWN, WAIT_STATUS_READING)
+-                self.update_stream(STREAM_UP, WAIT_STATUS_READING)
++                self._update_stream(STREAM_UP, WAIT_STATUS_READING)
+-        self.update_activity()
++    def _handle_stage_reply(self, data):
+-            self.write_to_sock(data, self._remote_sock)
++            self._write_to_sock(data, self._remote_sock)
+-            self.write_to_sock('\x05\00', self._local_sock)
++            self._write_to_sock('\x05\00', self._local_sock)
+-                        self.destroy()
++            self._handle_stage_reply(data)
+-                self.destroy()
++            self._handle_stage_hello(data)
+-        self.update_activity()
++    def _on_remote_read(self):
+-            self.write_to_sock(data, self._local_sock)
++            self._write_to_sock(data, self._local_sock)
+-    def on_local_write(self):
++    def _on_local_write(self):
+-            self.write_to_sock(data, self._local_sock)
++            self._write_to_sock(data, self._local_sock)
+-            self.update_stream(STREAM_DOWN, WAIT_STATUS_READING)
++            self._update_stream(STREAM_DOWN, WAIT_STATUS_READING)
+-    def on_remote_write(self):
++    def _on_remote_write(self):
+-            self.write_to_sock(data, self._remote_sock)
++            self._write_to_sock(data, self._remote_sock)
+-            self.update_stream(STREAM_UP, WAIT_STATUS_READING)
++            self._update_stream(STREAM_UP, WAIT_STATUS_READING)
+-    def on_local_error(self):
++    def _on_local_error(self):
+-    def on_remote_error(self):
++    def _on_remote_error(self):
+-                self.on_remote_read()
++                self._on_remote_read()
+-                self.on_remote_write()
++                self._on_remote_write()
+-                self.on_remote_error()
++                self._on_remote_error()
+-                self.on_local_read()
++                self._on_local_read()
+-                self.on_local_write()
++                self._on_local_write()
+-                self.on_local_error()
++                self._on_local_error()
+-                self.update_stream(STREAM_DOWN, WAIT_STATUS_READING)
++                if self._is_local and self._config['fast_open']:
+-        # we just need a sorted last_activity queue and it's faster that heapq
++        # we just need a sorted last_activity queue and it's faster than heapq
+-    return socket.error(errno, os.strerror(errno))
++    error_number = sock.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
+-        logging.error(eventloop.get_sock_error(self._local_sock))
++        if self._local_sock:
+-        logging.error(eventloop.get_sock_error(self._remote_sock))
++        if self._remote_sock:
+-                logging.debug('connecting %s:%d' % (remote_addr, remote_port))
++                logging.info('connecting %s:%d' % (remote_addr, remote_port))
+-    def __init__(self, fd_to_handlers, loop, local_sock, config, is_local):
++    def __init__(self, server, fd_to_handlers, loop, local_sock, config,
+-        # TODO update timeout
++        self.update_activity()
+-        # TODO update timeout
++        self.update_activity()
+-        logging.debug('destroy')
++        if self._remote_address:
+-                              eventloop.EVENT_NAMES.get(event, event))
++            # if sock:
+-                    logging.debug('accept')
++                    # logging.debug('accept')
+-                    TCPRelayHandler(self._fd_to_handlers, self._eventloop,
++                    TCPRelayHandler(self, self._fd_to_handlers, self._eventloop,
+-                self._last_time = now
++        now = time.time()
+-    if (int(config.get('timeout', 300)) or 300) < 100:
++    if config.get('timeout', 300) < 100:
+-    if (int(config.get('timeout', 300)) or 300) > 600:
++    if config.get('timeout', 300) > 600:
+-
++                        # just trim VER CMD RSV
+-                    data = data[3:]
++import errno
+-import errno
++CMD_BIND = 2
+-                    # TODO check cmd == 1
++                    if cmd == CMD_UDP_ASSOCIATE:
+-                                           self._local_sock)
++                                       '\x00\x00\x00\x00\x10\x10',
+-STATUS_WAIT_READWRITING = STATUS_WAIT_READING | STATUS_WAIT_WRITING
++# stream wait status
+-        self._downstream_status = STATUS_WAIT_INIT
++        self._upstream_status = WAIT_STATUS_READING
+-                if self._downstream_status & STATUS_WAIT_WRITING:
++                if self._downstream_status & WAIT_STATUS_WRITING:
+-                if self._upstream_status & STATUS_WAIT_READING:
++                if self._upstream_status & WAIT_STATUS_READING:
+-                if self._downstream_status & STATUS_WAIT_READING:
++                if self._downstream_status & WAIT_STATUS_READING:
+-                if self._upstream_status & STATUS_WAIT_WRITING:
++                if self._upstream_status & WAIT_STATUS_WRITING:
+-    def write_all_to_sock(self, data, sock):
++    def write_to_sock(self, data, sock):
+-                self.update_stream(STREAM_DOWN, STATUS_WAIT_WRITING)
++                self.update_stream(STREAM_DOWN, WAIT_STATUS_WRITING)
+-                self.update_stream(STREAM_UP, STATUS_WAIT_WRITING)
++                self.update_stream(STREAM_UP, WAIT_STATUS_WRITING)
+-                self.update_stream(STREAM_DOWN, STATUS_WAIT_READING)
++                self.update_stream(STREAM_DOWN, WAIT_STATUS_READING)
+-                self.update_stream(STREAM_UP, STATUS_WAIT_READING)
++                self.update_stream(STREAM_UP, WAIT_STATUS_READING)
+-            self.write_all_to_sock(data, self._remote_sock)
++            self.write_to_sock(data, self._remote_sock)
+-            self.write_all_to_sock('\x05\00', self._local_sock)
++            self.write_to_sock('\x05\00', self._local_sock)
+-                    self.write_all_to_sock('\x05\x00\x00\x01' +
++                    self.write_to_sock('\x05\x00\x00\x01' +
+-                self.update_stream(STREAM_DOWN, STATUS_WAIT_READING)
++                self.update_stream(STREAM_UP, WAIT_STATUS_READWRITING)
+-            self.write_all_to_sock(data, self._local_sock)
++            self.write_to_sock(data, self._local_sock)
+-            self.write_all_to_sock(data, self._local_sock)
++            self.write_to_sock(data, self._local_sock)
+-            self.update_stream(STREAM_DOWN, STATUS_WAIT_READING)
++            self.update_stream(STREAM_DOWN, WAIT_STATUS_READING)
+-            self.write_all_to_sock(data, self._remote_sock)
++            self.write_to_sock(data, self._remote_sock)
+-            self.update_stream(STREAM_UP, STATUS_WAIT_READING)
++            self.update_stream(STREAM_UP, WAIT_STATUS_READING)
+-            self._model = 'epoll'
++            model = 'epoll'
+-            self._model = 'kqueue'
++            model = 'kqueue'
+-            self._model = 'select'
++            model = 'select'
+-        return self._model
++        self._handlers = []
+-        return ((self._fd_to_f[fd], event) for fd, event in events)
++        return [(self._fd_to_f[fd], fd, event) for fd, event in events]
+-import encrypt
++import encrypt
+-            pass
++        tcp_server = tcprelay.TCPRelay(config, True)
+-import encrypt
++import logging
+-        udp_servers.append(udp_server)
++        tcp_servers.append(tcprelay.TCPRelay(a_config, False))
+-                tcp_server.start()
++                tcp_server.add_to_loop(loop)
+-                pass
++                udp_server.add_to_loop(loop)
+-                    udp_server.close()
++                for a_tcp_server in tcp_servers:
+-        logging.error(e)
++    main()
+-import threading
++        logging.debug('destroy')
+-        self._thread = None
++        self._eventloop = None
+-        self._eventloop.add(server_socket,
++    def add_to_loop(self, loop):
+-            for sock, event in events:
++
+-                            logging.error(e)
++                    handler = self._fd_to_handlers.get(fd, None)
+-                        logging.warn('poll removed fd')
++                    logging.warn('poll removed fd')
+-            if now - last_time > 5:
++            if now - self._last_time > 5:
+-        self._thread = t
++                self._last_time = now
+-import threading
++        self._eventloop = None
+-        self._thread = None
++        self._last_time = time.time()
+-    def start(self):
++    def add_to_loop(self, loop):
+-        self._thread = t
++            raise Exception('already closed')
+-    except KeyboardInterrupt:
++    except (KeyboardInterrupt, IOError, OSError) as e:
+-            udp_server.start()
++            for tcp_server in tcp_servers:
+-        except KeyboardInterrupt:
++        except (KeyboardInterrupt, IOError, OSError) as e:
+-                def handler(signum, frame):
++                def handler(signum, _):
+-        tcp_server = tcprelay.TCPRelay(config, False)
++        tcp_server = tcprelay.TCPRelay(a_config, False)
+-        udp_server = udprelay.UDPRelay(config, False)
++        udp_server = udprelay.UDPRelay(a_config, False)
+-                    tcp_server.server_close()
++                    tcp_server.close()
+-    print 'start'
++    print 'salsa20 test start'
+-    print BLOCK_SIZE * rounds / (end - start)
++    print 'speed: %d bytes/s' % (BLOCK_SIZE * rounds / (end - start))
+-import sys
++import encrypt_salsa20
+-    
++
+-    if not (info.major == 2 and info.minor >= 6):
++    if not (info[0] == 2 and info[1] >= 6):
+-                        '--socks5-hostname', '127.0.0.1:1080'], shell=False,
++                        '--socks5-hostname', '127.0.0.1:1081'], shell=False,
+-                logging.info('connecting %s:%d' % (remote_addr, remote_port))
++                logging.debug('connecting %s:%d' % (remote_addr, remote_port))
+-        level = logging.WARNING
++        level = logging.INFO
+-        a_config['server_port'] = port
++        a_config['server_port'] = int(port)
+-                     (a_config['server'], port))
++                     (a_config['server'], int(port)))
+-        shortopts = 's:p:k:m:c:t:'
++        shortopts = 's:p:k:m:c:t:v'
+-           'POLL_HUP', 'POLL_NVAL']
++           'POLL_HUP', 'POLL_NVAL', 'EVENT_NAMES']
+-import socket
++        # TODO combine the two threads into one loop on a single thread
+-        self._upstream_status = STATUS_WAIT_INIT
++        self._upstream_status = STATUS_WAIT_READING
+-                if self._downstream_status == STATUS_WAIT_WRITING:
++                if self._downstream_status & STATUS_WAIT_WRITING:
+-                if self._upstream_status == STATUS_WAIT_READING:
++                if self._upstream_status & STATUS_WAIT_READING:
+-                if self._downstream_status == STATUS_WAIT_READING:
++                if self._downstream_status & STATUS_WAIT_READING:
+-                if self._upstream_status == STATUS_WAIT_WRITING:
++                if self._upstream_status & STATUS_WAIT_WRITING:
+-        if is_local and self._stage == STAGE_INIT:
++        elif is_local and self._stage == STAGE_INIT:
+-        if self._stage == STAGE_REPLY:
++        elif self._stage == STAGE_REPLY:
+-        if (is_local and self._stage == STAGE_HELLO) or \
++        elif (is_local and self._stage == STAGE_HELLO) or \
+-                self._remote_sock.setblocking(False)
++                remote_sock = socket.socket(af, socktype, proto)
+-                    self._remote_sock.connect(sa)
++                    remote_sock.connect(sa)
+-                self._loop.add(self._remote_sock,
++                self._loop.add(remote_sock,
+-                self.update_stream(STREAM_UP, STATUS_WAIT_WRITING)
++                self._stage = STAGE_REPLY
+-
++        logging.debug('using event model: %s', self._eventloop.model)
+-                logging.debug('%s %d', sock, event)
++                if sock:
+-                        handler.handle_event(sock, event)
++                    if sock:
+-                        self._eventloop.remove(sock)
++                        logging.warn('poll removed fd')
+-STATUS_WAIT_WRITING = 1
++STATUS_WAIT_INIT = 0
+-        self._downstream_status = STATUS_WAIT_READING
++        self._upstream_status = STATUS_WAIT_INIT
+-        data = self._local_sock.recv(BUF_SIZE)
++        data = None
+-                else:
++                    data_to_send = self._encryptor.encrypt(data)
+-                self._remote_sock.connect(sa)
++                try:
+-
++                self.update_stream(STREAM_DOWN, STATUS_WAIT_READING)
+-        data = self._remote_sock.recv(BUF_SIZE)
++        # TODO update timeout
+-            self.update_stream(STREAM_DOWN, STATUS_WAIT_READING)
++            self.update_stream(STREAM_UP, STATUS_WAIT_READING)
+-            self._remote_sock.close()
++            self._remote_sock.close()
+-            self._local_sock.close()
++            self._local_sock.close()
+-                                        conn, self._config, self._is_local)
++                                        conn[0], self._config, self._is_local)
+-        t.setName('UDPThread')
++        t.setName('TCPThread')
+-
++    logging.getLogger('').handlers = []
+-                                       padding=1)
++                return M2Crypto.EVP.Cipher(method.replace('-', '_'), key, iv,
+-        sys.exit(0)
++        os._exit(0)
+-    config['workers'] = config.get('workers', 1)
++    config['password'] = config.get('password', None)
+-
++    utils.print_shadowsocks()
+-    utils.print_shadowsocks()
++    config = utils.get_config(False)
+-    config = utils.get_config(True)
++    utils.print_shadowsocks()
+-        logging.error(e)
++        print >>sys.stderr, e
+-                [--fast-open]
++                [--fast-open] [-v]
+-                -m METHOD [-t TIMEOUT] [-c CONFIG] [--fast-open]
++                -m METHOD [-t TIMEOUT] [-c CONFIG] [--fast-open] [-v]
+-import getopt
++import tcprelay
+-                        datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
++    utils.check_python()
+-        sys.exit(2)
++    utils.print_shadowsocks()
+-    config_fast_open = config.get('fast_open', False)
++    config = utils.get_config(True)
+-                 'https://github.com/clowwindy/shadowsocks')
++    encrypt.init_table(config['password'], config['method'])
+-        logging.error(e)
++                     (config['local_address'], config['local_port']))
+-        sys.exit(2)
++    utils.check_python()
+-    config['workers'] = config.get('workers', 1)
++    utils.print_shadowsocks()
+-    utils.check_config(config)
++    config = utils.get_config(True)
+-        loop.add(local_sock, eventloop.POLL_IN)
++        loop.add(local_sock, eventloop.POLL_IN | eventloop.POLL_ERR)
+-                self._loop.add(self._remote_sock, eventloop.POLL_OUT)
++                self._loop.add(self._remote_sock,
+-        self._eventloop.add(server_socket, eventloop.POLL_IN)
++        self._eventloop.add(server_socket,
+-    def __init__(self, config, is_local=True):
++    def __init__(self, config, is_local):
+-    if addrtype == 1:
++    if addrtype == ADDRTYPE_IPV4:
+-    elif addrtype == 3:
++    elif addrtype == ADDRTYPE_HOST:
+-    elif addrtype == 4:
++    elif addrtype == ADDRTYPE_IPV6:
+-                                   socket.SO_ERROR)
++    errno = sock.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
+-
++CMD_CONNECT = 1
+-        self._stage = 0
++        self._stage = STAGE_INIT
+-        pass
++    def update_stream(self, stream, status):
+-        return True
++        if not data or not sock:
+-        if self._stage == 5:
++        if self._stage == STAGE_STREAM:
+-                self.pause_reading(self._local_sock)
++            self.write_all_to_sock(data, self._remote_sock)
+-        if is_local and self._stage == 0:
++        if is_local and self._stage == STAGE_INIT:
+-            self._stage = 1
++            self._stage = STAGE_HELLO
+-        if self._stage == 4:
++        if self._stage == STAGE_REPLY:
+-                (not is_local and self._stage == 1):
++        if (is_local and self._stage == STAGE_HELLO) or \
+-                    assert cmd == 1
++                    assert cmd == CMD_CONNECT
+-                self.pause_reading(self._local_sock)
++                self.update_stream(STREAM_UP, STATUS_WAIT_WRITING)
+-        if self._stage == 4:
++        elif self._stage == STAGE_REPLY:
+-                self.resume_writing(self._local_sock)
++            self.write_all_to_sock(data, self._local_sock)
+-                self.pause_writing(self._local_sock)
++            data = ''.join(self._data_to_write_to_local)
+-            self.pause_writing(self._local_sock)
++            self.update_stream(STREAM_DOWN, STATUS_WAIT_READING)
+-                self.pause_writing(self._remote_sock)
++            data = ''.join(self._data_to_write_to_remote)
+-            self.pause_writing(self._remote_sock)
++            self.update_stream(STREAM_DOWN, STATUS_WAIT_READING)
+-                        if error_no in [errno.EAGAIN, errno.EINPROGRESS]:
++                        if error_no in (errno.EAGAIN, errno.EINPROGRESS):
+-    version="1.4.5",
++    version="2.0",
+-    install_requires=['setuptools'],
++    install_requires=[],
+-    return (addrtype, dest_addr, dest_port, header_length)
++    return addrtype, dest_addr, dest_port, header_length
+-    for port, key in config['port_password'].items():
++    for port, password in config['port_password'].items():
+-                     tuple(tcp_server.server_address[:2]))
++                     (a_config['server'], port))
+-    if int(config_workers) > 1:
++    if int(config['workers']) > 1:
+-            for i in xrange(0, int(config_workers)):
++            for i in xrange(0, int(config['workers'])):
+-                                       self._local_sock)
++                                           '\x00\x00\x00\x00\x10\x10',
+-                                        self._is_local)
++                        TCPRelayHandler(self._fd_to_handlers, self._eventloop,
+-        self._cache = lru_cache.LRUCache(timeout=timeout,
++        self._cache = lru_cache.LRUCache(timeout=config['timeout'],
+-        self._client_fd_to_server_addr = lru_cache.LRUCache(timeout=timeout)
++        self._client_fd_to_server_addr = \
+-        client_addr = self._client_fd_to_server_addr.get(sock.fileno(), None)
++        client_addr = self._client_fd_to_server_addr.get(sock.fileno())
+-
++#!/usr/bin/python
+-import eventloop
++import eventloop
+-    def __init__(self, fd_to_handlers, loop, conn, config, is_local):
++    def __init__(self, fd_to_handlers, loop, local_sock, config, is_local):
+-        self._remains_data_for_remote = None
++        self._local_sock = local_sock
+-        loop.add(conn, eventloop.POLL_IN)
++        self._encryptor = encrypt.Encryptor(config['password'],
+-    def on_local_read(self):
++    def resume_reading(self, sock):
+-    def on_remote_read(self):
++    def pause_reading(self, sock):
+-    def on_local_write(self):
++    def resume_writing(self, sock):
+-    def on_remote_write(self):
++    def pause_writing(self, sock):
+-        elif sock == self._remote_conn:
++        if sock == self._remote_sock:
+-            self._fd_to_handlers[self._local_conn.fileno()] = None
++        if self._remote_sock:
+-        addrs = socket.getaddrinfo(self._listen_addr, self._listen_port, 0,
++        if is_local:
+-                            (self._listen_addr, self._listen_port))
++                            (listen_addr, listen_port))
+-        server_socket.bind((self._listen_addr, self._listen_port))
++        server_socket.bind(sa)
+-                                        password, method, timeout, is_local)
++                        TCPRelayHandler(self._eventloop, conn, self._config,
+-
++import errno
+-import errno
++from common import parse_header
+-
++import tcprelay
+-                 'https://github.com/clowwindy/shadowsocks')
++    config['password'] = config.get('password', None)
+-        if config_server_port or config_key:
++    if config['port_password']:
+-        config_port_password[str(config_server_port)] = config_key
++        config['port_password'] = {}
+-    addrs = socket.getaddrinfo(config_server, int(8387))
++    encrypt.init_table(config['password'], config['method'])
+-        tcp_server.timeout = int(config_timeout)
++    for port, key in config['port_password'].items():
+-                                       False)
++        udp_server = udprelay.UDPRelay(config, False)
+-            threading.Thread(target=tcp_server.serve_forever).start()
++            tcp_server.start()
+-
++#!/usr/bin/python
+-        self._timeout = timeout
++    def __init__(self, config, is_local=True):
+-    version="1.4.4",
++    version="1.4.5",
+-                r, w, e = select.select(fdset, [], [])
++                r, w, e = select.select(fdset, [], [], config_timeout)
+-                        remote = socket.create_connection((a_server, a_port))
++                        remote = socket.create_connection((a_server, a_port),
+-        config_fast_open
++        config_fast_open, config_timeout
+-        while True:
++        while not self._closed:
+-    ready_count = 0
++    local_ready = False
+-        if ready_count == 2 and p3 is None:
++            if line.find('starting local') >= 0:
+-        optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:c:',
++        optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:c:t:',
+-        optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:c:',
++        optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:c:t:',
+-    config_timeout = config.get('timeout', 600)
++    config_timeout = int(config.get('timeout', 300))
+-                r, w, e = select.select(fdset, [], [])
++                r, w, e = select.select(fdset, [], [], config_timeout)
+-                remote = socket.create_connection((addr, port[0]))
++                remote = socket.create_connection((addr, port[0]),
+-    global config_server, config_server_port, config_method, config_fast_open
++    global config_server, config_server_port, config_method, config_fast_open, \
+-        optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:',
++        optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:t:',
+-        optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:',
++        optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:t:',
+-    config_timeout = config.get('timeout', 600)
++    config_timeout = int(config.get('timeout', 300))
+-    if (config.get('timeout', 600) or 600) < 100:
++    if (int(config.get('timeout', 300)) or 300) < 100:
+-    if (config.get('timeout', 600) or 600) > 600:
++                     int(config.get('timeout')))
+-                     config.get('timeout'))
++                     int(config.get('timeout')))
+-                -l LOCAL_PORT -k PASSWORD -m METHOD [-c config] [--fast-open]
++                -l LOCAL_PORT -k PASSWORD -m METHOD [-t TIMEOUT] [-c CONFIG]
+-                -m METHOD [-c config] [--fast-open]
++                -m METHOD [-t TIMEOUT] [-c CONFIG] [--fast-open]
+-            time.sleep(3)
++import time
+-    version="1.4.3",
++    version="1.4.4",
+-            int(config_timeout)
++        tcp_server = ThreadingTCPServer((config_server, int(port)),
+-                          config_method, int(config_timeout), False).start()
++                     tuple(tcp_server.server_address[:2]))
+-            for i in xrange(0, int(config_workers) - 1):
++            children = []
+-
++    else:
+-        self._eventloop = eventloop.EventLoop()
++        addrs = socket.getaddrinfo(self._listen_addr, self._listen_port, 0,
+-        t.setDaemon(True)
++        t.setDaemon(False)
+-                                      ['fast-open'])
++                                      ['fast-open', 'workers:'])
+-                                      ['fast-open'])
++                                      ['fast-open', 'workers='])
+-    version="1.4.2",
++    version="1.4.3",
+-                            raise Exception('failed to send all data')
++                            should_break = True
+-                        raise Exception('failed to send all data')
++                        should_break = True
+-                        raise Exception('failed to send all data')
++                        should_break = True
+-                        raise Exception('failed to send all data')
++                        should_break = True
+-    version="1.4.1",
++    version="1.4.2",
+-    bb = numpy.frombuffer(b, dtype=numpy.byte)
++    dtype = numpy.byte
+-                assert self._pos == 0
++                self._pos = 0
+-                   padding=1)
++    # cipher = M2Crypto.EVP.Cipher('aes_128_cfb', 'k' * 32, 'i' * 16, 1,
+-        l = random.randint(100, 16384)
++        l = random.randint(100, 32768)
+-        l = random.randint(100, 16384)
++        l = random.randint(100, 32768)
+-            self._pos = (self._pos + cur_data_len) % BLOCK_SIZE
++            self._pos = self._pos + cur_data_len
+-    rounds = 1 * 10
++    rounds = 1 * 1024
+-        l = random.randint(10000, 32768)
++        l = random.randint(100, 16384)
+-        results.append(decipher.update(c))
++        results.append(c)
+-    assert ''.join(results) == plain
++    assert ''.join(results) == plain
+-                iv = iv_[:m[1]]
++                iv = iv_
+-p1 = Popen(['python', 'shadowsocks/server.py', '-c', 'test/config.json'], shell=False, bufsize=0, stdin=PIPE, 
++p1 = Popen(['python', 'shadowsocks/server.py', '-c', sys.argv[-1]], shell=False, bufsize=0, stdin=PIPE, 
+-p2 = Popen(['python', 'shadowsocks/local.py', '-c', 'test/config.json'], shell=False, bufsize=0, stdin=PIPE,
++p2 = Popen(['python', 'shadowsocks/local.py', '-c', sys.argv[-1]], shell=False, bufsize=0, stdin=PIPE,
+-    return M2Crypto.Rand.rand_bytes(length)
++    try:
+-            return M2Crypto.EVP.Cipher(method.replace('-', '_'), key, iv, op,
++            if method != 'salsa20-ctr':
+-    version="1.4.0",
++    version="1.4.1",
+-                        remote.sendto(data, MSG_FASTOPEN, (server, port))
++                        try:
+-        #     logging.warn(e)
++            except (OSError, IOError) as e:
+-        logging.warn('Notice server will listen at %s:%s' %
++        logging.warn('warning: server set to listen %s:%s, are you sure?' %
+-        logging.warn('RC4 is not safe; please use a safer cipher, '
++        logging.warn('warning: RC4 is not safe; please use a safer cipher, '
+-p1 = Popen(['python', 'shadowsocks/server.py'], shell=False, bufsize=0, stdin=PIPE, 
++p1 = Popen(['python', 'shadowsocks/server.py', '-c', 'test/config.json'], shell=False, bufsize=0, stdin=PIPE, 
+-p2 = Popen(['python', 'shadowsocks/local.py'], shell=False, bufsize=0, stdin=PIPE,
++p2 = Popen(['python', 'shadowsocks/local.py', '-c', 'test/config.json'], shell=False, bufsize=0, stdin=PIPE,
+-        logging.error('cant resolve local address')
++        logging.error('cant resolve listen address')
+-        self.socket.setsockopt(socket.SOL_TCP, 23, 5)
++        if config_fast_open:
+-        optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:6')
++        optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:',
+-        optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:6')
++        optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:',
+-                IPv6 = True
++            elif key == '--fast-open':
+-    TIMEOUT = config.get('timeout', 600)
++    config_server = config['server']
+-    if not KEY and not config_path:
++    if not config_key and not config_path:
+-        if PORT or KEY:
++    if config_port_password:
+-        server.key, server.method, server.timeout = key, METHOD, int(TIMEOUT)
++        config_port_password = {}
+-                          int(TIMEOUT), False).start()
++        udprelay.UDPRelay(config_server, int(port), None, None, key,
+-        if isinstance(REMOTE_PORT, list):
++    @staticmethod
+-        if isinstance(SERVER, list):
++            a_port = random.choice(config_server_port)
+-            aServer = random.choice(SERVER)
++            a_server = random.choice(config_server)
+-        r = re.match(r'^(.*)\:(\d+)$', aServer)
++        r = re.match(r'^(.*):(\d+)$', a_server)
+-        return (aServer, aPort)
++            a_server = r.group(1)
+-    def handle_tcp(self, sock, remote, pending_data=None, server=None, port=None):
++    @staticmethod
+-            if FAST_OPEN:
++            if config_fast_open:
+-                    if not connected and FAST_OPEN:
++                    if not connected and config_fast_open:
+-                        data = self.encrypt(pending_data + data)
++                        data = encryptor.encrypt(pending_data + data)
+-                        data = self.encrypt(sock.recv(4096))
++                        data = sock.recv(4096)
+-                    data = self.decrypt(remote.recv(4096))
++                    data = encryptor.decrypt(remote.recv(4096))
+-            self.encryptor = encrypt.Encryptor(KEY, METHOD)
++            encryptor = encrypt.Encryptor(config_password, config_method)
+-                addrs = socket.getaddrinfo(aServer, aPort)
++                a_server, a_port = Socks5Server.get_server()
+-                    if FAST_OPEN:
++                    if config_fast_open:
+-                        self.send_encrypt(remote, addr_to_send)
++                        Socks5Server.handle_tcp(sock, remote, encryptor,
+-                        self.handle_tcp(sock, remote)
++                        remote = socket.create_connection((a_server, a_port))
+-    global SERVER, REMOTE_PORT, KEY, METHOD, FAST_OPEN
++    global config_server, config_server_port, config_password, config_method,\
+-    IPv6 = False
++    config_password = None
+-        optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:c:6')
++        optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:c:',
+-        optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:c:6')
++        optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:c:',
+-    except getopt.GetoptError:
++            elif key == '--fast-open':
+-    FAST_OPEN = config.get('fast_open', False)
++    config_server = config['server']
+-    if not KEY and not config_path:
++    if not config_password and not config_path:
+-    encrypt.init_table(KEY, METHOD)
++    encrypt.init_table(config_password, config_method)
+-        ThreadingTCPServer.address_family = socket.AF_INET6
++    addrs = socket.getaddrinfo(config_local_address, config_local_port)
+-        server = ThreadingTCPServer((LOCAL, PORT), Socks5Server)
++        udprelay.UDPRelay(config_local_address, int(config_local_port),
+-                -l LOCAL_PORT -k PASSWORD -m METHOD [-c config]
++                -l LOCAL_PORT -k PASSWORD -m METHOD [-c config] [--fast-open]
+-                -m METHOD [-c config]
++                -m METHOD [-c config] [--fast-open]
+-    def handle_tcp(self, sock, remote):
++    def handle_tcp(self, sock, remote, pending_data=None, server=None, port=None):
+-            fdset = [sock, remote]
++            if FAST_OPEN:
+-                        raise Exception('failed to send all data')
++                    if not connected and FAST_OPEN:
+-            logging.warn(e)
++                addrs = socket.getaddrinfo(aServer, aPort)
+-    global SERVER, REMOTE_PORT, KEY, METHOD
++    global SERVER, REMOTE_PORT, KEY, METHOD, FAST_OPEN
+-                remote = socket.create_connection((aServer, aPort))
++                MSG_FASTOPEN = 0x20000000
+-                self.send_encrypt(remote, addr_to_send)
++                data = self.encrypt(addr_to_send)
+-        self._cache = lru_cache.LRUCache(timeout=timeout)
++        self._cache = lru_cache.LRUCache(timeout=timeout,
+-            print '2.', len(data), data.encode('hex')
++import udprelay
+-            sock.send("\x05\x00")
++            data = sock.recv(262)
+-                logging.warn('mode != 1')
++            if mode == 1:
+-                config['local'] = value
++                config['local_address'] = value
+-    LOCAL = config.get('local', '127.0.0.1')
++    LOCAL = config.get('local_address', '127.0.0.1')
+-        client.sendto(data, (server_addr, server_port))
++        try:
+-            response = '\x00\x00\0x00' + data
++            response = '\x00\x00\x00' + data
+-            addrtype = ord(self.decrypt(sock.recv(1)))
++                self.decrypt(data)
+-           'MODE_HUP', 'MODE_NVAL']
++__all__ = ['EventLoop', 'POLL_NULL', 'POLL_IN', 'POLL_OUT', 'POLL_ERR',
+-MODE_NVAL = 0x20
++POLL_NULL = 0x00
+-        if mode & MODE_IN:
++        if mode & POLL_IN:
+-        if mode & MODE_OUT:
++        if mode & POLL_OUT:
+-        results = defaultdict(lambda: MODE_NULL)
++        results = defaultdict(lambda: POLL_NULL)
+-                results[fd] |= MODE_IN
++                results[fd] |= POLL_IN
+-                results[fd] |= MODE_OUT
++                results[fd] |= POLL_OUT
+-        for p in [(r, MODE_IN), (w, MODE_OUT), (x, MODE_ERR)]:
++        results = defaultdict(lambda: POLL_NULL)
+-        if mode & MODE_IN:
++        if mode & POLL_IN:
+-        if mode & MODE_OUT:
++        if mode & POLL_OUT:
+-        if mode & MODE_ERR:
++        if mode & POLL_ERR:
+-    def __init__(self, timeout=60, *args, **kwargs):
++    def __init__(self, timeout=60, close_callback=None, *args, **kwargs):
+-                        value.close()
++                    if self.close_callback is not None:
+-            self._eventloop.add(client, eventloop.MODE_IN)
++            self._eventloop.add(client, eventloop.POLL_IN)
+-        self._eventloop.add(server_socket, eventloop.MODE_IN)
++        self._eventloop.add(server_socket, eventloop.POLL_IN)
+-            events = self._eventloop.poll(10)
++            try:
+-        self._client_fd_to_server_addr = {}  # TODO replace ith an LRU cache
++        self._cache = lru_cache.LRUCache(timeout=timeout)
+-            events = self._eventloop.poll()
++            events = self._eventloop.poll(10)
+-            client.connect((server_addr, server_port))
++            # prevent from recv other sources
+-# `server`  means the UDP server that handle user requests
++# `server`  means the UDP server that handles user requests
+-        self._eventloop.add(client, eventloop.MODE_IN)
++            self._eventloop.add(client, eventloop.MODE_IN)
+-    # TODO: cache the results
++    password = str(password)
+-import udprelay
++# TODO remove gevent
+-                                       padding=1)
++                                     key_as_bytes=0, d='md5', salt=None, i=1,
+-            # addrtype, dest_addr, dest_port, header_length = parse_header(data)
++            header_result = parse_header(data)
+-        self._fd_to_f = defaultdict(list)
++        self._fd_to_f = {}
+-        self._fd_to_f[fd].append(f)
++        self._fd_to_f[fd] = f
+-            a.remove(f)
++        self._fd_to_f[fd] = None
+-                dest_port = struct.unpack('>H', data[2 + addrlen:4 + addrlen])[0]
++                dest_port = struct.unpack('>H', data[2 + addrlen:4 +
+-        self._cache = {}  # TODO replace this dictionary with an LRU cache
++        self._cache = {}  # TODO replace ith an LRU cache
+-        data = server.recvfrom(BUF_SIZE)
++        data, r_addr = server.recvfrom(BUF_SIZE)
+-        
++            # decrypt data
+-        pass
++        data, r_addr = sock.recvfrom(BUF_SIZE)
+-    if method == 'table':
++    if method is not None and method == 'table':
+-        global encrypt_table, decrypt_table
++        if key in cached_tables:
+-        if method is not None:
++        if method:
+-            return string.translate(buf, encrypt_table)
++        if not self.method:
+-            return string.translate(buf, decrypt_table)
++        if not self.method:
+-                          int(TIMEOUT), False)
++                          int(TIMEOUT), False).start()
+-import event
++import logging
+-        self._eventloop = event.EventLoop()
++        self._eventloop = eventloop.EventLoop()
+-    def _handle_client(self, addr, sock, data):
++    def _handle_server(self):
+-        eventloop.add(server_socket, event.MODE_IN)
++        self._eventloop.add(server_socket, eventloop.MODE_IN)
+-            # TODO
++            events = self._eventloop.poll()
+-        threading.Thread(target=self._run).start()
++        t = threading.Thread(target=self._run)
+-    raise Exception('can not find any available functions in select package')
++class EventLoop(object):
+-        eventloop.add_fd(server_socket, event.MODE_IN)
++        eventloop.add(server_socket, event.MODE_IN)
+-        logging.warn('Notice server will listen at %s:%s' % (config['server'], config['server_port']))
++        logging.warn('Server is set to "%s", maybe it\'s not correct' %
+-        logging.warn('RC4 is not safe; please use a safer cipher, like AES-256-CFB')
++        logging.warn('RC4 is not safe; please use a safer cipher, '
+-    print '''usage: sslocal [-h] -s SERVER_ADDR -p SERVER_PORT [-b LOCAL_ADDR] -l LOCAL_PORT -k PASSWORD -m METHOD [-c config]
++    print '''usage: sslocal [-h] -s SERVER_ADDR -p SERVER_PORT [-b LOCAL_ADDR]
+-    print '''usage: ssserver [-h] -s SERVER_ADDR -p SERVER_PORT -k PASSWORD -m METHOD [-c config]
++    print '''usage: ssserver [-h] -s SERVER_ADDR -p SERVER_PORT -k PASSWORD
+-            logging.error('M2Crypto is required to use encryption other than default method')
++            logging.error('M2Crypto is required to use encryption other than '
+-        decrypt_table = string.maketrans(encrypt_table, string.maketrans('', ''))
++        decrypt_table = string.maketrans(encrypt_table,
+-            Encryptor(key, method)  # make an Encryptor to test if the settings if OK
++            Encryptor(key, method)  # test if the settings if OK
+-            return M2Crypto.EVP.Cipher(method.replace('-', '_'), key, iv, op, key_as_bytes=0, d='md5', salt=None, i=1, padding=1)
++                self.cipher_iv = iv[:m[1]]  # this iv is for cipher not decipher
+-                self.decipher = self.get_cipher(self.key, self.method, 0, iv=decipher_iv)
++                self.decipher = self.get_cipher(self.key, self.method, 0,
+-            # or "server": ["123.123.123.1:8381", "123.123.123.2:8381", "123.123.123.2:8382"]
++            # or "server": ["123.123.123.1:8381", "123.123.123.2:8381"]
+-                    logging.error('found an error in config.json: %s', e.message)
++                    logging.error('found an error in config.json: %s',
+-        sys.exit('config not specified, please read https://github.com/clowwindy/shadowsocks')
++        sys.exit('config not specified, please read '
+-        logging.info("starting local at %s:%d" % tuple(server.server_address[:2]))
++        logging.info("starting local at %s:%d" %
+-            self.encryptor = encrypt.Encryptor(self.server.key, self.server.method)
++            self.encryptor = encrypt.Encryptor(self.server.key,
+-                    logging.error('found an error in config.json: %s', e.message)
++                    logging.error('found an error in config.json: %s',
+-        sys.exit('config not specified, please read https://github.com/clowwindy/shadowsocks')
++        sys.exit('config not specified, please read '
+-            logging.warn('warning: port_password should not be used with server_port and password. server_port and password will be ignored')
++            logging.warn('warning: port_password should not be used with '
+-        logging.info("starting server at %s:%d" % tuple(server.server_address[:2]))
++        logging.info("starting server at %s:%d" %
+-        
++        udprelay.UDPRelay(SERVER, int(port), None, None, key, METHOD,
+-from setuptools import setup 
++from setuptools import setup
+-    packages = ['shadowsocks'],
++    name="shadowsocks",
+-                        ],
++    install_requires=['setuptools'],
+-        ],
++    ],
+-import os
++        
+-    version = "1.3.6",
++    version = "1.3.7",
+-  -s METHOD             encryption method, for example, aes-256-cfb
++  -m METHOD             encryption method, for example, aes-256-cfb
+-  -s METHOD             encryption method, for example, aes-256-cfb
++  -m METHOD             encryption method, for example, aes-256-cfb
+-    version = "1.3.5",
++    version = "1.3.6",
+-  -s LOCAL_PORT         local port
++  -l LOCAL_PORT         local port
+-    version = "1.3.4",
++    version = "1.3.5",
+-# Copyright (c) 2012 clowwindy
++# Copyright (c) 2014 clowwindy
+-# Copyright (c) 2013 clowwindy
++# Copyright (c) 2014 clowwindy
+-            IPv6 = True
++    try:
+-    LOCAL = config.get('local', '')
++    LOCAL = config.get('local', '127.0.0.1')
+-# Copyright (c) 2013 clowwindy
++# Copyright (c) 2014 clowwindy
+-            IPv6 = True
++    try:
+-    version = "1.3.3",
++    version = "1.3.4",
+-                # not support
++                logging.warn('addr_type not supported')
+-                logging.warn('addr_type not support')
++                # not supported
+-            config = json.load(f)
++            try:
+-            config = json.load(f)
++            try:
+-                remote = socket.create_connection((SERVER, REMOTE_PORT))
++                aServer, aPort = self.getServer()
+-    
++    global SERVER, REMOTE_PORT, KEY, METHOD
+-    
++
+-        
++
+-        
++
+-            self.encryptor = encrypt.Encryptor(KEY, METHOD)
++            self.encryptor = encrypt.Encryptor(self.server.key, self.server.method)
+-   
++
+- 
++
+-        server = ThreadingTCPServer((SERVER, PORT), Socks5Server)
++    for port, key in PORTPASSWORD.items():
+-        logging.error(e)
++        threading.Thread(target=server.serve_forever).start()
+-    main()
++    try:
+-    version = "1.3.2",
++    version = "1.3.3",
+-    'rc2-cfb': (8, 8),
++    'rc2-cfb': (16, 8),
+-    version = "1.3.1",
++    version = "1.3.2",
+-            REMOTE_PORT = int(value)
++            config['server_port'] = int(value)
+-            KEY = value
++            config['password'] = value
+-            PORT = int(value)
++            config['local_port'] = int(value)
+-            SERVER = value
++            config['server'] = value
+-            METHOD = value
++            config['method'] = value
+-            LOCAL = value
++            config['local'] = value
+-        logging.info("starting server at %s:%d" % tuple(server.server_address[:2]))
++        logging.info("starting local at %s:%d" % tuple(server.server_address[:2]))
+-    optlist, args = getopt.getopt(sys.argv[1:], 'p:k:m:c:6')
++    optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:6')
+-    optlist, args = getopt.getopt(sys.argv[1:], 'p:k:m:c:6')
++    optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:m:c:6')
+-            PORT = int(value)
++            config['server_port'] = int(value)
+-            KEY = value
++            config['password'] = value
+-            METHOD = value
++            config['method'] = value
+-            
++
+-        logging.info("starting server at port %d ..." % PORT)
++        server = ThreadingTCPServer((SERVER, PORT), Socks5Server)
+-sys.exit(-1)
++#!/usr/bin/python
+-    version = "1.3.0",
++    version = "1.3.1",
+-        with open('config.json', 'rb') as f:
++        with open(config_path, 'rb') as f:
+-from setuptools import setup, find_packages
++from setuptools import setup 
+-    author = 'clowwindy42@gmail.com',
++    author = 'clowwindy',
+-        'shadowsocks': ['README.md', 'LICENSE', 'config.json']
++        'shadowsocks': ['README.rst', 'LICENSE', 'config.json']
+-        config = json.load(f)
++        with open('config.json', 'rb') as f:
+-    except ImportError:
++    except:
+-    except ImportError:
++    except:
+-# Copyright (c) 2012 clowwindy
++# Copyright (c) 2013 clowwindy
+-if __name__ == '__main__':
++def main():
+-    LOCAL = config.get('local', '')
++        import pkg_resources
+-    optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:6')
++    
+-
++        
+-# Copyright (c) 2012 clowwindy
++# Copyright (c) 2013 clowwindy
+-    print 'shadowsocks v1.2.3'
++def main():
+-    IPv6 = False
++    if config_path:
+-    optlist, args = getopt.getopt(sys.argv[1:], 'p:k:m:6')
++    optlist, args = getopt.getopt(sys.argv[1:], 'p:k:m:c:6')
+-
++
+-p1 = Popen(['python', 'server.py'], shell=False, bufsize=0, stdin=PIPE, 
++p1 = Popen(['python', 'shadowsocks/server.py'], shell=False, bufsize=0, stdin=PIPE, 
+-p2 = Popen(['python', 'local.py'], shell=False, bufsize=0, stdin=PIPE,
++p2 = Popen(['python', 'shadowsocks/local.py'], shell=False, bufsize=0, stdin=PIPE,
+-    print 'shadowsocks v1.2.2'
++    print 'shadowsocks v1.2.3'
+-    optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:l:m:6')
++    optlist, args = getopt.getopt(sys.argv[1:], 's:b:p:k:l:m:6')
+-        logging.info("starting server at port %d ..." % PORT)
++        server = ThreadingTCPServer((LOCAL, PORT), Socks5Server)
+-        version='1.2.2',
++        version='1.2.3',
+-    print 'shadowsocks v1.2.2'
++    print 'shadowsocks v1.2.3'
+-            if line.find('starting server at port') >= 0:
++            if line.find('starting server') >= 0:
+-    os.chdir(os.path.dirname(__file__) or '.')
++    try:
+-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s',
++    logging.basicConfig(level=logging.DEBUG,
+-                addr = socket.inet_ntop(socket.AF_INET6, self.decrypt(self.rfile.read(16)))
++                addr = socket.inet_ntop(socket.AF_INET6,
+-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s',
++    logging.basicConfig(level=logging.DEBUG,
+-
++                remote = socket.create_connection((SERVER, REMOTE_PORT))
+-    print 'shadowsocks v1.2.1'
++    print 'shadowsocks v1.2.2'
+-    optlist, args = getopt.getopt(argv, 's:p:k:l:m:')
++    optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:l:m:6')
+-    print 'shadowsocks v1.2.1'
++    print 'shadowsocks v1.2.2'
+-    optlist, args = getopt.getopt(sys.argv[1:], 'p:k:m:')
++    optlist, args = getopt.getopt(sys.argv[1:], 'p:k:m:6')
+-    if '-6' in sys.argv[1:]:
++    if IPv6:
+-    print 'shadowsocks v1.2'
++    print 'shadowsocks v1.2.1'
+-    print 'shadowsocks v1.2'
++    print 'shadowsocks v1.2.1'
+-        Encryptor(key, method)  # make an Encryptor to test if the settings if OK
++        try:
+-
++    encrypt.init_table(KEY, METHOD)
+-    print 'shadowsocks v1.1.1'
++    print 'shadowsocks v1.2'
+-    print 'shadowsocks v1.1.1'
++    print 'shadowsocks v1.2'
+-        get_cipher(key, method, 1)
++        Encryptor(key, method)  # make an Encryptor to test if the settings if OK
+-
++        self.key = key
+-            self.decipher = get_cipher(key, method, 0)
++            self.cipher = self.get_cipher(key, method, 1, iv=random_string(32))
+-            self.decipher = None
++
+-        if self.cipher is None:
++        if self.method is None:
+-            return self.cipher.update(buf)
++            if self.iv_sent:
+-        if self.cipher is None:
++        if self.method is None:
+-                    data = sock.recv(4096)
++                    data = self.encrypt(sock.recv(4096))
+-                    result = send_all(remote, self.encrypt(data))
++                    result = send_all(remote, data)
+-                    data = remote.recv(4096)
++                    data = self.decrypt(remote.recv(4096))
+-                    result = send_all(sock, self.decrypt(data))
++                    result = send_all(sock, data)
+-                    data = sock.recv(4096)
++                    data = self.decrypt(sock.recv(4096))
+-                    result = send_all(remote, self.decrypt(data))
++                    result = send_all(remote, data)
+-                    data = remote.recv(4096)
++                    data = self.encrypt(remote.recv(4096))
+-                    result = send_all(sock, self.encrypt(data))
++                    result = send_all(sock, data)
+-    print 'shadowsocks v1.1'
++    print 'shadowsocks v1.1.1'
+-    print 'shadowsocks v1.1'
++    print 'shadowsocks v1.1.1'
+- 
++
+-    gevent.monkey.patch_all(dns=gevent.version_info[0]>=1)
++    import gevent
+-import hashlib
++import encrypt
+-    return table
++
+-        return data.translate(encrypt_table)
++        return self.encryptor.encrypt(data)
+-        return data.translate(decrypt_table)
++        return self.encryptor.decrypt(data)
+-    optlist, args = getopt.getopt(argv, 's:p:k:l:')
++    optlist, args = getopt.getopt(argv, 's:p:k:l:m:')
+-        datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
++                        datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
+-     
++
+-    gevent.monkey.patch_all(dns=gevent.version_info[0]>=1)
++    import gevent
+-import hashlib
++import encrypt
+-    return table
++
+-        return data.translate(encrypt_table)
++        return self.encryptor.encrypt(data)
+-        return data.translate(decrypt_table)
++        return self.encryptor.decrypt(data)
+-    optlist, args = getopt.getopt(sys.argv[1:], 'p:k:')
++    optlist, args = getopt.getopt(sys.argv[1:], 'p:k:m:')
+-        datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
++                        datefmt='%Y-%m-%d %H:%M:%S', filemode='a+')
+-    decrypt_table = string.maketrans(encrypt_table, string.maketrans('', ''))
++    encrypt.init_table(KEY, METHOD)
+-                remote.connect((addr, port[0]))
++                remote = socket.create_connection((addr, port[0]))
+-    print 'shadowsocks v1.0'
++    print 'shadowsocks v1.1'
+-    print 'shadowsocks v1.0'
++    print 'shadowsocks v1.1'
+-    print 'shadowsocks v0.9.4'
++    print 'shadowsocks v1.0'
+-    print 'shadowsocks v0.9.4'
++    print 'shadowsocks v1.0'
+-                remote.connect((SERVER, REMOTE_PORT))
++                    remote.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+-    optlist, args = getopt.getopt(sys.argv[1:], 's:p:k:l:')
++    argv = sys.argv[1:]
+-            p.kill()
++            os.kill(p.pid, signal.SIGTERM)
+-
++if sys.version_info < (2, 6):
+-        
++from __future__ import with_statement
+-
++if sys.version_info < (2, 6):
+-    print 'shadowsocks v0.9.3'
++    print 'shadowsocks v0.9.4'
+-    print 'shadowsocks v0.9.3'
++    print 'shadowsocks v0.9.4'
+-import json
++from __future__ import with_statement
+-    print 'shadowsocks v0.9.2'
++    print 'shadowsocks v0.9.3'
+-    print 'shadowsocks v0.9.2'
++    print 'shadowsocks v0.9.3'
+-            data = self.rfile.read(4)
++            data = self.rfile.read(4) or '\x00' * 4
+-    print 'shadowsocks v0.9.1'
++    print 'shadowsocks v0.9.2'
+-    print 'shadowsocks v0.9.1'
++    print 'shadowsocks v0.9.2'
+-    print 'shadowsocks v0.9'
++    print 'shadowsocks v0.9.1'
+-    print 'shadowsocks v0.9'
++    print 'shadowsocks v0.9.1'
+-            p3 = Popen(['curl', 'http://www.google.com/', '-v', '-L',
++            p3 = Popen(['curl', 'http://www.example.com/', '-v', '-L',
+-            fdset.append(p3.stderr)
++                        bufsize=0,  close_fds=True)
+-    
++   
+-print 'test passed'
++#!/usr/bin/python
+-            self.wfile.write("\x05\x00")
++            sock = self.connection
+-                reply += socket.inet_aton('0.0.0.0') + struct.pack(">H", 0)
++                reply += socket.inet_aton('0.0.0.0') + struct.pack(">H", 2222)
+-            self.handle_tcp(self.connection, remote)
++            self.handle_tcp(sock, remote)
+-                    if data <= 0:
++                    if len(data) <= 0:
+-                    send_all(remote, self.encrypt(data))
++                    result = send_all(remote, self.encrypt(data))
+-                    if data <= 0:
++                    if len(data) <= 0:
+-                    send_all(sock, self.decrypt(data))
++                    result = send_all(sock, self.decrypt(data))
+-                    if data <= 0:
++                    if len(data) <= 0:
+-                    send_all(remote, self.decrypt(data))
++                    result = send_all(remote, self.decrypt(data))
+-                    if data <= 0:
++                    if len(data) <= 0:
+-                    send_all(sock, self.encrypt(data))
++                    result = send_all(sock, self.encrypt(data))
+-                    remote.sendall(self.encrypt(data))
++                    send_all(remote, self.encrypt(data))
+-                    sock.sendall(self.decrypt(data))
++                    send_all(sock, self.decrypt(data))
+-                    remote.sendall(self.decrypt(data))
++                    send_all(remote, self.decrypt(data))
+-                    sock.send(self.encrypt(data))
++                    send_all(sock, self.encrypt(data))
+-    pass
++    allow_reuse_address = True
+-                        break
++                    remote.sendall(self.encrypt(data))
+-                        break
++                    sock.sendall(self.decrypt(data))
+-    pass
++    allow_reuse_address = True
+-                        break
++                    remote.sendall(self.decrypt(data))
+-                        break
++                    sock.send(self.encrypt(data))
+-        server.allow_reuse_address = True
++import sys
+-                    if remote.sendall(self.encrypt(data)) is not None:
++                    if remote.send(self.encrypt(data)) <= 0:
+-                    if sock.sendall(self.decrypt(data)) is not None:
++                    if sock.send(self.decrypt(data)) <= 0:
+-                    if remote.sendall(self.decrypt(data)) is not None:
++                    if remote.send(self.decrypt(data)) <= 0:
+-                    if sock.sendall(self.encrypt(data)) is not None:
++                    if sock.send(self.encrypt(data)) <= 0:
+-                    if remote.send(self.encrypt(sock.recv(4096))) <= 0:
++                    data = sock.recv(4096)
+-                    if sock.send(self.decrypt(remote.recv(4096))) <= 0:
++                    data = remote.recv(4096)
+-                    if remote.send(self.decrypt(sock.recv(4096))) <= 0:
++                    data = sock.recv(4096)
+-                    if sock.send(self.encrypt(remote.recv(4096))) <= 0:
++                    data = remote.recv(4096)
+-            sock.send("\x05\x00")
++            data = self.rfile.read(2)
+-                addr_len = sock.recv(1)
++                addr_len = self.rfile.read(1)
+-                sock.send(reply)
++                reply += socket.inet_aton('0.0.0.0') + struct.pack(">H", 0)
+-            self.handle_tcp(sock, remote)
++            self.handle_tcp(self.connection, remote)
+-                logging.warn('socket error ' + str(e))
++            except socket.error, e:
+-            logging.warn('socket error ' + str(e))
++        except socket.error, e:
+-    server.serve_forever()
++    try:
+-            except socket.error as e:
++            except socket.error, e:
+-                logging.warn('socket error ' + str(e))
++                logging.warn(e)
+-            logging.warn('socket error ' + str(e))
++        except socket.error, e:
+-    server.serve_forever()
++    try:
+-target2 = [[124 , 30 , 170 , 247 , 27 , 127 , 224 , 59 , 13 , 22 , 196 , 76 , 72 , 154 , 32 , 209 , 4 , 2 , 131 , 62 , 101 , 51 , 230 , 9 , 166 , 11 , 99 , 80 , 208 , 112 , 36 , 248 , 81 , 102 , 130 , 88 , 218 , 38 , 168 , 15 , 241 , 228 , 167 , 117 , 158 , 41 , 10 , 180 , 194 , 50 , 204 , 243 , 246 , 251 , 29 , 198 , 219 , 210 , 195 , 21 , 54 , 91 , 203 , 221 , 70 , 57 , 183 , 17 , 147 , 49 , 133 , 65 , 77 , 55 , 202 , 122 , 162 , 169 , 188 , 200 , 190 , 125 , 63 , 244 , 96 , 31 , 107 , 106 , 74 , 143 , 116 , 148 , 78 , 46 , 1 , 137 , 150 , 110 , 181 , 56 , 95 , 139 , 58 , 3 , 231 , 66 , 165 , 142 , 242 , 43 , 192 , 157 , 89 , 175 , 109 , 220 , 128 , 0 , 178 , 42 , 255 , 20 , 214 , 185 , 83 , 160 , 253 , 7 , 23 , 92 , 111 , 153 , 26 , 226 , 33 , 176 , 144 , 18 , 216 , 212 , 28 , 151 , 71 , 206 , 222 , 182 , 8 , 174 , 205 , 201 , 152 , 240 , 155 , 108 , 223 , 104 , 239 , 98 , 164 , 211 , 184 , 34 , 193 , 14 , 114 , 187 , 40 , 254 , 12 , 67 , 93 , 217 , 6 , 94 , 16 , 19 , 82 , 86 , 245 , 24 , 197 , 134 , 132 , 138 , 229 , 121 , 5 , 235 , 238 , 85 , 47 , 103 , 113 , 179 , 69 , 250 , 45 , 135 , 156 , 25 , 61 , 75 , 44 , 146 , 189 , 84 , 207 , 172 , 119 , 53 , 123 , 186 , 120 , 171 , 68 , 227 , 145 , 136 , 100 , 90 , 48 , 79 , 159 , 149 , 39 , 213 , 236 , 126 , 52 , 60 , 225 , 199 , 105 , 73 , 233 , 252 , 118 , 215 , 35 , 115 , 64 , 37 , 97 , 129 , 161 , 177 , 87 , 237 , 141 , 173 , 191 , 163 , 140 , 234 , 232 , 249],[117 , 94 , 17 , 103 , 16 , 186 , 172 , 127 , 146 , 23 , 46 , 25 , 168 , 8 , 163 , 39 , 174 , 67 , 137 , 175 , 121 , 59 , 9 , 128 , 179 , 199 , 132 , 4 , 140 , 54 , 1 , 85 , 14 , 134 , 161 , 238 , 30 , 241 , 37 , 224 , 166 , 45 , 119 , 109 , 202 , 196 , 93 , 190 , 220 , 69 , 49 , 21 , 228 , 209 , 60 , 73 , 99 , 65 , 102 , 7 , 229 , 200 , 19 , 82 , 240 , 71 , 105 , 169 , 214 , 194 , 64 , 142 , 12 , 233 , 88 , 201 , 11 , 72 , 92 , 221 , 27 , 32 , 176 , 124 , 205 , 189 , 177 , 246 , 35 , 112 , 219 , 61 , 129 , 170 , 173 , 100 , 84 , 242 , 157 , 26 , 218 , 20 , 33 , 191 , 155 , 232 , 87 , 86 , 153 , 114 , 97 , 130 , 29 , 192 , 164 , 239 , 90 , 43 , 236 , 208 , 212 , 185 , 75 , 210 , 0 , 81 , 227 , 5 , 116 , 243 , 34 , 18 , 182 , 70 , 181 , 197 , 217 , 95 , 183 , 101 , 252 , 248 , 107 , 89 , 136 , 216 , 203 , 68 , 91 , 223 , 96 , 141 , 150 , 131 , 13 , 152 , 198 , 111 , 44 , 222 , 125 , 244 , 76 , 251 , 158 , 106 , 24 , 42 , 38 , 77 , 2 , 213 , 207 , 249 , 147 , 113 , 135 , 245 , 118 , 193 , 47 , 98 , 145 , 66 , 160 , 123 , 211 , 165 , 78 , 204 , 80 , 250 , 110 , 162 , 48 , 58 , 10 , 180 , 55 , 231 , 79 , 149 , 74 , 62 , 50 , 148 , 143 , 206 , 28 , 15 , 57 , 159 , 139 , 225 , 122 , 237 , 138 , 171 , 36 , 56 , 115 , 63 , 144 , 154 , 6 , 230 , 133 , 215 , 41 , 184 , 22 , 104 , 254 , 234 , 253 , 187 , 226 , 247 , 188 , 156 , 151 , 40 , 108 , 51 , 83 , 178 , 52 , 3 , 31 , 255 , 195 , 53 , 235 , 126 , 167 , 120 ]]
++target1 = [
+-target = [[60,53,84,138,217,94,88,23,39,242,219,35,12,157,165,181,255,143,83,247,162,16,31,209,190,171,115,65,38,41,21,245,236,46,121,62,166,233,44,154,153,145,230,49,128,216,173,29,241,119,64,229,194,103,131,110,26,197,218,59,204,56,27,34,141,221,149,239,192,195,24,155,170,183,11,254,213,37,137,226,75,203,55,19,72,248,22,129,33,175,178,10,198,71,77,36,113,167,48,2,117,140,142,66,199,232,243,32,123,54,51,82,57,177,87,251,150,196,133,5,253,130,8,184,14,152,231,3,186,159,76,89,228,205,156,96,163,146,18,91,132,85,80,109,172,176,105,13,50,235,127,0,189,95,98,136,250,200,108,179,211,214,106,168,78,79,74,210,30,73,201,151,208,114,101,174,92,52,120,240,15,169,220,182,81,224,43,185,40,99,180,17,212,158,42,90,9,191,45,6,25,4,222,67,126,1,116,124,206,69,61,7,68,97,202,63,244,20,28,58,93,134,104,144,227,147,102,118,135,148,47,238,86,112,122,70,107,215,100,139,223,225,164,237,111,125,207,160,187,246,234,161,188,193,249,252],[151,205,99,127,201,119,199,211,122,196,91,74,12,147,124,180,21,191,138,83,217,30,86,7,70,200,56,62,218,47,168,22,107,88,63,11,95,77,28,8,188,29,194,186,38,198,33,230,98,43,148,110,177,1,109,82,61,112,219,59,0,210,35,215,50,27,103,203,212,209,235,93,84,169,166,80,130,94,164,165,142,184,111,18,2,141,232,114,6,131,195,139,176,220,5,153,135,213,154,189,238,174,226,53,222,146,162,236,158,143,55,244,233,96,173,26,206,100,227,49,178,34,234,108,207,245,204,150,44,87,121,54,140,118,221,228,155,78,3,239,101,64,102,17,223,41,137,225,229,66,116,171,125,40,39,71,134,13,193,129,247,251,20,136,242,14,36,97,163,181,72,25,144,46,175,89,145,113,90,159,190,15,183,73,123,187,128,248,252,152,24,197,68,253,52,69,117,57,92,104,157,170,214,81,60,133,208,246,172,23,167,160,192,76,161,237,45,4,58,10,182,65,202,240,185,241,79,224,132,51,42,126,105,37,250,149,32,243,231,67,179,48,9,106,216,31,249,19,85,254,156,115,255,120,75,16]]
++target1 = [[60,53,84,138,217,94,88,23,39,242,219,35,12,157,165,181,255,143,83,247,162,16,31,209,190,171,115,65,38,41,21,245,236,46,121,62,166,233,44,154,153,145,230,49,128,216,173,29,241,119,64,229,194,103,131,110,26,197,218,59,204,56,27,34,141,221,149,239,192,195,24,155,170,183,11,254,213,37,137,226,75,203,55,19,72,248,22,129,33,175,178,10,198,71,77,36,113,167,48,2,117,140,142,66,199,232,243,32,123,54,51,82,57,177,87,251,150,196,133,5,253,130,8,184,14,152,231,3,186,159,76,89,228,205,156,96,163,146,18,91,132,85,80,109,172,176,105,13,50,235,127,0,189,95,98,136,250,200,108,179,211,214,106,168,78,79,74,210,30,73,201,151,208,114,101,174,92,52,120,240,15,169,220,182,81,224,43,185,40,99,180,17,212,158,42,90,9,191,45,6,25,4,222,67,126,1,116,124,206,69,61,7,68,97,202,63,244,20,28,58,93,134,104,144,227,147,102,118,135,148,47,238,86,112,122,70,107,215,100,139,223,225,164,237,111,125,207,160,187,246,234,161,188,193,249,252],[151,205,99,127,201,119,199,211,122,196,91,74,12,147,124,180,21,191,138,83,217,30,86,7,70,200,56,62,218,47,168,22,107,88,63,11,95,77,28,8,188,29,194,186,38,198,33,230,98,43,148,110,177,1,109,82,61,112,219,59,0,210,35,215,50,27,103,203,212,209,235,93,84,169,166,80,130,94,164,165,142,184,111,18,2,141,232,114,6,131,195,139,176,220,5,153,135,213,154,189,238,174,226,53,222,146,162,236,158,143,55,244,233,96,173,26,206,100,227,49,178,34,234,108,207,245,204,150,44,87,121,54,140,118,221,228,155,78,3,239,101,64,102,17,223,41,137,225,229,66,116,171,125,40,39,71,134,13,193,129,247,251,20,136,242,14,36,97,163,181,72,25,144,46,175,89,145,113,90,159,190,15,183,73,123,187,128,248,252,152,24,197,68,253,52,69,117,57,92,104,157,170,214,81,60,133,208,246,172,23,167,160,192,76,161,237,45,4,58,10,182,65,202,240,185,241,79,224,132,51,42,126,105,37,250,149,32,243,231,67,179,48,9,106,216,31,249,19,85,254,156,115,255,120,75,16]]
+-encrypt_table = ''.join(get_table(KEY))
++encrypt_table = ''.join(get_table('foobar!'))
+-	assert(target[1][i] == ord(decrypt_table[i]))
++    assert(target1[0][i] == ord(encrypt_table[i]))
+-                remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
++                if '-6' in sys.argv[1:]:
+-        ThreadingTCPServer.address_family = socket.AF_INET6
++import os
+-KEY = "barfoo!"
++import json
+-                print 'mode != 1'
++                logging.warn('mode != 1')
+-                print 'not support'
++                logging.warn('addr_type not support')
+-                    return
++                reply = "\x05\x00\x00\x01"
+-                print 'socket error ' + str(e)
++                logging.warn('socket error ' + str(e))
+-            print 'socket error ' + str(e)
++            logging.warn('socket error ' + str(e))
+-def main():
++if __name__ == '__main__':
+-    print "starting server at port %d ..." % PORT
++    logging.info("starting server at port %d ..." % PORT)
+-KEY = "barfoo!"
++import json
+-                print 'server: not support'
++                logging.warn('addr_type not support')
+-                print 'Tcp connecting to', addr, port[0]
++                logging.info('connecting %s:%d' % (addr, port[0]))
+-            except socket.error:
++            except socket.error as e:
+-            print 'socket error'
++            logging.warn('socket error ' + str(e))
+-def main():
++    encrypt_table = ''.join(get_table(KEY))
+-    print "starting server at port %d ..." % PORT
++    logging.info("starting server at port %d ..." % PORT)
+-    def send_encrpyt(self, sock, data):
++    def send_encrypt(self, sock, data):
+-                    self.send_encrpyt(remote, addr_to_send)
++                    self.send_encrypt(remote, addr_to_send)
+-      return data.translate(encrypt_table)
++        return data.translate(encrypt_table)
+-      return data.translate(decrypt_table)
++        return data.translate(decrypt_table)
+-      sock.send(self.encrypt(data))
++        sock.send(self.encrypt(data))
+-              return
++                print 'mode != 1'
+-              print 'not support'
++                print 'not support'
+-              return
++                return
+-      return data.translate(encrypt_table)
++        return data.translate(encrypt_table)
+-      return data.translate(decrypt_table)
++        return data.translate(decrypt_table)
+-      sock.send(self.encrypt(data))
++        sock.send(self.encrypt(data))
+-REMOTE_PORT = 8499
++SERVER = '127.0.0.1'
+-KEY = "foobar!"
++KEY = "barfoo!"
+-import string
++import SocketServer
+-import SocketServer
++import sys
+-                    if remote.send(self.encrypt(r_data)) <= 0:
++                    if remote.send(self.encrypt(sock.recv(4096))) <= 0:
+-            remote.connect((SERVER, REMOTE_PORT))
++            sock.recv(262)
+-            lock_print('socket error: %s' % str(e))
++            print 'socket error ' + str(e)
+-    print 'Starting proxy at port %d' % PORT
++    if '-6' in sys.argv[1:]:
+-KEY = "foobar!"
++PORT = 8388
+-        return data.translate(encrypt_table)
++      return data.translate(encrypt_table)
+-        return data.translate(decrypt_table)
++      return data.translate(decrypt_table)
+-        sock.send(self.encrypt(data))
++      sock.send(self.encrypt(data))
+-            addrtype = ord(data[3])
++            addrtype = ord(self.decrypt(sock.recv(1)))
+-                    print 'command not supported'
++                remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+-                    self.handle_tcp(sock, remote)
++                return
+-SERVER = 'my_server_ip_or_host'
++SERVER = 'my server ip'
+-            remote = socket_create_connection((SERVER, REMOTE_PORT))
++            remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+-                    remote = socket_create_connection((addr, port[0]))
++                    remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+-        ThreadingTCPServer.address_family = socket.AF_INET6
++#!/usr/bin/python
+-        except error as _:
++        except socket.error as _:
+-        except error as _:
++        except socket.error as _:
+-        except socket.error as _:
++        except error as _:
+-        raise error("getaddrinfo returns an empty list")
++        raise socket.error("getaddrinfo returns an empty list")
+-        raise error("getaddrinfo returns an empty list")
++        raise socket.error("getaddrinfo returns an empty list")
+-SERVER = '::1'
++SERVER = 'my_server_ip_or_host'
+-            lock_print('socket error')
++        except socket.error as e:
+-            remote.connect((SERVER, REMOTE_PORT))
++            remote = socket_create_connection((SERVER, REMOTE_PORT))
+-            lock_print('socket error: ' + str(e))
++        except socket.error:
+-    address_family = socket.AF_INET6
++    pass
+-                    remote.connect((addr, port[0]))
++                    remote = socket_create_connection((addr, port[0]))
+-        except socket.error:
++        except socket.error as e:
+-SERVER = 'myserver_ip_or_hostname'
++SERVER = '::1'
+-            remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
++            remote = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
+-            lock_print('socket error')
++        except socket.error as e:
+-    pass
++    address_family = socket.AF_INET6
+-        print "[%s]%s" % (time.ctime(), msg)
++        print "[%s] %s" % (time.ctime(), msg)
+-                    break
++        try:
+-            remote = socket.socket()
++            remote = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+-                if sock.send(self.encrypt(remote.recv(4096))) <= 0: break
++        try:
+-    m = hashlib.md5.new()
++    m = hashlib.md5()
+-    m = hashlib.md5.new()
++    m = hashlib.md5()
+-                addr = self.decrypt(self.rfile.read(ord(self.decrypt(sock.recv(1)))))
++                addr = self.decrypt(
+-                    reply += socket.inet_aton(local[0]) + struct.pack(">H", local[1])
++                    reply += socket.inet_aton(local[0]) + struct.pack(">H",

@@ -1,0 +1,34 @@
+-        
++
+-            blocks[i] = blocks[i]+'\n'
++            blocks[i] = blocks[i] + '\n'
+-    # Sorting the libraries         
++            blocks[i] = '# ' + blocks[i] + '\n'
+-            inner_blocks[i]='##'+inner_blocks[i]
++            inner_blocks[i] = '##' + inner_blocks[i]
+-    
++    final_README = table_of_contents + '- - -' + ''.join(blocks)
+-        
++
+-    
++
+-def main():
++def sort_blocks():
+-    # First, we load the current README into memory as an array of lines
++    # First, we load the current README into memory
+-            last_indent = indent
++        read_me = read_me_file.read()
+-
++            blocks[i] = '#' + blocks[i]+'\n'
+-        sorted_file.write(''.join(blocks))
++        sorted_file.write(final_README)
+-    #First, we load the current README into memory as an array of lines
++    # First, we load the current README into memory as an array of lines
+-    #Clustering is done by indentation
++    # Then we cluster the lines together as blocks
+-        #Then all of the blocks are sorted individually
++        # Then all of the blocks are sorted individually
+-        #And the result is written back to README.md
++        # And the result is written back to README.md
+-        
++

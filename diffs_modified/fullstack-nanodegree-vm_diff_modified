@@ -1,0 +1,64 @@
+-  return c.fetchall()
++  posts = c.fetchall()
+-  return c.fetchall()
++  posts = c.fetchall()
+-  return c.fetchall()
++  posts = c.fetchall()
+-  c.execute("insert into posts values (%s)" % content)  # Almost but not quite.
++  c.execute("insert into posts values ('%s')" % content) # Almost but not quite.
+-#
++#!/usr/bin/env python3
+-import forumdb
++import datetime
+-from wsgiref import util
++from forumdb import get_posts, add_post
+-		 margin: 10px 20%%; }
++                 margin: 10px 20%%; }
+-    <form method=post action="/post">
++    <form method=post>
+-    <div class=post><em class=date>%(time)s</em><br>%(content)s</div>
++    <div class=post><em class=date>%s</em><br>%s</div>
+-    return ['Redirecting']
++@app.route('/', methods=['GET'])
+-        return ['Not Found: ' + page]
++@app.route('/', methods=['POST'])
+-httpd.serve_forever()
++if __name__ == '__main__':
+-# 
++# "Database code" for the DB Forum.
+-import time
++import datetime
+-DB = []
++POSTS = [("This is the first post.", datetime.datetime.now())]
+-    '''Get all the posts from the database, sorted with the newest first.
++def get_posts():
+-    return posts
++def add_post(content):
+-    DB.append((t, content))
++#!/usr/bin/env python3
+-
++    """
+-            "countPlayers() should return numeric zero, not string '0'.")
++            "countPlayers should return numeric zero, not string '0'.")
+-    deletePlayers()
++        raise ValueError("After deletion, countPlayers should return zero.")
+-    registerPlayer("Atlanta Hope")
++            "After one player registers, countPlayers() should be 1. Got {c}".format(c=c))
+-    if c != 4:
++    if c != 2:
+-            "After registering four players, countPlayers should be 4.")
++            "After two players register, countPlayers() should be 2. Got {c}".format(c=c))
+-
++        raise ValueError(
+-
++    """
+-
++    deleteMatches()
+-    [id1, id2, id3, id4] = [row[0] for row in standings]
++    [id1, id2, id3, id4, id5, id6, id7, id8] = [row[0] for row in standings]
+-    if len(pairings) != 2:
++    if len(pairings) != 4:
+-    print "8. After one match, players with one win are paired."
++            "For eight players, swissPairings should return 4 pairs. Got {pairs}".format(pairs=len(pairings)))
+-
++#

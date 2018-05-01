@@ -1,0 +1,996 @@
+-VERSION = "1.1.3"
++VERSION = "1.1.4"
+-VERSION = "1.1.3"
++VERSION = "1.1.4"
+-
++VERSION = "1.1.4"
+-
++VERSION = "1.1.4"
+-
++VERSION = "1.1.4"
+-
++VERSION = "1.1.4"
+-    sys.stdout = UnicodeStreamFilter(sys.stdout)
++    if sys.stdout.encoding == 'cp936':
+-        self.encode_to = self.target.encoding
++
+-    sys.stdout = UnicodeStreamFilter(sys.stdout)
++        sys.stdout = UnicodeStreamFilter(sys.stdout)
+-class UnicodeStreamFilter:
++if sys.version_info.major != 3:
+-if sys.stdout.encoding == 'cp936':
++    if sys.stdout.encoding == 'cp936':
+-'''
++
+-from common import adb
++from common.auto_adb import auto_adb
+-    
++
+-            print("Load config file from {}".format(config_file))
++            print("æ­£å¨ä» {} å è½½éç½®æä»¶".format(config_file))
+-    size_str = adb.run('shell wm size')
++    size_str = adb.get_screen()
+-è¿å¿æ¯debugçä»£ç ï¼å½DEBUG_SWITCHå¼å³å¼å¯çæ¶åï¼ä¼å°åç§ä¿¡æ¯å­å¨æ¬å°ï¼æ¹ä¾¿æ£æ¥æé
++è¿æ¯debugçä»£ç ï¼å½DEBUG_SWITCHå¼å³å¼å¯çæ¶åï¼ä¼å°åç§ä¿¡æ¯å­å¨æ¬å°ï¼æ¹ä¾¿æ£æ¥æé
+-screenshot_backup_dir = 'screenshot_backups/'
++import platform
+-    shutil.copy('autojump.png', '{}{}.png'.format(screenshot_backup_dir, ts))
++    shutil.copy('{}{}autojump.png'.format(os.getcwd(), path_split),
+-def save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y, debugtype = 'auto'):
++def save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y):
+-    im.save('{}{}_{}.png'.format(screenshot_backup_dir, ts, debugtype))
++    im.save(os.path.join(os.getcwd(), screenshot_backup_dir,
+-    '''
++def computing_error(last_press_time, target_board_x, target_board_y, last_piece_x, last_piece_y, temp_piece_x,
+-    target_distance = math.sqrt((target_board_x - last_piece_x) ** 2 + (target_board_y - last_piece_y) ** 2)  # ä¸ä¸è½®ç®æ è·³è·è·ç¦»
++    """
+-    # å°ç»æééè¿å­¦ä¹ å­å¸
++    ''''# å°ç»æééè¿å­¦ä¹ å­å¸
+-        # print(round(actual_distance), round(last_press_time))
++        # print(round(actual_distance), round(last_press_time))'''
+-    density_str = adb.run('shell wm density')
++    size_str = adb.get_screen()
+-        phone_os=phone_os_str.strip(),
++        size=size_str.replace('\n', ''),
+-
++try:
+-import os
++if sys.version_info.major != 3:
+-    from common import adb, debug, config, screenshot, UnicodeStreamFilter
++    from common import debug, config, screenshot, UnicodeStreamFilter
+-VERSION = "1.3.0"
++    exit(1)
+-
++adb.test_device()
+-    density_str = adb.run('shell wm density')
++    density_str = adb.test_density()
+-    swipe_x1, swipe_y1, swipe_x2, swipe_y2 = left, top, left, top
++    left = int(random.uniform(left - 200, left + 200))
+-    print('{} {}'.format(adb.adb_path, cmd))
++    print(cmd)
+-    points = []                 # æææ»¡è¶³è²ç´ çç¹éå
++    points = []  # æææ»¡è¶³è²ç´ çç¹éå
+-    print('scan_start_y: {}'.format(scan_start_y))
++    print('start scan Y axis: {}'.format(scan_start_y))
+-      
++
+-    center_y = h/ 2 + (17/ 1920) * h
++    # é¦åæ¾å°æ¸¸æçå¯¹ç§°ä¸­å¿ï¼ç±å¯¹ç§°ä¸­å¿åè¾å©çº¿ä¸x=board_xç´çº¿çäº¤ç¹å³ä¸ºæ£ççä¸­å¿ä½ç½®
+-        delta_piece_y = piece_y - round((25.5/ 43.5) * (piece_x - center_x) + center_y)
++        board_y = round((25.5 / 43.5) * (board_x - center_x) + center_y)
+-        delta_piece_y = piece_y - round(-(25.5/ 43.5) * (piece_x - center_x) + center_y)
++        board_y = round(-(25.5 / 43.5) * (board_x - center_x) + center_y)
+-def yes_or_no(prompt, true_value='y', false_value='n', default=True):
++
+-        i = input(prompt)
++        yes_or_no = str(input('è¯·ç¡®ä¿ææºæå¼äº ADB å¹¶è¿æ¥äºçµèï¼'
+-        piece_x, piece_y, board_x, board_y , delta_piece_y = find_piece_and_board(im)
++        piece_x, piece_y, board_x, board_y, delta_piece_y = find_piece_and_board(im)
+-            print('å·²ç»è¿ç»­æäº {} ä¸ï¼ä¼æ¯ {}s'.format(i, next_rest_time))
++            print('å·²ç»è¿ç»­æäº {} ä¸ï¼ä¼æ¯ {}ç§'.format(i, next_rest_time))
+-                sys.stdout.write('\rç¨åºå°å¨ {}s åç»§ç»­'.format(next_rest_time - j))
++                sys.stdout.write('\rç¨åºå°å¨ {}ç§ åç»§ç»­'.format(next_rest_time - j))
+-        print('bye')
++        print('\nè°¢è°¢ä½¿ç¨', end='')
+-
++    from common.auto_adb import auto_adb
+-VERSION = "1.1.1"
++    exit(1)
+-debug_switch = True    # debug å¼å³ï¼éè¦è°è¯çæ¶åè¯·æ¹ä¸ºï¼True
++debug_switch = True  # debug å¼å³ï¼éè¦è°è¯çæ¶åè¯·æ¹ä¸ºï¼True
+-
++press_coefficient = config['press_coefficient']  # é¿æçæ¶é´ç³»æ°ï¼è¯·èªå·±æ ¹æ®å®éæåµè°è
+-    '''
++    """
+-    '''
++    """
+-    swipe_x1, swipe_y1, swipe_x2, swipe_y2 = left, top, left, top
++    left = int(random.uniform(left - 100, left + 100))
+-        press_time = max(press_time, 200)   # è®¾ç½® 200ms æ¯æå°çæåæ¶é´
++        press_time = max(press_time, 200)  # è®¾ç½® 200ms æ¯æå°çæåæ¶é´
+-    cmd = 'adb shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
++    cmd = 'shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
+-    os.system(cmd)
++    print('{}'.format(cmd))
+-    elif hi == 5: r, g, b = v, p, q
++    if hi == 0:
+-    r, g, b = r/255.0, g/255.0, b/255.0
++    r, g, b = r / 255.0, g / 255.0, b / 255.0
+-    df = mx-mn
++    df = mx - mn
+-        h = (60 * ((g-b)/df) + 360) % 360
++        h = (60 * ((g - b) / df) + 360) % 360
+-        h = (60 * ((b-r)/df) + 120) % 360
++        h = (60 * ((b - r) / df) + 120) % 360
+-        h = (60 * ((r-g)/df) + 240) % 360
++        h = (60 * ((r - g) / df) + 240) % 360
+-        s = df/mx
++        s = df / mx
+-    return piece_x,piece_y
++    return piece_x, piece_y
+-    im_pixel=im.load()
++    im_pixel = im.load()
+-        last_pixel = im_pixel[0,i]
++    for i in range(int(h / 3), int(h * 2 / 3), 50):
+-            pixel=im_pixel[j,i]
++            pixel = im_pixel[j, i]
+-            pixel = im_pixel[j,i]
++            pixel = im_pixel[j, i]
+-                pixel = im_pixel[j,i]
++                pixel = im_pixel[j, i]
+-                        > 10) and (abs(pixel[0] - r) + abs(pixel[1] - g) + abs(pixel[2] - b) > 10):
++                    > 10) and (abs(pixel[0] - r) + abs(pixel[1] - g) + abs(pixel[2] - b) > 10):
+-                        left_count = left_count+1
++                        left_count = left_count + 1
+-            debug.save_debug_screenshot(ts, im_temp, temp_piece_x, temp_piece_y, board_x, board_y, "t")
++            debug.save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y)
+-        time.sleep(random.uniform(0.5, 0.6))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿ï¼éæºå¼é² ban
++        time.sleep(random.uniform(0.5, 0.6))  # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿ï¼éæºå¼é² ban
+-        os.system('adb kill-server')
++        adb.run('kill-server')
+-    from common import adb, debug, config, screenshot, UnicodeStreamFilter
++    from common import debug, config, screenshot, UnicodeStreamFilter
+-VERSION = "1.1.2"
++    exit(1)
+-    swipe_x1, swipe_y1, swipe_x2, swipe_y2 = left, top, left, top
++    left = int(random.uniform(left - 100, left + 100))
+-        f.close()
++        return Image.open(StringIO(binary_screenshot))
+-        Image.open('./autojump.png').load()
++        im = pull_screenshot()
+-        im = Image.open('./autojump.png')
++        im = screenshot.pull_screenshot()
+-    main()
++    try:
+-    from common import debug, config, screenshot, UnicodeStreamFilter
++    from common import adb, debug, config, screenshot, UnicodeStreamFilter
+-    cmd = 'adb shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
++
+-    os.system(cmd)
++    print('{} {}'.format(adb.adb_path, cmd))
+-    main()
++    try:
+-    main()
++    try:
+-VERSION = "1.2.1"
++VERSION = "1.2.2"
+-head_diameter = config.get('head_diameter', 60)
++head_diameter = config.get('head_diameter')
+-    press_time = (-945 + math.sqrt(945 ** 2 + 4 * 105 * 36 * actual_distance)) / (2 * 105) * 1000
++    press_time = (-945 + math.sqrt(945 ** 2 + 4 * 105 *
+-    bottom_x = [x for x,y in points if y == piece_y_max]  # æææåºå±çç¹çæ¨ªåæ 
++    bottom_x = [x for x, y in points if y == piece_y_max]  # æææåºå±çç¹çæ¨ªåæ 
+-        adb_path = 'adb '
++        adb_path = 'adb'
+-            adb_path = os.path.join('Tools', "adb", 'adb.exe ')
++            adb_path = os.path.join('Tools', "adb", 'adb.exe')
+-    command = '{}{}'.format(adb_path, command)
++    command = '{} {}'.format(adb_path, command)
+-            adb.adb_path + 'shell screencap -p',
++            adb.adb_path + ' shell screencap -p',
+-    print(adb.adb_path + cmd)
++    print('{} {}'.format(adb.adb_path, cmd))
+-def jump(distance):
++def jump(distance, delta_piece_y):
+-        duration=press_time
++        duration=press_time + delta_piece_y
+-        return 0, 0, 0, 0
++
+-            break
++    #é¦åæ¾å°æ¸¸æçå¯¹ç§°ä¸­å¿ï¼ç±å¯¹ç§°ä¸­å¿åè¾å©çº¿ä¸x=board_xç´çº¿çäº¤ç¹å³ä¸ºæ£ççä¸­å¿ä½ç½®
+-
++        return 0, 0, 0, 0, 0
+-        piece_x, piece_y, board_x, board_y = find_piece_and_board(im)
++        piece_x, piece_y, board_x, board_y , delta_piece_y = find_piece_and_board(im)
+-        jump(math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2))
++        jump(math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2), delta_piece_y)
+-        time.sleep(random.uniform(0.9, 1.2))
++        time.sleep(random.uniform(1.2, 1.4))
+-# -*- coding: utf-8 -*-
++# -*- coding: utf-8 -*-
+-        sys.exit()
++    size_str = adb.run('shell wm size')
+-    density_str = os.popen('adb shell wm density').read()
++    size_str = adb.run('shell wm size')
+-            'adb shell screencap -p',
++            adb.adb_path + 'shell screencap -p',
+-        os.system('adb pull /sdcard/autojump.png .')
++        adb.run('shell screencap -p /sdcard/autojump.png')
+-    from common import debug, config, screenshot, UnicodeStreamFilter
++    from common import adb, debug, config, screenshot, UnicodeStreamFilter
+-    cmd = 'adb shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
++    cmd = 'shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
+-    os.system(cmd)
++    print(adb.adb_path + cmd)
+-        os.system('adb kill-server')
++        adb.run('kill-server')
+-    from common import debug, config, screenshot
++    from common import debug, config, screenshot, UnicodeStreamFilter
+-#   exit(-1)
++try:
+-    from common import debug, config, screenshot
++    from common import debug, config, screenshot, UnicodeStreamFilter
+-            # ä¿®æåé¡¶çæ¶åä¸æ¡çº¿å¯¼è´çå° bugï¼è¿ä¸ªé¢è²å¤æ­åºè¯¥ OKï¼ææ¶ä¸æåºæ¥
++            # æ£æ¥Yè½´ä¸é¢5ä¸ªåç´ ï¼ åèæ¯è²ç¸åï¼ é£ä¹æ¯å¹²æ°
+-                    + abs(pixel[2] - last_pixel[2]) > 10:
++                    + abs(pixel[2] - last_pixel[2]) > 10 \
+-    piece_x_c = 0
++    points = []                 # æææ»¡è¶³è²ç´ çç¹éå
+-                piece_x_c += 1
++                points.append((j, i))
+-    if not all((piece_x_sum, piece_x_c)):
++    bottom_x = [x for x,y in points if y == piece_y_max]  # æææåºå±çç¹çæ¨ªåæ 
+-    piece_x = int(piece_x_sum / piece_x_c)
++    piece_x = int(sum(bottom_x) / len(bottom_x))  # ä¸­é´å¼
+-import random
++
+-VERSION = "1.1.1"
++VERSION = "1.2.1"
+-
++# å¾å½¢ä¸­åççç´å¾ï¼å¯ä»¥å©ç¨ç³»ç»èªå¸¦ç»å¾å·¥å·ï¼ç¨ç´çº¿æµéåç´ ï¼å¦æå¯ä»¥å®ç°èªå¨è¯å«åçç´å¾ï¼é£ä¹æ­¤å¤å°å¯å®ç°å¨èªå¨ã
+-    top = int(random.uniform(top-10, top+10))    # éæºé² ban
++    left = int(random.uniform(left - 50, left + 50))
+-    press_time = max(press_time, 200)   # è®¾ç½® 200ms æ¯æå°çæåæ¶é´
++    # è®¡ç®ç¨åºé¿åº¦ä¸æªå¾æµå¾çè·ç¦»çæ¯ä¾
+-    for i in range(int(h / 3), int(h*2 / 3), 50):
++    for i in range(int(h / 3), int(h * 2 / 3), 50):
+-    if piece_x < w/2:
++    if piece_x < w / 2:
+-    for k in range(i+274, i, -1):  # 274 åå¼å±æ¶æå¤§çæ¹åçä¸ä¸é¡¶ç¹è·ç¦»
++    for k in range(i + 274, i, -1):  # 274 åå¼å±æ¶æå¤§çæ¹åçä¸ä¸é¡¶ç¹è·ç¦»
+-    board_y = int((i+k) / 2)
++    board_y = int((i + k) / 2)
+-    for j in range(i, i+200):
++    for j in range(i, i + 200):
+-        false_value, default_value)
++                                      false_value, default_value)
+-def save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y):
++def save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y, debugtype = 'auto'):
+-    im.save('{}{}_d.png'.format(screenshot_backup_dir, ts))
++    im.save('{}{}_{}.png'.format(screenshot_backup_dir, ts, debugtype))
+-            region=im.crop((0,0,460,320))
++            ##æ¯ä¾ç³»æ°
+-            region4.save(str4)
++            start_h,end_h,pixels_Widh=pixel_division(region,int(460*pix_w),int(pix_h*0.1))
+-            data.append(data4)
++            for i in range(len(pixels_Widh)-1):
+-            m_score=strint(output[0])+strint(output[1])+strint(output[2])+strint(output[3])
++            m_score=""
+-    main()
++    main()
+-        saver.restore(sess,tf.train.latest_checkpoint('./'))
++        saver = tf.train.import_meta_graph('./resource/model/model.ckpt.meta')
+-    s.tap_hold(200, 200, press_time)
++    s.tap_hold(random.uniform(0, 320), random.uniform(64, 320), press_time)
+-VERSION = "1.1.1"
++VERSION = "1.1.2"
+-plt.show()
++    print('æ¿æ´»çªå£å¹¶æ CONTROL + C ç»åé®éåº')
+-    main()
++    try:
+-template = cv2.imread('character.png')
++template = cv2.imread('./resource/image/character.png')
+-    os.system('adb pull /sdcard/autojump.png .')
++    os.system('adb pull /sdcard/autojump.png ./autojump.png')
+-    img = cv2.imread('autojump.png')
++    img = cv2.imread('./autojump.png')
+-        os.remove('autojump.png')
++        try:
+-def updatefig():
++def updatefig(*args):
+-def updatefig():
++def updatefig(*args):
+-def updatefig():
++def updatefig(*args):
+-    print('è¯·æ£æ¥é¡¹ç®æ ¹ç®å½ä»ç common æä»¶å¤¹æ¯å¦å­å¨')
++    print('è¯·å°èæ¬æ¾å¨é¡¹ç®æ ¹ç®å½ä¸­è¿è¡')
+-    device_str = os.popen('adb shell getprop ro.product.model').read()
++    device_str = os.popen('adb shell getprop ro.product.device').read()
+-OS: {os}
++Device: {device}
+-        os=sys.platform,
++        device=device_str.strip(),
+-# SCREENSHOT_WAYæ¯æªå¾æ¹æ³ï¼ç»è¿check_screenshotåï¼ä¼èªå¨éåï¼å æ­¤ä¸éä¿®æ¹
++# SCREENSHOT_WAY æ¯æªå¾æ¹æ³ï¼ç»è¿ check_screenshot åï¼ä¼èªå¨éåï¼ä¸éæå¨ä¿®æ¹
+-    æ¹æ³æ¶ï¼å¯æ ¹æ®æçåéç¨æ§ç±é«å°ä½æåº
++    è·åå±å¹æªå¾ï¼ç®åæ 0 1 2 3 åç§æ¹æ³ï¼æªæ¥æ·»å æ°çå¹³å°çæµæ¹æ³æ¶ï¼
+-# æåï¼æ ¹æ®ä¸¤ç¹çåæ ç®è·ç¦»ä¹ä»¥ç³»æ°æ¥è·åé¿ææ¶é´ï¼ä¼¼ä¹å¯ä»¥ç´æ¥ç¨ X è½´è·ç¦»ï¼
++=== æè·¯ ===
+-    print('è¯·æ£æ¥é¡¹ç®æ ¹ç®å½ä»çcommonæä»¶å¤¹æ¯å¦å­å¨')
++    print('è¯·æ£æ¥é¡¹ç®æ ¹ç®å½ä»ç common æä»¶å¤¹æ¯å¦å­å¨')
+-                                  false_value, default_value)
++    prompt = '{} {}/{} [{}]: '.format(prompt, true_value,
+-        prompt = 'Please input %s or %s: ' % (true_value, false_value)
++        prompt = 'Please input {} or {}: '.format(true_value, false_value)
+-'''
++"""
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-'''
++"""
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    from common import debug, config
++    from common import debug, config, screenshot
+-    check_screenshot()
++    screenshot.check_screenshot()
+-        pull_screenshot()
++        screenshot.pull_screenshot()
+-
++from __future__ import print_function, division
+-except ImportError:
++except Exception as ex:
+-    è·åå±å¹æ¥å¥ï¼ç®åæ 0 1 2 4 ä¸ãåç§æ¹æ³ï¼æªæ¥æ·»å æ°çå¹³å°çæµ
++    è·åå±å¹æ¥å¥ï¼ç®åæ 0 1 2 3 åç§æ¹æ³ï¼æªæ¥æ·»å æ°çå¹³å°çæµ
+-        pixel = im_pixel[board_x, l]
++    for j in range(i, i+200):
+-            board_y = l + 10
++            board_y = j + 10
+-import numpy as np
++import os
+-
++    cv2.rectangle(
+-update = True 
++update = True
+-def updatefig(*args):
++def updatefig():
+-def onClick(event):      
++
+-fig.canvas.mpl_connect('button_press_event', onClick)
++fig.canvas.mpl_connect('button_press_event', on_click)
+-'''
++
+-#      æ ¹æ®ä¸ä¸ªéè¿æªå¾è·åçåºå®çè§åº¦æ¥æ¨åºä¸­ç¹ç Y åæ 
++# è¯å«æ£å­ï¼é æ£å­çé¢è²æ¥è¯å«ä½ç½®ï¼éè¿æªå¾åç°æä¸é¢ä¸è¡å¤§æ¦æ¯ä¸æ¡
+-'''
++"""
+-from PIL import Image
++from PIL import Image
+-DEBUG_SWITCH = False    # debug å¼å³ï¼éè¦è°è¯çæ¶åè¯·æ¹ä¸ºTrueï¼ä¸éè¦è°è¯çæ¶åä¸ºFalse
++# DEBUG å¼å³ï¼éè¦è°è¯çæ¶åè¯·æ¹ä¸º Trueï¼ä¸éè¦è°è¯çæ¶åä¸º False
+-# Magic Numberï¼ä¸è®¾ç½®å¯è½æ æ³æ­£å¸¸æ§è¡ï¼è¯·æ ¹æ®å·ä½æªå¾ä»ä¸å°ä¸æéè®¾ç½®ï¼è®¾ç½®ä¿å­å¨ config æä»¶å¤¹ä¸­
++
+-piece_body_width = config['piece_body_width']        # æ£å­çå®½åº¦ï¼æ¯æªå¾ä¸­éå°çç¨å¾®å¤§ä¸ç¹æ¯è¾å®å¨ï¼å¯è½è¦è°è
++# é¿æçæ¶é´ç³»æ°ï¼è¯·èªå·±æ ¹æ®å®éæåµè°è
+-    '''
++    """
+-        process = subprocess.Popen('adb shell screencap -p', shell=True, stdout=subprocess.PIPE)
++    if 1 <= SCREENSHOT_WAY <= 3:
+-    '''
++    """
+-    '''
++    """
+-    if (SCREENSHOT_WAY < 0):
++    if SCREENSHOT_WAY < 0:
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-    '''
++    """
+-            if pixel[0] != last_pixel[0] or pixel[1] != last_pixel[1] or pixel[2] != last_pixel[2]:
++            if pixel != last_pixel:
+-        for j in range(scan_x_border, w - scan_x_border):  # æ¨ªåæ æ¹é¢ä¹åå°äºä¸é¨åæ«æå¼é
++        # æ¨ªåæ æ¹é¢ä¹åå°äºä¸é¨åæ«æå¼é
+-            if (50 < pixel[0] < 60) and (53 < pixel[1] < 63) and (95 < pixel[2] < 110):
++            # æ ¹æ®æ£å­çæä½è¡çé¢è²å¤æ­ï¼æ¾æåä¸è¡é£äºç¹çå¹³åå¼ï¼è¿ä¸ªé¢
+-            if abs(pixel[0] - last_pixel[0]) + abs(pixel[1] - last_pixel[1]) + abs(pixel[2] - last_pixel[2]) > 10:
++            if abs(pixel[0] - last_pixel[0]) \
+-    for k in range(i+274, i, -1): # 274 åå¼å±æ¶æå¤§çæ¹åçä¸ä¸é¡¶ç¹è·ç¦»
++    # è¯¥æ¹æ³å¯¹ææçº¯è²å¹³é¢åé¨åéçº¯è²å¹³é¢ææï¼å¯¹é«å°å¤«èåªé¢ãæ¨çº¹æ¡é¢ã
+-        if abs(pixel[0] - last_pixel[0]) + abs(pixel[1] - last_pixel[1]) + abs(pixel[2] - last_pixel[2]) < 10:
++        if abs(pixel[0] - last_pixel[0]) \
+-    # è¥ä¸ä¸è·³ç±äºæç§åå æ²¡æè·³å°æ­£ä¸­é´ï¼èä¸ä¸è·³æ°å¥½ææ æ³æ­£ç¡®è¯å«è±çº¹ï¼åæå¯è½æ¸¸æå¤±è´¥ï¼ç±äºè±çº¹é¢ç§¯éå¸¸æ¯è¾å¤§ï¼å¤±è´¥æ¦çè¾ä½
++    # å¦æä¸ä¸è·³å½ä¸­ä¸­é´ï¼åä¸ä¸ªç®æ ä¸­å¿ä¼åºç° r245 g245 b245 çç¹ï¼å©ç¨è¿ä¸ª
+-            board_y = l+10
++            board_y = l + 10
+-
++    """
+-    prompt = '%s %s/%s [%s]: ' % (prompt, true_value, false_value, default_value)
++    prompt = '%s %s/%s [%s]: ' % (prompt, true_value,
+-    '''
++    """
+-    op = yes_or_no('è¯·ç¡®ä¿ææºæå¼äº ADB å¹¶è¿æ¥äºçµèï¼ç¶åæå¼è·³ä¸è·³å¹¶ãå¼å§æ¸¸æãååç¨æ¬ç¨åºï¼ç¡®å®å¼å§ï¼')
++    """
+-    i, next_rest, next_rest_time = 0, random.randrange(3, 10), random.randrange(5, 10)
++    i, next_rest, next_rest_time = (0, random.randrange(3, 10),
+-            debug.save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y)
++            debug.save_debug_screenshot(ts, im, piece_x,
+-        time.sleep(random.uniform(0.9, 1.2))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿ï¼éæºå¼é² ban
++            i, next_rest, next_rest_time = (0, random.randrange(30, 100),
+-from PIL import Image, ImageDraw
++from PIL import Image, ImageDraw
+-piece_body_width = config['piece_body_width']             # æ£å­çå®½åº¦ï¼æ¯æªå¾ä¸­éå°çç¨å¾®å¤§ä¸ç¹æ¯è¾å®å¨ï¼å¯è½è¦è°è
++under_game_score_y = config['under_game_score_y']
+-    }
++swipe = config.get('swipe', {
+-    # ä¸ºäºæ¹ä¾¿å¤±è´¥çæ¶å debug
++    """
+-    draw.ellipse((board_x - 10, board_y - 10, board_x + 10, board_y + 10), fill=(0, 0, 255))
++    draw.ellipse(
+-    # å°swipeè®¾ç½®ä¸º `åæ¥ä¸å±` æé®çä½ç½®
++    """
+-    board_y = 0
++    piece_x_sum = piece_x_c = piece_y_max = 0
+-    scan_start_y = 0  # æ«æçèµ·å§yåæ 
++    scan_start_y = 0  # æ«æçèµ·å§ y åæ 
+-    # ä»¥50pxæ­¥é¿ï¼å°è¯æ¢æµscan_start_y
++    # ä»¥ 50px æ­¥é¿ï¼å°è¯æ¢æµ scan_start_y
+-            if pixel[0] != last_pixel[0] or pixel[1] != last_pixel[1] or pixel[2] != last_pixel[2]:
++            if pixel != last_pixel:
+-    # ä»scan_start_yå¼å§å¾ä¸æ«æï¼æ£å­åºä½äºå±å¹ä¸åé¨åï¼è¿éæå®ä¸è¶è¿2/3
++    # ä» scan_start_y å¼å§å¾ä¸æ«æï¼æ£å­åºä½äºå±å¹ä¸åé¨åï¼è¿éæå®ä¸è¶è¿ 2/3
+-        for j in range(scan_x_border, w - scan_x_border):  # æ¨ªåæ æ¹é¢ä¹åå°äºä¸é¨åæ«æå¼é
++        # æ¨ªåæ æ¹é¢ä¹åå°äºä¸é¨åæ«æå¼é
+-            if (50 < pixel[0] < 60) and (53 < pixel[1] < 63) and (95 < pixel[2] < 110):
++            # æ ¹æ®æ£å­çæä½è¡çé¢è²å¤æ­ï¼æ¾æåä¸è¡é£äºç¹çå¹³åå¼ï¼è¿ä¸ªé¢
+-    for i in range (int (h / 3), int (h * 2 / 3)):
++    for i in range(int(h / 3), int(h * 2 / 3)):
+-            if abs(pixel[0] - last_pixel[0]) + abs(pixel[1] - last_pixel[1]) + abs(pixel[2] - last_pixel[2]) > 10:
++            if abs(pixel[0] - last_pixel[0]) \
+-    # æå®éçè§åº¦æ¥ç®ï¼æ¾å°æ¥è¿ä¸ä¸ä¸ª board ä¸­å¿çåæ  è¿éçè§åº¦åºè¯¥æ¯30Â°,å¼åºè¯¥æ¯tan 30Â°, math.sqrt(3) / 3
++    # æå®éçè§åº¦æ¥ç®ï¼æ¾å°æ¥è¿ä¸ä¸ä¸ª board ä¸­å¿çåæ  è¿éçè§åº¦åºè¯¥
+-        distance = math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2)
++        distance = math.sqrt(
+-        time.sleep(random.uniform(1, 1.1))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
++        # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿ï¼éæºå¼é² ban
+-#iphone6s plus
++# time_coefficient:
+-    s.tap_hold(200,200,press_time)
++    s.tap_hold(200, 200, press_time)
+-cor = [0, 0]
++im = plt.imshow(img, animated=True)
+-def updatefig(*args):
++def updatefig():
+-def onClick(event):
++
+-    coords.append((ix, iy))
++    coords = [(ix, iy)]
+-fig.canvas.mpl_connect('button_press_event', onClick)
++
+-import os
++
+-cor = [0, 0]
++fig = plt.figure()
+-update = True 
++update = True
+-def updatefig(*args):
++def updatefig():
+-    global update    
++
+-    coords.append((ix, iy))
++    coords = [(ix, iy)]
+-        distance = (cor1[0][0] - cor2[0][0])**2 + (cor1[0][1] - cor2[0][1])**2 
++        distance = (cor1[0][0] - cor2[0][0])**2 + (cor1[0][1] - cor2[0][1])**2
+-fig.canvas.mpl_connect('button_press_event', onClick)
++fig.canvas.mpl_connect('button_press_event', on_click)
+-press_coefficient     = config['press_coefficient']       # é¿æçæ¶é´ç³»æ°ï¼è¯·èªå·±æ ¹æ®å®éæåµè°è
++under_game_score_y = config['under_game_score_y']
+-piece_body_width      = config['piece_body_width']        # æ£å­çå®½åº¦ï¼æ¯æªå¾ä¸­éå°çç¨å¾®å¤§ä¸ç¹æ¯è¾å®å¨ï¼å¯è½è¦è°è
++piece_body_width = config['piece_body_width']        # æ£å­çå®½åº¦ï¼æ¯æªå¾ä¸­éå°çç¨å¾®å¤§ä¸ç¹æ¯è¾å®å¨ï¼å¯è½è¦è°è
+-    è·åå±å¹æ¥å¥ï¼ç®åæ 0 1 2 ä¸ç§æ¹æ³ï¼æªæ¥æ·»å æ°çå¹³å°çæµæ¹æ³æ¶ï¼è¯·æ ¹æ®æçåéç¨æ§ç±é«å°ä½æåº
++    è·åå±å¹æ¥å¥ï¼ç®åæ 0 1 2 4 ä¸ãåç§æ¹æ³ï¼æªæ¥æ·»å æ°çå¹³å°çæµæ¹æ³æ¶ï¼å¯æ ¹æ®æçåéç¨æ§ç±é«å°ä½æåº
+-# coding: utf-8
++# -*- coding: utf-8 -*-
+-# coding: utf-8
++# -*- coding: utf-8 -*-
+-# coding: utf-8
++# -*- coding: utf-8 -*-
+-# coding: utf-8
++# -*- coding: utf-8 -*-
+-# coding: utf-8
++# -*- coding: utf-8 -*-
+-press_coefficient = config['press_coefficient']       # é¿æçæ¶é´ç³»æ°ï¼è¯·èªå·±æ ¹æ®å®éæåµè°è
++config = config.open_accordant_config()
+-piece_body_width = config['piece_body_width']             # æ£å­çå®½åº¦ï¼æ¯æªå¾ä¸­éå°çç¨å¾®å¤§ä¸ç¹æ¯è¾å®å¨ï¼å¯è½è¦è°è
++piece_body_width      = config['piece_body_width']        # æ£å­çå®½åº¦ï¼æ¯æªå¾ä¸­éå°çç¨å¾®å¤§ä¸ç¹æ¯è¾å®å¨ï¼å¯è½è¦è°è
+-screenshot_way = 3
++SCREENSHOT_WAY = 3
+-    æ°çæ¹æ³è¯·æ ¹æ®æçåéç¨æ§ç±é«å°ä½æåº
++    è·åå±å¹æ¥å¥ï¼ç®åæ 0 1 2 ä¸ç§æ¹æ³ï¼æªæ¥æ·»å æ°çå¹³å°çæµæ¹æ³æ¶ï¼è¯·æ ¹æ®æçåéç¨æ§ç±é«å°ä½æåº
+-    if screenshot_way >= 1 and screenshot_way <= 3:
++    global SCREENSHOT_WAY
+-        if screenshot_way == 2:
++        if SCREENSHOT_WAY == 2:
+-        elif screenshot_way == 1:
++        elif SCREENSHOT_WAY == 1:
+-    elif screenshot_way == 0:
++    elif SCREENSHOT_WAY == 0:
+-        if debug_switch:
++        if DEBUG_SWITCH:
+-screenshot_way = 2
++screenshot_way = 3
+-    if screenshot_way == 2 or screenshot_way == 1:
++    if screenshot_way >= 1 and screenshot_way <= 3:
+-        screenshot = process.stdout.read()
++        binary_screenshot = process.stdout.read()
+-            binary_screenshot = screenshot.replace(b'\r\r\n', b'\n')
++            binary_screenshot = binary_screenshot.replace(b'\r\n', b'\n')
+-**********
++    print("""**********
+-from WechatJump import Debug, Config
++try:
+-config = Config.open_accordant_config()
++
+-    Debug.dump_device_info()
++    print('ç¨åºçæ¬å·ï¼{}'.format(VERSION))
+-            Debug.backup_screenshot(ts)
++            debug.save_debug_screenshot(ts, im, piece_x, piece_y, board_x, board_y)
+-            for j in xrange(next_rest_time):
++            for j in range(next_rest_time):
+-    top = int(random.uniform(top-10,top+10))    #éæºé²ban
++    left = int(random.uniform(left-50, left+50))
+-    i = raw_input(prompt)
++    i = input(prompt)
+-        i = raw_input(prompt)
++        i = input(prompt)
+-    op = yes_or_no('è¯·ç¡®ä¿ææºæå¼äº ADB å¹¶è¿æ¥äºçµèï¼ç¶åæå¼è·³ä¸è·³æ¸¸æåç¨æ¬ç¨åºï¼ç¡®å®å¼å§ï¼')
++    op = yes_or_no('è¯·ç¡®ä¿ææºæå¼äº ADB å¹¶è¿æ¥äºçµèï¼ç¶åæå¼è·³ä¸è·³å¹¶ãå¼å§æ¸¸æãååç¨æ¬ç¨åºï¼ç¡®å®å¼å§ï¼')
+-        time.sleep(random.uniform(1, 1.2))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿ï¼éæºå¼é² ban
++        i += 1
+-    left = w / 2
++    left = int(w / 2)
+-        print('è¯·å®è£ADBåé©±å¨å¹¶éç½®ç¯å¢åé')
++        print('è¯·å®è£ ADB åé©±å¨å¹¶éç½®ç¯å¢åé')
+-    å¯¹debugå¾çå ä¸è¯¦ç»çæ³¨é
++    å¯¹ debug å¾çå ä¸è¯¦ç»çæ³¨é
+-    )
++    print("""å¦æä½ çèæ¬æ æ³å·¥ä½ï¼ä¸æ¥ issue æ¶è¯· copy å¦ä¸ä¿¡æ¯ï¼
+-debug_switch = False # debugå¼å³ï¼éè¦è°è¯çæ¶åè¯·æ¹ä¸ºï¼True
++debug_switch = False # debug å¼å³ï¼éè¦è°è¯çæ¶åè¯·æ¹ä¸ºï¼True
+-# Magic Numberï¼ä¸è®¾ç½®å¯è½æ æ³æ­£å¸¸æ§è¡ï¼è¯·æ ¹æ®å·ä½æªå¾ä»ä¸å°ä¸æéè®¾ç½®
++# Magic Numberï¼ä¸è®¾ç½®å¯è½æ æ³æ­£å¸¸æ§è¡ï¼è¯·æ ¹æ®å·ä½æªå¾ä»ä¸å°ä¸æéè®¾ç½®ï¼è®¾ç½®ä¿å­å¨ config æä»¶å¤¹ä¸­
+-    å°swipeè®¾ç½®ä¸º `åæ¥ä¸å±` æé®çä½ç½®
++    å° swipe è®¾ç½®ä¸º `åæ¥ä¸å±` æé®çä½ç½®
+-    press_time = max(press_time, 200)   # è®¾ç½® 200 ms æ¯æå°çæåæ¶é´
++    press_time = max(press_time, 200)   # è®¾ç½® 200ms æ¯æå°çæåæ¶é´
+-    scan_start_y = 0  # æ«æçèµ·å§yåæ 
++    scan_start_y = 0  # æ«æçèµ·å§ y åæ 
+-    # ä»¥50pxæ­¥é¿ï¼å°è¯æ¢æµscan_start_y
++    # ä»¥ 50px æ­¥é¿ï¼å°è¯æ¢æµ scan_start_y
+-            # ä¸æ¯çº¯è²ççº¿ï¼åè®°å½scan_start_yçå¼ï¼åå¤è·³åºå¾ªç¯
++            # ä¸æ¯çº¯è²ççº¿ï¼åè®°å½ scan_start_y çå¼ï¼åå¤è·³åºå¾ªç¯
+-    print('scan_start_y: ', scan_start_y)
++    print('scan_start_y: {}'.format(scan_start_y))
+-    # ä»scan_start_yå¼å§å¾ä¸æ«æï¼æ£å­åºä½äºå±å¹ä¸åé¨åï¼è¿éæå®ä¸è¶è¿2/3
++    # ä» scan_start_y å¼å§å¾ä¸æ«æï¼æ£å­åºä½äºå±å¹ä¸åé¨åï¼è¿éæå®ä¸è¶è¿ 2/3
+-    piece_x = int(piece_x_sum / piece_x_c);
++    piece_x = int(piece_x_sum / piece_x_c)
+-    #éå¶æ£çæ«æçæ¨ªåæ ï¼é¿åé³ç¬¦bug
++    # éå¶æ£çæ«æçæ¨ªåæ ï¼é¿åé³ç¬¦ bug
+-    for k in range(i+274, i, -1): #274åå¼å±æ¶æå¤§çæ¹åçä¸ä¸é¡¶ç¹è·ç¦»
++    # ä»ä¸é¡¶ç¹å¾ä¸ +274 çä½ç½®å¼å§åä¸æ¾é¢è²ä¸ä¸é¡¶ç¹ä¸æ ·çç¹ï¼ä¸ºä¸é¡¶ç¹
+-    #è¥ä¸ä¸è·³ç±äºæç§åå æ²¡æè·³å°æ­£ä¸­é´ï¼èä¸ä¸è·³æ°å¥½ææ æ³æ­£ç¡®è¯å«è±çº¹ï¼åæå¯è½æ¸¸æå¤±è´¥ï¼ç±äºè±çº¹é¢ç§¯éå¸¸æ¯è¾å¤§ï¼å¤±è´¥æ¦çè¾ä½
++    # å¦æä¸ä¸è·³å½ä¸­ä¸­é´ï¼åä¸ä¸ªç®æ ä¸­å¿ä¼åºç° r245 g245 b245 çç¹ï¼å©ç¨è¿ä¸ªå±æ§å¼¥è¡¥ä¸ä¸æ®µä»£ç å¯è½å­å¨çå¤æ­éè¯¯
+-    except:
++        print('éç¨æ¹å¼ {} è·åæªå¾'.format(screenshot_way))
+-        time.sleep(1)   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
++        time.sleep(random.uniform(1, 1.2))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿ï¼éæºå¼é² ban
+-    m = re.search('(\d+)x(\d+)', size_str)
++    m = re.search(r'(\d+)x(\d+)', size_str)
+-        return "{height}x{width}".format(height=height, width=width)
++        return "{height}x{width}".format(height=m.group(2), width=m.group(1))
+-        \nScreen: {size}\nDensity: {dpi}\nDeviceType: {type}\nOS: {os}\nPython: {python}\n**********".format(
++        \nScreen: {size}\
+-    ))
++        )
+-
++'''
+-# TODO: ç´æ¥ç¨ X è½´è·ç¦»ç®åé»è¾
++TODO:
+-          binary_screenshot = screenshot.replace(b'\r\n', b'\n')
++            binary_screenshot = screenshot.replace(b'\r\n', b'\n')
+-          binary_screenshot = screenshot.replace(b'\r\r\n', b'\n')
++            binary_screenshot = screenshot.replace(b'\r\r\n', b'\n')
+-    # å°swipeè®¾ç½®ä¸º `åæ¥ä¸å±` æé®çä½ç½®
++    '''
+-    im_pixel=im.load()
++    im_pixel = im.load()
+-        last_pixel = im_pixel[0,i]
++    for i in range(int(h / 3), int(h*2 / 3), 50):
+-            pixel=im_pixel[j,i]
++            pixel = im_pixel[j, i]
+-            pixel = im_pixel[j,i]
++            pixel = im_pixel[j, i]
+-            pixel = im_pixel[j,i]
++            pixel = im_pixel[j, i]
+-    last_pixel=im_pixel[board_x,i]
++    last_pixel = im_pixel[board_x, i]
+-        pixel = im_pixel[board_x,k]
++        pixel = im_pixel[board_x, k]
+-        pixel = im_pixel[board_x,l]
++        pixel = im_pixel[board_x, l]
+-
++    '''
+-from PIL import Image, ImageDraw
++from PIL import Image
+-
++from WechatJump import Debug, Config
+-config = open_accordant_config()
++debug_switch = False # debugå¼å³ï¼éè¦è°è¯çæ¶åè¯·æ¹ä¸ºï¼True
+-    dump_device_info()
++    Debug.dump_device_info()
+-        backup_screenshot(ts)
++        if debug_switch:
+-    top = int(1584 * (h / 1920.0)) 
++    top = int(1584 * (h / 1920.0))
+-    piece_x = piece_x_sum / piece_x_c
++    piece_x = int(piece_x_sum / piece_x_c);
+-        
++
+-    
++
+-        
++
+-    
++
+-        for j in range(board_x_start, board_x_end):
++        for j in range(int(board_x_start), int(board_x_end)):
+-    top = 1003 * (h / 1280.0) + 10
++    top = int(1584 * (h / 1920.0)) 
+-        y2=swipe['y2'],
++        x1=swipe_x1,
+-
++    #éå¶æ£çæ«æçæ¨ªåæ ï¼é¿åé³ç¬¦bug
+-        if from_left_find_board_y and from_right_find_board_y:
++        if board_x or board_y:
+-        new_board_y = from_left_find_board_y
++        for j in range(board_x_start, board_x_end):
+-
++    return piece_x, piece_y, board_x, board_y
+-        time.sleep(random.uniform(1.2, 1.4))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
++        time.sleep(1)   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
+-                        right_count = left_count + 1
++                        right_count = right_count + 1
+-
++    
+-        Image.open('./autojump.png')
++        Image.open('./autojump.png').load()
+-    elif screenshot_way == 1 or screenshot_way == 2:
++    # æ°çæ¹æ³è¯·æ ¹æ®æçåéç¨æ§ç±é«å°ä½æåº
+-        else:
++        if screenshot_way == 2:
+-screenshot_way = 1
++screenshot_way = 2
+-    elif screenshot_way == 1:
++    elif screenshot_way == 1 or screenshot_way == 2:
+-        binary_screenshot = screenshot.replace(b'\r\n', b'\n')
++        if screenshot_way == 1:
+-screenshot_way = 0
++screenshot_way = 1
+-    if (screenshot_way >= 2):
++    if (screenshot_way < 0):
+-        screenshot_way += 1
++        screenshot_way -= 1
+-        im = Image.open('./autojump.png')
++        Image.open('./autojump.png')
+-    except IOError:
++    except:
+-        os.mkdir(screenshot_backup_dir)
++    os.mkdir(screenshot_backup_dir)
+-    f.close()
++    global screenshot_way
+-        screenshot = screenshot.replace(b'\r\n', b'\n')
++    binary_screenshot = screenshot.replace(b'\r\n', b'\n')
+-    f.write(screenshot)
++    f.write(binary_screenshot)
+-    #è®¾ç½®æ¨¡ææååé¡¹åæ°ï¼ç»è¿å¤å°ææºæµè¯ï¼å¶ä¸­2160x1080å»ºè®®è°æ´åæ°ä¸º320ï¼1210ï¼720ï¼910å³å¯è¾¾å°é«å
++    #è®¾ç½®æ¨¡ææååé¡¹åæ°ï¼ç»è¿å¤å°ææºæµè¯ï¼å¶ä¸­2160x1080å»ºè®®è°æ´åæ°ä¸º320ï¼1210ï¼720ï¼910
+-time_coefficient = 0.00125
++# time_coefficient = 0.00125
+-        if board_x or board_y:
++        # è®¡ç®é´å½±çRGBå¼,éè¿photoshopè§å¯,é´å½±é¨åå¶å®å°±æ¯èæ¯è²çæåº¦V ä¹ä»¥0.7çæ ·å­
+-    # æå®éçè§åº¦æ¥ç®ï¼æ¾å°æ¥è¿ä¸ä¸ä¸ª board ä¸­å¿çåæ  è¿éçè§åº¦åºè¯¥æ¯30Â°,å¼åºè¯¥æ¯tan 30Â°, math.sqrt(3) / 3
++        if not board_x:
+-    return piece_x, piece_y, board_x, board_y
++    return piece_x, piece_y, board_x, new_board_y
+-        time.sleep(random.uniform(1, 1.1))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
++        time.sleep(random.uniform(1.2, 1.4))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
+-# time_coefficient = 0.00196 //iphone6
++# iphonex
+-    except IOError:
++    except:
+-        os.mkdir(screenshot_backup_dir)
++    os.mkdir(screenshot_backup_dir)
+-    f.close()
++    global screenshot_way
+-time_coefficient = 0.00125
++time_coefficient = 0.00125 //iphonex
+-    print(press_time)
++    print('press_time = ',press_time)
+-           \nScreen: {size}\nDensity: {dpi}\nDeviceType: {type}\n=====".format(
++    print("å¦æä½ çèæ¬æ æ³å·¥ä½ï¼ä¸æ¥issueæ¶è¯·copyå¦ä¸ä¿¡æ¯:\n**********\
+-            dpi=density_str.strip()
++            dpi=density_str.strip(),
+-        screenshot = screenshot.replace(b'\r\n', b'\n')
++    binary_screenshot = screenshot.replace(b'\r\n', b'\n')
+-    f.write(screenshot)
++    f.write(binary_screenshot)
+-        with open('{}/config.json'.format(sys.path[0]), 'r') as f:
++        with open('{}/config/default.json'.format(sys.path[0]), 'r') as f:
+-    screenshot = process.stdout.read().replace(b'\r\n', b'\n')
++    screenshot = process.stdout.read()
+-    config_file = "./config/{screen_size}/config.json".format(
++    config_file = "{path}/config/{screen_size}/config.json".format(
+-        with open('config.json', 'r') as f:
++        with open('{}/config.json'.format(sys.path[0]), 'r') as f:
+-
++    process = subprocess.Popen('adb shell screencap -p', shell=True, stdout=subprocess.PIPE)
+-swipe_x1, swipe_y1, swipe_x2, swipe_y2 = 375, 1055, 375, 1055     # æ¨¡ææåçèµ·å§ç¹åæ ï¼éè¦èªå¨éå¤æ¸¸æè¯·è®¾ç½®æâåæ¥ä¸å±âçåæ 
++# æ¨¡ææåçèµ·å§ç¹åæ ï¼éè¦èªå¨éå¤æ¸¸æè¯·è®¾ç½®æâåæ¥ä¸å±âçåæ 
+-    os.system('adb pull /sdcard/1.png .')
++    os.system('mv autojump.png {}'.format(filename))
+-    img = cv2.imread('1.png')
++    img = cv2.imread('autojump.png')
+-    flag = os.system('adb shell screencap -p /sdcard/1.png')
++    flag = os.system('adb shell screencap -p /sdcard/autojump.png')
+-    os.system('adb pull /sdcard/1.png .')
++    os.system('adb pull /sdcard/autojump.png .')
+-    shutil.copy('1.png', '{}{}.png'.format(screenshot_backup_dir, ts))
++    shutil.copy('autojump.png', '{}{}.png'.format(screenshot_backup_dir, ts))
+-        im = Image.open('./1.png')
++        im = Image.open('./autojump.png')
+-    c.screenshot('1.png')
++    c.screenshot('autojump.png')
+-img = np.array(Image.open('1.png'))
++img = np.array(Image.open('autojump.png'))
+-    return np.array(Image.open('1.png'))
++    return np.array(Image.open('autojump.png'))
+-    os.system('adb pull /sdcard/1.png .')
++    os.system('adb shell screencap -p /sdcard/autojump.png')
+-img = np.array(Image.open('1.png'))
++img = np.array(Image.open('autojump.png'))
+-    return np.array(Image.open('1.png'))
++    return np.array(Image.open('autojump.png'))
+-plt.show()
++plt.show()
+-under_game_score_y = config['under_game_score_y']     # æªå¾ä¸­åå¥½ä½äºåæ°æ¾ç¤ºåºåç Y åæ ï¼300 æ¯ 1920x1080 çå¼ï¼2K å±ãå¨é¢å±è¯·æ ¹æ®å®éæåµä¿®æ¹
++under_game_score_y = config['under_game_score_y']
+-swipe_x1, swipe_y1, swipe_x2, swipe_y2 = 320, 410, 320, 410     # æ¨¡ææåçèµ·å§ç¹åæ ï¼éè¦èªå¨éå¤æ¸¸æè¯·è®¾ç½®æâåæ¥ä¸å±âçåæ 
++# æ¨¡ææåçèµ·å§ç¹åæ ï¼éè¦èªå¨éå¤æ¸¸æè¯·è®¾ç½®æâåæ¥ä¸å±âçåæ 
+-    cmd = 'adb shell input swipe {} {} {} {} {}'.format(swipe_x1, swipe_y1, swipe_x2, swipe_y2, press_time)
++    cmd = 'adb shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
+-    main()
++# coding: utf-8
+-    config = json.load(f)
++def open_accordant_config():
+-#         æ±å¥½ä¹ååè®© Y è½´åæ åå°æ£å­åºççä¸åé«åº¦ä»èå¾å°ä¸­å¿ç¹çåæ 
++#      æ¯è¾é¢è²ï¼é¢è²ç¨äºä¸ä¸ªåºé´æ¥æ¯è¾ï¼æ¾å°æä¸é¢çé£ä¸è¡çææç¹ï¼ç¶åæ±ä¸ªä¸­ç¹ï¼
+-#          æ ¹æ®ä¸ä¸ªéè¿æªå¾è·åçåºå®çè§åº¦æ¥æ¨åºä¸­ç¹ç Y åæ 
++#      æ¹å½¢çä¸é¢å¤§æ¦æ¯ä¸ä¸ªç¹ï¼æä»¥å°±ç¨ç±»ä¼¼è¯å«æ£å­çåæ³å¤è¯å«äºå ä¸ªç¹æ±ä¸­ç¹ï¼
+-    for i in range(int(h / 3), int(h * 2 / 3)):
++    for i in range(scan_start_y, int(h * 2 / 3)):
+-    os.system('adb shell screencap -p /sdcard/1.png')
++    flag = os.system('adb shell screencap -p /sdcard/1.png')
+-    im.save("{}{}_d.png".format(screenshot_backup_dir, ts))
++    im.save('{}{}_d.png'.format(screenshot_backup_dir, ts))
+-    print("scan_start_y: ", scan_start_y)
++    print('scan_start_y: ', scan_start_y)
+-        im = Image.open("./1.png")
++        im = Image.open('./1.png')
+-with open('config.json','r') as f:
++with open(sys.path[0] + '/config.json','r') as f:
+-    print cmd
++    print(cmd)
+-    print 'distance = ', distance
++    print('distance = ', distance)
+-plt.show()
++plt.show()
+-    for i in range(under_game_score_y, h, 50):
++    for i in range(int(h / 3), int( h*2 /3 ), 50):
+-    for i in range(scan_start_y, int(h * 2 / 3)):
++    for i in range(int(h / 3), int(h * 2 / 3)):
+-    for i in range(scan_start_y, h):
++    for i in range(int(h / 3), int(h * 2 / 3)):
+-
++
+-    board_y = piece_y - abs(board_x - piece_x) * abs(sample_board_y1 - sample_board_y2) / abs(sample_board_x1 - sample_board_x2)
++    # æå®éçè§åº¦æ¥ç®ï¼æ¾å°æ¥è¿ä¸ä¸ä¸ª board ä¸­å¿çåæ  è¿éçè§åº¦åºè¯¥æ¯30Â°,å¼åºè¯¥æ¯tan 30Â°, math.sqrt(3) / 3
+-
++    im_pixel=im.load()
+-        last_pixel = im.getpixel((0, i))
++        last_pixel = im_pixel[0,i]
+-            pixel = im.getpixel((j, i))
++            pixel=im_pixel[j,i]
+-            pixel = im.getpixel((j, i))
++            pixel = im_pixel[j,i]
+-        last_pixel = im.getpixel((0, i))
++        last_pixel = im_pixel[0, i]
+-            pixel = im.getpixel((j, i))
++            pixel = im_pixel[j,i]
+-        for j in range(w):
++    # ä»¥50pxæ­¥é¿ï¼å°è¯æ¢æµscan_start_y
+-            continue
++    for i in range(scan_start_y, h):
+-press_coefficient = 1.392    # é¿æçæ¶é´ç³»æ°ï¼è¯·èªå·±æ ¹æ®å®éæåµè°è
++under_game_score_y = config['under_game_score_y']     # æªå¾ä¸­åå¥½ä½äºåæ°æ¾ç¤ºåºåç Y åæ ï¼300 æ¯ 1920x1080 çå¼ï¼2K å±ãå¨é¢å±è¯·æ ¹æ®å®éæåµä¿®æ¹
+-piece_body_width = 70       # æ£å­çå®½åº¦ï¼æ¯æªå¾ä¸­éå°çç¨å¾®å¤§ä¸ç¹æ¯è¾å®å¨ï¼å¯è½è¦è°è
++
+-piece_body_width = 70       # æ£å­çå®½åº¦ï¼æ¯æªå¾ä¸­éå°çç¨å¾®å¤§ä¸ç¹æ¯è¾å®å¨ï¼å¯è½è¦è°è
++piece_base_height_1_2 = 25   # äºåä¹ä¸çæ£å­åºåº§é«åº¦ï¼å¯è½è¦è°è
+-        jump(math.sqrt(abs(board_x - piece_x) ** 2 + abs(board_y - piece_y) ** 2))
++        jump(math.sqrt((board_x - piece_x) ** 2 + (board_y - piece_y) ** 2))
+-
++    shutil.copy('1.png', '{}{}.png'.format(screenshot_backup_dir, ts))
+-press_coefficient = 1.393    # é¿æçæ¶é´ç³»æ°ï¼è¯·èªå·±æ ¹æ®å®éæåµè°è
++press_coefficient = 1.392    # é¿æçæ¶é´ç³»æ°ï¼è¯·èªå·±æ ¹æ®å®éæåµè°è
+-sample_board_x1, sample_board_y1, sample_board_x2, sample_board_y2 = 813, 1122, 310, 813
++# ä¸é¢ç (353, 859) å (772, 1100) æ¯æ¸¸ææªå¾éçä¸¤ä¸ªå°å­çä¸­ç¹åæ ï¼ä¸»è¦ç¨æ¥ç®è§åº¦ï¼å¯è½è¦è°è
+-    draw.line((piece_x, piece_y) + (board_x, board_y), fill=128)
++    draw.line((piece_x, piece_y) + (board_x, board_y), fill=2, width=3)
+-        time.sleep(random.uniform(2, 3))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
++        time.sleep(random.uniform(1, 1.1))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
+-from PIL import Image
++from PIL import Image, ImageDraw
+-# TODO: ççä¸¤ä¸ªåä¸­å¿å°ä¸­è½´è·ç¦»æ¯å¦ç¸åï¼å¦ææ¯çè¯é è¿ä¸ªæ¥å¤æ­ä¸ä¸å½åè¶åè¿æ¯è½åï¼ä¾¿äºç«æ­£
++screenshot_backup_dir = 'screenshot_backups/'
+-    os.system('cp 1.png {}{}.png'.format(dir_path, ts))
++    if not os.path.isdir(screenshot_backup_dir):
+-    board_y = piece_y + abs(board_x - piece_x) * abs(sample_board_y1 - sample_board_y2) / abs(sample_board_x1 - sample_board_x2)
++    board_y = piece_y - abs(board_x - piece_x) * abs(sample_board_y1 - sample_board_y2) / abs(sample_board_x1 - sample_board_x2)
+-    os.system('cp 1.png screenshot_backups/{}.png'.format(ts))
++    os.system('cp 1.png {}{}.png'.format(dir_path, ts))
+-    press_time = max(press_time, 200)
++    press_time = distance * press_coefficient
+-    cmd = 'adb shell input swipe 320 410 320 410 ' + str(press_time)
++    cmd = 'adb shell input swipe {} {} {} {} {}'.format(swipe_x1, swipe_y1, swipe_x2, swipe_y2, press_time)
+-            # æ ¹æ®æ£å­çæä½è¡çé¢è²å¤æ­ï¼æ¾æåä¸è¡é£äºç¹çå¹³åå¼
++            # æ ¹æ®æ£å­çæä½è¡çé¢è²å¤æ­ï¼æ¾æåä¸è¡é£äºç¹çå¹³åå¼ï¼è¿ä¸ªé¢è²è¿æ ·åºè¯¥ OKï¼ææ¶ä¸æåºæ¥
+-    piece_y = piece_y_max - 20  # ä¸ç§»æ£å­åºçé«åº¦çä¸å
++    piece_y = piece_y_max - piece_base_height_1_2  # ä¸ç§»æ£å­åºçé«åº¦çä¸å
+-        if i < 300:
++        if i < under_game_score_y:
+-            if abs(j - piece_x) < 70:
++            if abs(j - piece_x) < piece_body_width:
+-            # ä¿®æåé¡¶çæ¶åä¸æ¡çº¿å¯¼è´çå° bug
++            # ä¿®æåé¡¶çæ¶åä¸æ¡çº¿å¯¼è´çå° bugï¼è¿ä¸ªé¢è²å¤æ­åºè¯¥ OKï¼ææ¶ä¸æåºæ¥
+-    board_y = piece_y + abs(board_x - piece_x) * abs(1122 - 831) / abs(813 - 310)   # æå®éçè§åº¦æ¥ç®ï¼æ¾å°æ¥è¿ä¸ä¸ä¸ª board ä¸­å¿çåæ 
++    # æå®éçè§åº¦æ¥ç®ï¼æ¾å°æ¥è¿ä¸ä¸ä¸ª board ä¸­å¿çåæ 
+-        time.sleep(random.uniform(2,3))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
++        time.sleep(random.uniform(2, 3))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
+-from PIL import Image
++import cv2
+-img = np.array(Image.open('1.png'))
++# pull_screenshot()
+-
++
+-        time.sleep(1.5)
++        time.sleep(1)
+-    # next screenshot
++    global src_x, src_y
+-        cor2 = cor.pop()
++    dst_x, dst_y = event.xdata, event.ydata
+-        
++    distance = (dst_x - src_x)**2 + (dst_y - src_y)**2 
+-ani = animation.FuncAnimation(fig, updatefig, interval=50, blit=True)
++ani = animation.FuncAnimation(fig, updatefig, interval=5, blit=True)
+-
++
+-    cmd = 'adb shell input swipe 500 1600 500 1601 ' + str(press_time)
++    cmd = 'adb shell input swipe 320 410 320 410 ' + str(press_time)
+-
++import random
+-        time.sleep(3)   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
++        time.sleep(random.uniform(2,3))   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
+-    print cmd
++    print(cmd)
+-from PIL import Image
++image = cv2.imread('2.png')
+-raw_r = np.mat(raw[:, :, 0])
++# 120.109.150 
+-        label1num=label1max-label1min;
++#å¦æcolorä¸­å®ä¹äºå ç§é¢è²åºé´ï¼é½å¯ä»¥åå²åºæ¥ 
+-create time:15-10-25 ä¸å12:09
++#-*- coding=utf8 -*-
+-è¿å°±æ¯åæ°´å²­ç®æ³çèåå²çã
++img = cv2.imread('pic/5.jpg')  
+-"""
++x_range = [0,1080]
+-cv2.destroyAllWindows()
++for y in range(min(y_range), max(y_range)):
+-    # 500 1600
++    # TODO: åæ æ ¹æ®æªå¾ç size æ¥è®¡ç®
+-    piece_y = piece_y_max - 20
++    # TODO: å¤§å°æ ¹æ®æªå¾ç size æ¥è®¡ç®
+-            # ä¿®æèè¢æ¯ä¸ä¸ä¸ªå°æ ¼å­è¿é«çæåµç bug in 1514552420.png
++            # ä¿®æèè¢æ¯ä¸ä¸ä¸ªå°æ ¼å­è¿é«çæåµç bug
+-    board_y = piece_y + abs(board_x - piece_x) * abs(1122 - 831) / abs(813 - 310)
++    board_y = piece_y + abs(board_x - piece_x) * abs(1122 - 831) / abs(813 - 310)   # æå®éçè§åº¦æ¥ç®ï¼æ¾å°æ¥è¿ä¸ä¸ä¸ª board ä¸­å¿çåæ 
+-        time.sleep(3)
++        time.sleep(3)   # ä¸ºäºä¿è¯æªå¾çæ¶ååºè½ç¨³äºï¼å¤å»¶è¿ä¸ä¼å¿
+-    os.system('~/platform-tools/adb pull /sdcard/1.png .')
++    os.system('adb shell screencap -p /sdcard/1.png')
+-    cmd = '~/platform-tools/adb shell input swipe 500 1600 500 1601 ' + str(press_time)
++    cmd = 'adb shell input swipe 500 1600 500 1601 ' + str(press_time)
+-    press_time = distance * 1.395
++    press_time = distance * 1.393
+-    press_time = distance * 1.39
++    press_time = distance * 1.395
+-                break
++                board_x_sum += j
+-    press_time = distance * 1.31
++    press_time = distance * 1.39
+-    piece_y = piece_y_max
++    piece_y = piece_y_max - 20
+-                board_x, board_y = j, i + 20
++                board_x = j
+-    return piece_x, piece_y - 20, board_x, board_y
++    return piece_x, piece_y, board_x, board_y
+-    press_time = distance * 1.35
++    press_time = distance * 1.31
+-            if i < 300 or board_x or board_y:
++    if not all((piece_x_sum, piece_x_c)):
+-    if not all((piece_x_sum, piece_x_c, board_x, board_y)):
++    if not all((board_x, board_y)):
+-    os.system('cp 1.png 2.png')
++
+-        print(piece_x, piece_y, board_x, board_y)
++        ts = int(time.time())
+-        time.sleep(2)
++        backup_screenshot(ts)
+-    cmd = '~/platform-tools/adb shell input swipe 320 410 320 410 ' + str(press_time)
++    # 500 1600
+-    pixel_matrix = []
++def find_piece_and_board(im):
+-def find_piece(pixel_matrix):
++    board_x = 0
+-        for j, pixel in enumerate(pixel_line):
++    for i in range(h):
+-        for j, pixel in enumerate(pixel_line):
++            if i < 300 or board_x or board_y:
+-                return j, i + 20
++                board_x, board_y = j, i + 20
+-        print(piece_x, piece_y)
++        # è·åæ£å­å board çä½ç½®
+-    output = cv2.bitwise_and(image, image, mask = mask)
++raw = np.array(Image.open('1.png'))
+-    # cv2.waitKey(0)
++# -*-coding:utf8-*-#
+-contour(im, origin='image')
++import numpy as np
