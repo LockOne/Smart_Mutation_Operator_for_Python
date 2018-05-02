@@ -37,6 +37,7 @@ yield
 -
 /
 *
+**
 %
 //
 ### comparison operators
@@ -80,3 +81,5 @@ yield
 ### comment
 #
 '''
+### others
+:
