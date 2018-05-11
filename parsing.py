@@ -3,7 +3,18 @@ class Token:
         self.type = typ
         self.content = content
     def __repr__(self):
-        return self.type + " : " + self.content
+        if self.type == 'string':
+            return 'str'
+        return  self.content
+
+    def __eq__(self, token2):
+        if (self.type == token2.type):
+            if (self.type == 'string'):
+                return True
+            if (self.content == token2.content):
+                return True
+        return False
+    
 
 def getKeywords():
     keyword_file = open('python_language_def', 'r')

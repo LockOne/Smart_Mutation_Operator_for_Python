@@ -1,5 +1,6 @@
 from parsing import parse
 from compare_token import compareTok
+import sys
 
 def getRepoNames():
     repo_names_file = open('repository_names', 'r')
@@ -11,11 +12,13 @@ def getRepoNames():
 
 repo_names = getRepoNames()
 new_operators = []
+output = open('log2.log','w')
 for repo in repo_names:
     print("repo name : " + repo)
     diff_file = open('diffs_modified/'+repo+'_diff_modified','r')
     minus = None
     plus = None
+    prev = None
     for line in diff_file:
         if minus is None:
             minus = line.strip()
@@ -28,9 +31,10 @@ for repo in repo_names:
                 token_minus = parse(minus[1:])
                 token_plus = parse(plus[1:])
                 new_operator = compareTok(token_minus, token_plus)
-                if new_operator is not None:
-                    new_operators.append(new_operator)
+                if (new_operator is not None) and (( prev is None ) or (new_operator != prev)):
+                    output.write(str(new_operator)+ "\n")
+                    #new_operators.append(new_operator)
+                    prev = new_operator
             minus = None
             plus = None
-    break
-print(new_operators)
+output.close()

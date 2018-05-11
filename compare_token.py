@@ -6,7 +6,10 @@ class mutation_operator:
         self.after = token2
 
     def __repr__(self):
-        return str(self.before) + "  ->  " + str(self.after) + "\n"
+        return str(self.before) + "  ->  " + str(self.after) 
+
+    def __eq__(self, op2):
+        return (self.before == op2.before) and (self.after == op2.after)
 
 
 def compareTok(tokminus, tokplus):
@@ -30,5 +33,10 @@ def compareTok(tokminus, tokplus):
         else:
             afterToks.append(t)
 
-    return mutation_operator(beforeToks, afterToks)
+    if len(beforeToks) >= 20 or len(afterToks) >= 20:
+        return None
 
+    if len(beforeToks) <= 2 or len(afterToks) <= 2:
+        return None
+
+    return mutation_operator(beforeToks, afterToks)

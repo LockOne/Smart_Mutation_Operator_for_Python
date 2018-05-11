@@ -1,0 +1,7 @@
+###implemented
+which has less than and equal to two tokens
+which has more than and equal to 20 tokens
+duplicate tokens (partially, compare a mutation operator with the entire operator list is too costly)
+
+###not yet implemented
+duplicate tokens
