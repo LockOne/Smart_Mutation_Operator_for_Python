@@ -39,4 +39,7 @@ def compareTok(tokminus, tokplus):
     if len(beforeToks) <= 2 or len(afterToks) <= 2:
         return None
 
+    if beforeToks == afterToks:
+        return None
+
     return mutation_operator(beforeToks, afterToks)
