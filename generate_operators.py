@@ -12,13 +12,13 @@ def getRepoNames():
 
 repo_names = getRepoNames()
 new_operators = []
-output = open('log2.log','w')
+output = open('mutation_operators.txt','w')
+prev = None
 for repo in repo_names:
     print("repo name : " + repo)
     diff_file = open('diffs_modified/'+repo+'_diff_modified','r')
     minus = None
     plus = None
-    prev = None
     for line in diff_file:
         if minus is None:
             minus = line.strip()

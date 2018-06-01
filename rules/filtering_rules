@@ -2,7 +2,7 @@
 which has less than and equal to two tokens
 which has more than and equal to 20 tokens
 which has same aftertoken and beforetoken
-duplicate tokens (partially, compare a mutation operator with the entire operator list is too costly)
+duplicate tokens (partially, compare a mutation operator with the entire operator list is too expensive)
 
 ###not yet implemented
 duplicate tokens

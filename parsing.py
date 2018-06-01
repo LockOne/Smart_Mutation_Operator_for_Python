@@ -17,7 +17,7 @@ class Token:
     
 
 def getKeywords():
-    keyword_file = open('python_language_def', 'r')
+    keyword_file = open('rules/python_language_def', 'r')
     ret = []
     for line in keyword_file:
         if line[0:3] != '###':
@@ -139,6 +139,5 @@ def parse(string):
                 tokens.append (Token('number',t))
             else:
                 tokens.append(Token('indicator',t))
-    #print(tokens)
     return tokens
 
