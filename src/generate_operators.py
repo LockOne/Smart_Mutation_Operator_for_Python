@@ -3,7 +3,7 @@ from compare_token import compareTok
 import sys
 
 def getRepoNames():
-    repo_names_file = open('repository_names', 'r')
+    repo_names_file = open('../resources/repository_names', 'r')
     ret = []
     for line in repo_names_file:
         ret.append(line.strip())
@@ -16,7 +16,7 @@ output = open('mutation_operators.txt','w')
 prev = None
 for repo in repo_names:
     print("repo name : " + repo)
-    diff_file = open('diffs_modified/'+repo+'_diff_modified','r')
+    diff_file = open('../resources/diffs_modified/'+repo+'_diff_modified','r')
     minus = None
     plus = None
     for line in diff_file:
