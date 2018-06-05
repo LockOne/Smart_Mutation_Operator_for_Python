@@ -26,7 +26,7 @@ def getKeywords():
     return ret
 
 keywords = getKeywords()
-indicator_alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+identifier_alphabet = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
                    '0','1','2','3','4','5','6','7','8','9','_',
                    'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
 numbers = ['0','1','2','3','4','5','6','7','8','9']
@@ -45,18 +45,18 @@ def getCandinates(ch):
 def parse(string):
     #parse them in to tokens.
     token_candinates = []
-    indicator = ''
+    identifier = ''
     delayed = ''
     candi_index = 0
     tokens11111 = []
     for ch in string:
-        if indicator != '':
-            if ch in indicator_alphabet:
-                indicator += ch
+        if identifier != '':
+            if ch in identifier_alphabet:
+                identifier += ch
             else:
-                tokens11111.append(indicator)
+                tokens11111.append(identifier)
                 candis = getCandinates(ch)
-                indicator = ''
+                identifier = ''
                 if len(candis) == 0:
                     if ch == ' ':
                         continue
@@ -76,8 +76,8 @@ def parse(string):
                     delayed = ''
                     candi_index = 0
                     token_candinates = []
-                    if ch in indicator_alphabet:
-                        indicator +=ch
+                    if ch in identifier_alphabet:
+                        identifier +=ch
                     else:
                         candis = getCandinates(ch)
                         if len(candis) == 0:
@@ -98,8 +98,8 @@ def parse(string):
                     candi_index += 1
                     token_candinates = tmp
             else:
-                if ch in indicator_alphabet:
-                    indicator += ch
+                if ch in identifier_alphabet:
+                    identifier += ch
                 else:
                     candis = getCandinates(ch)
                     if len(candis) == 0:
@@ -111,8 +111,8 @@ def parse(string):
                         candi_index = 1
                         delayed = ch
 
-    if indicator != '':
-        tokens11111.append(indicator)
+    if identifier != '':
+        tokens11111.append(identifier)
     if delayed != '':
         tokens11111.append(delayed)
     tokens = [] 
@@ -138,6 +138,6 @@ def parse(string):
             elif t[0] in numbers:
                 tokens.append (Token('number',t))
             else:
-                tokens.append(Token('indicator',t))
+                tokens.append(Token('identifier',t))
     return tokens
 

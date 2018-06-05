@@ -1,8 +1,10 @@
-###implemented
-which has less than and equal to two tokens
-which has more than and equal to 20 tokens
+###implemented (order is important!)
+which has less than and equal to 2 tokens
+which has more than and equal to 10 tokens
 which has same aftertoken and beforetoken
-duplicate tokens (partially, compare a mutation operator with the entire operator list is too expensive)
+which has more than and equal to 4 identifiers
+which has 3 identifiers in a row
+which has unbalanced brackets (checking only '{}' for now)
+duplicate tokens
 
 ###not yet implemented
-duplicate tokens
