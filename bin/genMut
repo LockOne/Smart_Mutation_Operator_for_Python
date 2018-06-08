@@ -1,0 +1,23 @@
+#!/bin/bash
+DIR=`dirname $0`/..
+dirname="$1*"
+curdir=""
+if [ "$#" -eq 1 ]; then
+	mkdir mutants
+	curdir=$PWD
+else
+	curdir=$2
+fi
+for file in ${dirname}
+do
+	if [ ${file: -3} == ".py" ]; then
+	  echo "mutating ${file}"
+		python ${DIR}/src/main.py ${file} ${DIR} ${curdir}
+	elif [ -d ${file} ]; then
+		for file2 in "${file}/*"
+		do
+			${DIR}/bin/genMut ${file2%\*} ${curdir} 0
+		done
+	fi
+	
+done

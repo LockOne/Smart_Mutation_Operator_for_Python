@@ -1,3 +1,5 @@
+import init2
+
 class Token:
     def __init__(self, typ, content = ''):
         self.type = typ
@@ -17,7 +19,7 @@ class Token:
     
 
 def getKeywords():
-    keyword_file = open('../resources/rules/python_language_def', 'r')
+    keyword_file = open(init2.dirloc + '/resources/rules/python_language_def', 'r')
     ret = []
     for line in keyword_file:
         if line[0:3] != '###':

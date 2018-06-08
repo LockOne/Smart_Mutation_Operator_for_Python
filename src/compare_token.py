@@ -22,6 +22,16 @@ def compareTok(tokminus, tokplus):
     for t in tokminus:
         if t.type == 'identifier' and (t.content not in identifiers):
             return None
+    numstr = 0
+    for t in tokplus:
+        if t.type == 'string':
+            numstr += 1
+    for t in tokminus:
+        if t.type == 'string':
+            numstr -= 1
+    if numstr != 0:
+        return None
+
 
     beforeToks = []
     afterToks = []

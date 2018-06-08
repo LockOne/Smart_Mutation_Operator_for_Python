@@ -1,49 +1,47 @@
-repo name : models
-size : 302
-repo name : shadowsocks
-size : 383
-repo name : django
-size : 2334
-repo name : scikit-learn
-size : 4161
-repo name : ansible
-size : 5495
-repo name : flask
-size : 5603
-repo name : keras
-size : 5930
-repo name : awesome-python
-size : 5930
-repo name : fullstack-nanodegree-vm
-size : 5932
-repo name : odoo
-size : 6153
-repo name : awesome-machine-learning
-size : 6153
-repo name : scrapy
-size : 6386
-repo name : youtube-dl
-size : 7217
-repo name : XX-Net
-size : 7421
-repo name : requests
-size : 7607
-repo name : pandas
-size : 8820
-repo name : cpython
-size : 12813
-repo name : incubator-mxnet
-size : 13066
-repo name : wechat_jump_game
-size : 13086
-repo name : tornado
-size : 13284
-
-filtered :
-less and equal Than 2 : 89521
-more and equal than 10 tokens  : 155724
-same afterToken, beforeToken : 42240
-more and equal than 4 identifiers : 8439
+collecting operators form repo : models .....
+size : 254
+collecting operators form repo : shadowsocks .....
+size : 331
+collecting operators form repo : django .....
+size : 1958
+collecting operators form repo : scikit-learn .....
+size : 3601
+collecting operators form repo : ansible .....
+size : 4630
+collecting operators form repo : flask .....
+size : 4712
+collecting operators form repo : keras .....
+size : 5010
+collecting operators form repo : awesome-python .....
+size : 5010
+collecting operators form repo : fullstack-nanodegree-vm .....
+size : 5012
+collecting operators form repo : odoo .....
+size : 5190
+collecting operators form repo : awesome-machine-learning .....
+size : 5190
+collecting operators form repo : scrapy .....
+size : 5379
+collecting operators form repo : youtube-dl .....
+size : 5904
+collecting operators form repo : XX-Net .....
+size : 6092
+collecting operators form repo : requests .....
+size : 6242
+collecting operators form repo : pandas .....
+size : 7244
+collecting operators form repo : cpython .....
+size : 10672
+collecting operators form repo : incubator-mxnet .....
+size : 10901
+collecting operators form repo : wechat_jump_game .....
+size : 10919
+collecting operators form repo : tornado .....
+size : 11092
+less and equal Than 2 : 77239
+more and equal than 10 tokens  : 129800
+same afterToken, beforeToken : 37222
+more and equal than 4 identifiers : 8169
 3 identifers in a row : 0
-unmatched bracket : 445
-duplicate : 35594
+unmatched bracket : 241
+duplicate : 29770
