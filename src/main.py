@@ -108,7 +108,7 @@ for i in range(num_lines):
                 tmp += 1
         if tmp != len(strings):
             outputfile.close()
-            inputfil2.close()
+            inputfile2.close()
             call(['rm', 'mutants/' + infn + "." + str(mut_index-1)])
             continue
         for tok in o:
