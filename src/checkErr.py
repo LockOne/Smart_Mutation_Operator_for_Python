@@ -1,17 +1,15 @@
 import sys
 
 inputfile = open(sys.argv[1], 'r')
+errtypes = ["SyntaxError", "IndentationError", "ImportError", "NameError", "ValueError"]
 errs = {}
 for line in inputfile:
-    if "Error" in line:
-        err = line.lstrip()
-        err = err[:err.index("Error")]
-        if len(err) > 10:
-            continue
-        if err in errs.keys():
-            errs[err] += 1
-        else:
-            errs[err] = 0
+		for errT in errtypes:
+				if errT in errs.keys():
+						errs[errT] += 1
+						break
+				else:
+						errs[errT] = 1
 for er in errs.keys():
-    print(er + "Error :  " + str(errs[er]))
+    print(er +  " : " + str(errs[er]))
 inputfile.close()
