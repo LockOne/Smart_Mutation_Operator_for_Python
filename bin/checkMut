@@ -2,6 +2,7 @@
 DIR=`dirname $0`
 dirname="$1*"
 numOfFiles=0
+interpretable=0
 for file in ${dirname} 
 do
 	let numOfFiles++
@@ -9,7 +10,13 @@ do
 	mv ${file} ${newfilename}
 	echo "executing ${file}"
 	python ${newfilename}
+
+	if [ $? -eq 0 ]
+	then
+		let interpretable++
+	fi
+
 	mv ${newfilename} ${file}
 done &> mutantsReport.txt
-echo "number of Files : ${numOfFiles}"
+echo "number of Files : ${interpretable} out of ${numOfFiles}"
 python "${DIR}/../src/checkErr.py" mutantsReport.txt
