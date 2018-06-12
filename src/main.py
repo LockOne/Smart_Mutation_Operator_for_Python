@@ -87,7 +87,12 @@ for i in range(num_lines):
     for o in operators_to_use:
         ifn = sys.argv[1].split('/')
         infn = ifn[len(ifn)-1]
-        outputfile = open(mutloc + 'mutants/'+ infn + "." + str(mut_index),'w')
+        #outputfile = open(mutloc + 'mutants/'+ infn + "." + str(mut_index),'w')
+        xxx = ''
+        for string in ifn[1:]:
+            xxx += string
+            xxx += '_'
+        outputfile = open(mutloc + 'mutants/'+ xxx[:-1] + "." + str(mut_index),'w')
         inputfile2 = open(sys.argv[1], 'r')
         mut_index += 1
         for ind2 in range(i):
@@ -109,7 +114,7 @@ for i in range(num_lines):
         if tmp != len(strings):
             outputfile.close()
             inputfile2.close()
-            call(['rm', 'mutants/' + infn + "." + str(mut_index-1)])
+            call(['rm', 'mutants/' + xxx[:-1] + "." + str(mut_index-1)])
             continue
         for tok in o:
             if tok.type == 'identifier':
