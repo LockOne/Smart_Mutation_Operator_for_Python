@@ -94,7 +94,7 @@ def compareTok(tokminus, tokplus):
                 init.unmatchedBracket += 1
                 return None
 
-    if brackets < 0:
+    if brackets != 0:
         init.unmatchedBracket += 1
         return None
 
@@ -108,12 +108,65 @@ def compareTok(tokminus, tokplus):
                 init.unmatchedBracket += 1
                 return None
 
-    if brackets < 0:
+    if brackets != 0:
         init.unmatchedBracket += 1
         return None
 
+    brackets = 0
+    for t in tokplus:
+        if t.type == 'keyword' and t.content == '[':
+            brackets += 1
+        elif t.type == 'keyword' and t.content == ']':
+            brackets -= 1
+            if brackets < 0:
+                init.unmatchedBracket += 1
+                return None
 
+    if brackets != 0:
+        init.unmatchedBracket += 1
+        return None
 
+    brackets = 0
+    for t in tokminus:
+        if t.type == 'keyword' and t.content == '[':
+            brackets += 1
+        elif t.type == 'keyword' and t.content == ']':
+            brackets -= 1
+            if brackets < 0:
+                init.unmatchedBracket += 1
+                return None
+
+    if brackets != 0:
+        init.unmatchedBracket += 1
+        return None
+
+    brackets = 0
+    for t in tokplus:
+        if t.type == 'keyword' and t.content == '(':
+            brackets += 1
+        elif t.type == 'keyword' and t.content == ')':
+            brackets -= 1
+            if brackets < 0:
+                init.unmatchedBracket += 1
+                return None
+
+    if brackets != 0:
+        init.unmatchedBracket += 1
+        return None
+
+    brackets = 0
+    for t in tokminus:
+        if t.type == 'keyword' and t.content == '(':
+            brackets += 1
+        elif t.type == 'keyword' and t.content == ')':
+            brackets -= 1
+            if brackets < 0:
+                init.unmatchedBracket += 1
+                return None
+
+    if brackets != 0:
+        init.unmatchedBracket += 1
+        return None
 
 
 

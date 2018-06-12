@@ -54,6 +54,5 @@ def generate_operators():
     print("duplicate : " + str(init.duplicate))
     output.close()
     
-
 generate_operators()
 

@@ -7,7 +7,11 @@ The care and feeding of wild-caught mutants
 ESEC/FSE 2017 Proceedings of the 2017 11th Joint Meeting on Foundations of Software Engineering
 https://dl.acm.org/citation.cfm?id=3106280
 
-usage : bin/genMut \<source dir>
-\<source dir> need to be absolute path.
-It check all .py files in \<source dir> recursively, and generate mutants for each of them.
+usage : bin/genMut /some/directory/
+/some/directory/ need to be absolute path.
+It check all .py files in /some/directory/ recursively, and generate mutants for each of them.
 ex) ./genMut ~/models/research/object_detection/
+
+usage : bin/checkMut /some/mutants/
+/some/mutants/ need to be absolute path.
+It checks mutants in mutants/ and count number of .py files with syntax error.

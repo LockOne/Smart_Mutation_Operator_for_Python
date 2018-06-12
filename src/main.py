@@ -25,14 +25,16 @@ def parse_operators():
         before = line.split('  ->  ')[0]
         before = before[1:len(before)-1]
         after = line.split('  ->  ')[1]
-        after = after[1:len(after)-1]
+        after = after[1:len(after)-2]
         before_tokens = []
         after_tokens = []
         for t in before.split(', '):
             if t == 'str':
                 before_tokens.append(Token('string',''))
-            elif t[0] == '$':
+            elif len(t) > 0 and t[0] == '$':
                 before_tokens.append(Token('identifier',t))
+            elif len(t) > 0 and t[0] in ['0','1','2','3','4','5','6','7','8','9']: 
+                before_tokens.append(Token('number',t))
             else:
                 before_tokens.append(Token('keyword',t))
         for t in after.split(', '):
@@ -40,6 +42,8 @@ def parse_operators():
                 after_tokens.append(Token('string',''))
             elif t[0] == '$':
                 after_tokens.append(Token('identifier',t))
+            elif len(t) > 0 and t[0] in ['0','1','2','3','4','5','6','7','8','9']: 
+                before_tokens.append(Token('number',t))
             else:
                 after_tokens.append(Token('keyword',t))
         operators.append(mutation_operator(before_tokens, after_tokens))
@@ -51,7 +55,14 @@ num_lines = sum(1 for line in open(sys.argv[1]))
 input_file = open(sys.argv[1], 'r')
 mut_index = 0
 for i in range(num_lines):
-    line = input_file.readline().rstrip()
+    line = input_file.readline()
+    indent = 0
+    for c in line:
+        if c == ' ':
+            indent += 1
+        else:
+            break
+    line = line.rstrip()
     if "'''" in line or '"""' in line:
         continue
     line_tokens = parse(line)
@@ -71,9 +82,25 @@ for i in range(num_lines):
         continue
 
     operator_candidates = []
+
+    beforetemp = []
+    identi = 0
+    for t in line_tokens:
+        if t.type == 'identifier':
+            beforetemp.append(Token('identifier', '$' + str(identi)))
+            identi += 1
+        else:
+            beforetemp.append(t)
     for o in operators:
-        if o.before == line_tokens:
-            operator_candidates.append(o.after)
+        if len(o.before) == len(beforetemp):
+            te = True
+            for i in range(len(o.before)):
+                if o.before[i].type != beforetemp[i].type or o.before[i].content != beforetemp[i].content:
+                    #print("i : " + str(i) + " o : " + str(o.before[i]) + ", " + str(beforetemp[i]))
+                    te = False
+                    break
+            if te:
+                operator_candidates.append(o.after)
     operators_to_use = []
     tmp = []
     if len(operator_candidates) > 5:        #pick only 5 operators to perform mutation
@@ -106,11 +133,14 @@ for i in range(num_lines):
         for tok in o:
             if tok.type == 'string':
                 tmp += 1
-        if tmp != len(strings):
+            elif tok.type == 'identifier':
+                idindex += 1
+        if tmp != len(strings) or idindex != len(identifiers):
             outputfile.close()
             inputfile2.close()
             call(['rm', 'mutants/' + infn + "." + str(mut_index-1)])
             continue
+        idindex = 0
         for tok in o:
             if tok.type == 'identifier':
                 afterline += identifiers[idindex]
@@ -120,6 +150,7 @@ for i in range(num_lines):
                 strindex += 1
             else:
                 afterline += tok.content
+        afterline = ' ' * indent + afterline + "\n"
         outputfile.write(afterline)
         inputfile2.readline()
         for line2 in inputfile2:

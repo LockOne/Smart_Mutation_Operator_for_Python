@@ -1,47 +1,48 @@
 collecting operators form repo : models .....
-size : 254
+size : 117
 collecting operators form repo : shadowsocks .....
-size : 331
+size : 184
 collecting operators form repo : django .....
-size : 1958
+size : 1425
 collecting operators form repo : scikit-learn .....
-size : 3601
+size : 2556
 collecting operators form repo : ansible .....
-size : 4630
+size : 3457
 collecting operators form repo : flask .....
-size : 4712
+size : 3524
 collecting operators form repo : keras .....
-size : 5010
+size : 3771
 collecting operators form repo : awesome-python .....
-size : 5010
+size : 3771
 collecting operators form repo : fullstack-nanodegree-vm .....
-size : 5012
+size : 3773
 collecting operators form repo : odoo .....
-size : 5190
+size : 3918
 collecting operators form repo : awesome-machine-learning .....
-size : 5190
+size : 3918
 collecting operators form repo : scrapy .....
-size : 5379
+size : 4070
 collecting operators form repo : youtube-dl .....
-size : 5904
+size : 4484
 collecting operators form repo : XX-Net .....
-size : 6092
+size : 4666
 collecting operators form repo : requests .....
-size : 6242
+size : 4800
 collecting operators form repo : pandas .....
-size : 7244
+size : 5519
 collecting operators form repo : cpython .....
-size : 10672
+size : 8453
 collecting operators form repo : incubator-mxnet .....
-size : 10901
+size : 8632
 collecting operators form repo : wechat_jump_game .....
-size : 10919
+size : 8650
 collecting operators form repo : tornado .....
-size : 11092
+size : 8760
+collecting done
 less and equal Than 2 : 77239
 more and equal than 10 tokens  : 129800
 same afterToken, beforeToken : 37222
 more and equal than 4 identifiers : 8169
 3 identifers in a row : 0
-unmatched bracket : 241
-duplicate : 29770
+unmatched bracket : 8399
+duplicate : 23944

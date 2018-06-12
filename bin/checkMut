@@ -1,0 +1,15 @@
+#!/bin/bash
+DIR=`dirname $0`
+dirname="$1*"
+numOfFiles=0
+for file in ${dirname} 
+do
+	let numOfFiles++
+  newfilename="${file%.*}"
+	mv ${file} ${newfilename}
+	echo "executing ${file}"
+	python ${newfilename}
+	mv ${newfilename} ${file}
+done &> mutantsReport.txt
+echo "number of Files : ${numOfFiles}"
+python "${DIR}/../src/checkErr.py" mutantsReport.txt
