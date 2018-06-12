@@ -148,13 +148,13 @@ for i in range(num_lines):
         idindex = 0
         for tok in o:
             if tok.type == 'identifier':
-                afterline += identifiers[idindex]
+                afterline += identifiers[idindex] + " "
                 idindex +=1
             elif tok.type == 'string':
                 afterline += strings[strindex]
                 strindex += 1
             else:
-                afterline += tok.content
+                afterline += tok.content + " "
         afterline = ' ' * indent + afterline + "\n"
         outputfile.write(afterline)
         inputfile2.readline()

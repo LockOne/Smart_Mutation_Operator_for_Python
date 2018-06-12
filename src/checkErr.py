@@ -1,10 +1,17 @@
 import sys
 
 inputfile = open(sys.argv[1], 'r')
-num = 0
+errs = {}
 for line in inputfile:
-    if "SyntaxError" in line:
-       num += 1
-
-print("number of syntax error : " + str(num))
+    if "Error" in line:
+        err = line.lstrip()
+        err = err[:err.index("Error")]
+        if len(err) > 10:
+            continue
+        if err in errs.keys():
+            errs[err] += 1
+        else:
+            errs[err] = 0
+for er in errs.keys():
+    print(er + "Error :  " + str(errs[er]))
 inputfile.close()
