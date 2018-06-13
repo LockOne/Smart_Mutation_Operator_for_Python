@@ -8,8 +8,9 @@ if 'mutantsReport.txt' in os.listdir(current_directory):
 	os.system('rm mutantsReport.txt')
 
 total_num = 0
+file_list = os.listdir(mutant_directory)
 
-for mutant_file in os.listdir(mutant_directory):
+for mutant_file in file_list:
 	if '.py' in mutant_file: 
 		path = '/'.join(mutant_file.split('.')[:-2][0].split('___')[1:-1])
 		mutant_python_file = '.'.join(mutant_file.split('.')[:-1])
@@ -38,7 +39,7 @@ os.chdir(current_directory)
 count_err = 0
 with open('mutantsReport.txt') as f:
 	for line in f.readlines():
-		if 'Error' in line:
+		if 'Error:' in line:
 			count_err += 1
 
 print '%d errors out of %d files'%(count_err, total_num)
