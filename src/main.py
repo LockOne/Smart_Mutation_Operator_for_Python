@@ -56,12 +56,14 @@ input_file = open(sys.argv[1], 'r')
 mut_index = 0
 for i in range(num_lines):
     line = input_file.readline()
-    indent = 0
+    indent = ""
     for c in line:
-        if c == ' ':
-            indent += 1
+        if c.isspace():
+            indent += c
         else:
             break
+    # print("orig line: "+ line)
+    # print("indent: \"" + indent + "\"")
     line = line.rstrip()
     if "'''" in line or '"""' in line:
         continue
@@ -94,8 +96,8 @@ for i in range(num_lines):
     for o in operators:
         if len(o.before) == len(beforetemp):
             te = True
-            for i in range(len(o.before)):
-                if o.before[i].type != beforetemp[i].type or o.before[i].content != beforetemp[i].content:
+            for j in range(len(o.before)):
+                if o.before[j].type != beforetemp[j].type or o.before[j].content != beforetemp[j].content:
                     #print("i : " + str(i) + " o : " + str(o.before[i]) + ", " + str(beforetemp[i]))
                     te = False
                     break
@@ -118,10 +120,11 @@ for i in range(num_lines):
         xxx = ''
         for string in ifn[1:]:
             xxx += string
-            xxx += '_'
-        outputfile = open(mutloc + 'mutants/'+ xxx[:-1] + "." + str(mut_index),'w')
+            xxx += '___'
+        outputfile = open(mutloc + 'mutants/'+ xxx[:-3] + "." + str(mut_index),'w')
         inputfile2 = open(sys.argv[1], 'r')
         mut_index += 1
+        # print("i = " + str(i))
         for ind2 in range(i):
             outputfile.write(inputfile2.readline())
         identifiers = []
@@ -143,7 +146,7 @@ for i in range(num_lines):
         if tmp != len(strings) or idindex != len(identifiers):
             outputfile.close()
             inputfile2.close()
-            call(['rm', 'mutants/' + xxx[:-1] + "." + str(mut_index-1)])
+            call(['rm', 'mutants/' + xxx[:-3] + "." + str(mut_index-1)])
             continue
         idindex = 0
         for tok in o:
@@ -155,7 +158,10 @@ for i in range(num_lines):
                 strindex += 1
             else:
                 afterline += tok.content + " "
-        afterline = ' ' * indent + afterline + "\n"
+        # print("indent: \"" + indent + "\"")
+        # print("before combine: \"" + afterline + "\"")
+        afterline = indent + afterline + "\n"
+        # print("after combine: \"" + afterline + "\"")
         outputfile.write(afterline)
         inputfile2.readline()
         for line2 in inputfile2:

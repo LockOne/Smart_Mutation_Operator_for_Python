@@ -11,9 +11,9 @@ total_num = 0
 
 for mutant_file in os.listdir(mutant_directory):
 	if '.py' in mutant_file: 
-		path = '/'.join(mutant_file.split('.')[:-2][0].split('_')[1:-1])
+		path = '/'.join(mutant_file.split('.')[:-2][0].split('___')[1:-1])
 		mutant_python_file = '.'.join(mutant_file.split('.')[:-1])
-		original_python_file = mutant_python_file.split('_')[-1]
+		original_python_file = mutant_python_file.split('___')[-1]
 		
 		execution_directory = project_directory + '/' + path
 		os.chdir(mutant_directory)
@@ -41,7 +41,7 @@ with open('mutantsReport.txt') as f:
 		if 'Error' in line:
 			count_err += 1
 
-print '%d out of %d files'%(count_err, total_num)
+print '%d errors out of %d files'%(count_err, total_num)
 os.system('python "%s/src/checkErr.py" mutantsReport.txt'%current_directory)
 
 		#mv 
