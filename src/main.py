@@ -54,6 +54,7 @@ num_lines = sum(1 for line in open(sys.argv[1]))
 
 input_file = open(sys.argv[1], 'r')
 mut_index = 0
+num_mutants = 0
 for i in range(num_lines):
     line = input_file.readline()
     indent = ""
@@ -124,6 +125,7 @@ for i in range(num_lines):
         outputfile = open(mutloc + 'mutants/'+ xxx[:-3] + "." + str(mut_index),'w')
         inputfile2 = open(sys.argv[1], 'r')
         mut_index += 1
+        num_mutants += 1
         # print("i = " + str(i))
         for ind2 in range(i):
             outputfile.write(inputfile2.readline())
@@ -147,6 +149,7 @@ for i in range(num_lines):
             outputfile.close()
             inputfile2.close()
             call(['rm', 'mutants/' + xxx[:-3] + "." + str(mut_index-1)])
+            num_mutants -= 1
             continue
         idindex = 0
         for tok in o:
@@ -168,5 +171,5 @@ for i in range(num_lines):
             outputfile.write(line2 )
         inputfile2.close()
         outputfile.close()
-print("generated " + str(mut_index) + " muntants")
+print("generated " + str(num_mutants) + " mutants")
 input_file.close()
