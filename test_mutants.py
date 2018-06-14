@@ -16,6 +16,7 @@ for mutant_file in file_list:
 		mutant_python_file = '.'.join(mutant_file.split('.')[:-1])
 		original_python_file = mutant_python_file.split('___')[-1]
 		
+		#print project_directory, path
 		execution_directory = project_directory + '/' + path
 		os.chdir(mutant_directory)
 		os.system('mv %s %s'%(mutant_file, execution_directory))
@@ -24,7 +25,7 @@ for mutant_file in file_list:
 		os.system('mv %s %s'%(mutant_file, mutant_python_file))
 		
 		os.system('echo Executing %s 1>> %s/mutantsReport.txt'% (mutant_file, current_directory))
-		os.system('python %s 2>> %s/mutantsReport.txt'%(mutant_python_file, current_directory))
+		os.system('gtimeout 3 python %s 2>> %s/mutantsReport.txt'%(mutant_python_file, current_directory))
 		
 		os.system('mv %s %s'%(mutant_python_file, mutant_file))
 		os.system('mv %s %s'%(mutant_file, mutant_directory))
