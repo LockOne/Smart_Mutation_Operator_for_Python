@@ -9,9 +9,9 @@ https://dl.acm.org/citation.cfm?id=3106280
 
 usage : __bin/genMut /some/directory/of/project/__  
 The path need to be absolute path.  
-It check all .py files in /some/directory/ recursively, and generate mutants for each of them.
-ex) ./genMut __~/models/research/object_detection/__
+It check all .py files in /some/directory/ recursively, and generate mutants for each of them.  
+ex) ./genMut ~/models/research/object_detection/
 
-usage : bin/checkMut /some/directory/of/mutants/  
+usage : __bin/checkMut /some/directory/of/mutants/__  
 /some/mutants/ need to be absolute path.  
 It checks mutants in mutants/ and count number of .py files with syntax error.
